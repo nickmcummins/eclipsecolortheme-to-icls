@@ -3,22 +3,23 @@ package com.nickmcummins.webscraping.com.jetbrains;
 import com.nickmcummins.webscraping.ThemeFile;
 import org.jsoup.internal.StringUtil;
 
+import java.text.SimpleDateFormat;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 public class IntellijIdeaColorScheme implements ThemeFile {
     private static final String EXTENSION = "icls";
+    private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     private final Map<String, String> metaInfo;
     private final Map<String, String> colorOptions;
     private final List<AttributeOption> attributeOptions;
 
     public IntellijIdeaColorScheme(String created, String name, Map<String, String> colorOptions, List<AttributeOption> attributeOptions) {
         this.metaInfo = Map.of(
-                "created", StringUtil.isBlank(created) ? new Date(System.currentTimeMillis()).toString() : created,
-                "modified", new Date(System.currentTimeMillis()).toString(),
+                "created", DATE_FORMAT.format(StringUtil.isBlank(created) ? System.currentTimeMillis() : created),
+                "modified", DATE_FORMAT.format(System.currentTimeMillis()),
                 "originalScheme", name
         );
         this.colorOptions = colorOptions;
@@ -39,7 +40,7 @@ public class IntellijIdeaColorScheme implements ThemeFile {
         String modified = metaInfo.get("modified");
 
         String colorsOptions = colorOptions.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getKey))
+                .sorted(Map.Entry.comparingByKey())
                 .map(colorOption -> String.format("<option name=\"%s\" value=\"%s\" />", colorOption.getKey(), colorOption.getValue()))
                 .collect(Collectors.joining("\n\t\t"));
         String attributesOptions = attributeOptions.stream()

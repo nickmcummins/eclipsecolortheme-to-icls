@@ -3,6 +3,7 @@ package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 import com.nickmcummins.webscraping.com.jetbrains.AttributeOption;
 import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 
+import java.text.ParseException;
 import java.util.*;
 
 import static java.util.Map.entry;
