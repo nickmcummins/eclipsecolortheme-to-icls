@@ -3,8 +3,7 @@ package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
-public class ColorThemeElement
-{
+public class ColorThemeElement {
     public final String name;
     // values
     private final String colorValue;
@@ -13,8 +12,7 @@ public class ColorThemeElement
     private final boolean underline;
     private final boolean strikethrough;
 
-    public ColorThemeElement(String name, String colorValue, boolean bold, boolean italic, boolean underline, boolean strikethrough)
-    {
+    public ColorThemeElement(String name, String colorValue, boolean bold, boolean italic, boolean underline, boolean strikethrough) {
         this.name = name;
         this.colorValue = colorValue;
         this.bold = bold;
@@ -23,8 +21,7 @@ public class ColorThemeElement
         this.strikethrough = strikethrough;
     }
 
-    public static ColorThemeElement fromHtmlPageDiv(Element div)
-    {
+    public static ColorThemeElement fromHtmlPageDiv(Element div) {
         return new ColorThemeElement(
                 div.select("div[class='setting']").get(0).text(),
                 div.select("input").get(0).attr("value"),
@@ -35,8 +32,7 @@ public class ColorThemeElement
         );
     }
 
-    public static ColorThemeElement fromXmlElement(Element element)
-    {
+    public static ColorThemeElement fromXmlElement(Element element) {
         String tagName = element.tagName();
         Attributes attributes = element.attributes();
         return new ColorThemeElement(
@@ -49,13 +45,11 @@ public class ColorThemeElement
         );
     }
 
-    public String toString()
-    {
+    public String toString() {
         return String.format("<%s color=\"%s\" />", name, colorValue);
     }
 
-    public String getColorValue()
-    {
+    public String getColorValue() {
         return colorValue;
     }
 

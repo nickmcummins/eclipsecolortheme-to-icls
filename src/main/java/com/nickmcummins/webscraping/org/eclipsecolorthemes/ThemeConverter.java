@@ -9,20 +9,15 @@ import static java.util.Map.entry;
 
 public class ThemeConverter {
     private static final Map<String, List<String>> ECLIPSE_TO_IDEA_OPTIONS;
-    static
-    {
-
-
+    static {
         ECLIPSE_TO_IDEA_OPTIONS = Map.of(
                 "background", List.of("CONSOLE_BACKGROUND_KEY", "GUTTER_BACKGROUND", "RIGHT_MARGIN_COLOR", "TEARLINE_COLOR"),
                 "selectionForeground", List.of("SELECTION_FOREGROUND"), "selectionBackground", List.of("SELECTION_BACKGROUND"),
                 "currentLine", List.of("CARET_ROW_COLOR"),
                 "lineNumber", List.of("CARET_COLOR", "LINE_NUMBERS_COLOR"));
     }
-
     private static final Map<String, String> ECLIPSE_TO_IDEA_ATTRIBUTES;
-    static
-    {
+    static {
         ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
                 entry("occurrenceIndication", "IDENTIFIER_UNDER_CARET_ATTRIBUTES"),
                 entry("writeOccurrenceIndication", "WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES"),
@@ -55,24 +50,19 @@ public class ThemeConverter {
         );
     }
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
         Map<String, String> iclsColorOptions = new HashMap<>();
         List<AttributeOption> iclsAttributeOptions = new ArrayList<>();
 
         EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromXml(args[0]);
-        for (Map.Entry<String, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet())
-        {
+        for (Map.Entry<String, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
             String eclipseFieldName = colorThemeElement.getKey();
             ColorThemeElement eclipseColor = colorThemeElement.getValue();
-            if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName))
-            {
+            if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName)) {
                 List<String> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
                 for (String iclsColorOption : iclsOptionsWithColor)
                     iclsColorOptions.put(iclsColorOption, eclipseColor.getColorValue());
-            }
-            else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName))
-            {
+            } else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName)) {
                 String iclsAttributeOptionName = ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName);
                 Map<String, String> attributeOptions = new HashMap<>();
                 attributeOptions.put("FOREGROUND", eclipseColor.getColorValue());
@@ -83,11 +73,8 @@ public class ThemeConverter {
                 if (eclipseColor.isStrikethrough())
                     attributeOptions.put("EFFECT_TYPE", "3");
                 iclsAttributeOptions.add(new AttributeOption(iclsAttributeOptionName, attributeOptions));
-            }
-            else
-            {
+            } else
                 System.out.println(String.format("Skipping unmapped %s in Eclipse XML.", eclipseFieldName));
-            }
         }
         IntellijIdeaColorScheme icls = new IntellijIdeaColorScheme(
                 eclipseColorTheme.getModified(),

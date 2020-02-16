@@ -23,13 +23,11 @@ public class IntellijIdeaColorScheme implements ThemeFile {
         this.attributeOptions = attributeOptions;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return metaInfo.get("originalScheme");
     }
 
-    public String getExtension()
-    {
+    public String getExtension() {
         return EXTENSION;
     }
 
@@ -46,19 +44,19 @@ public class IntellijIdeaColorScheme implements ThemeFile {
                 .collect(Collectors.joining("\n"));
 
         return String.format("""
-<scheme name="%s" version="142">
-    <metaInfo>
-        <property name="created">%s</property>
-        <property name="modified">%s</property>
-        <property name="originalScheme">%s</property>
-    </metaInfo>
-    <colors>
-        %s
-    </colors>
-    <attributes>
-%s
-    </attributes>
-</scheme>""", name, created, modified, name, colorsOptions, attributesOptions
+                <scheme name="%s" version="142">
+                    <metaInfo>
+                        <property name="created">%s</property>
+                        <property name="modified">%s</property>
+                        <property name="originalScheme">%s</property>
+                    </metaInfo>
+                    <colors>
+                        %s
+                    </colors>
+                    <attributes>
+                %s
+                    </attributes>
+                </scheme>""", name, created, modified, name, colorsOptions, attributesOptions
         );
     }
 }

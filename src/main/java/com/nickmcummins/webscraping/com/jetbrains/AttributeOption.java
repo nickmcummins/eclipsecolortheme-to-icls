@@ -21,8 +21,6 @@ public class AttributeOption {
                         .collect(Collectors.toMap(option -> option.attr("name"), option -> option.attr("value"))));
     }
 
-
-
     private static String formatHexValue(String hexColor) {
         String formattedHex = hexColor.replaceFirst("#", "").toLowerCase();
         int numZeroDigits = 0;

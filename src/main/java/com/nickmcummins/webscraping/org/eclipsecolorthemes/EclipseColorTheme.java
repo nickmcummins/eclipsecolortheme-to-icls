@@ -72,8 +72,7 @@ public class EclipseColorTheme implements ThemeFile {
         }
     }
 
-    public Map<String, ColorThemeElement> getSettingsByName()
-    {
+    public Map<String, ColorThemeElement> getSettingsByName() {
         return settingsByName;
     }
 
@@ -89,8 +88,7 @@ public class EclipseColorTheme implements ThemeFile {
                     """, id, name, author, settingsTags);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
@@ -99,8 +97,7 @@ public class EclipseColorTheme implements ThemeFile {
     }
 
     @Override
-    public String getExtension()
-    {
+    public String getExtension() {
         return EXTENSION;
     }
 }
