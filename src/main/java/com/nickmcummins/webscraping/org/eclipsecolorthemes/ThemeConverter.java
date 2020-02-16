@@ -50,6 +50,22 @@ public class ThemeConverter {
         );
     }
 
+    public static String formatHexValue(String hexColor) {
+        String formattedHex = hexColor.replaceFirst("#", "").toLowerCase();
+        int numZeroDigits = 0;
+        int i = 0;
+        while (numZeroDigits == i && i < formattedHex.length()) {
+            if (formattedHex.charAt(i) == '0')
+                numZeroDigits += 1;
+            i += 1;
+        }
+
+        if (numZeroDigits == i)
+            return String.valueOf(formattedHex.charAt(formattedHex.length() - 1));
+        else
+            return formattedHex.substring(numZeroDigits);
+    }
+
     public static void main(String[] args) {
         Map<String, String> iclsColorOptions = new HashMap<>();
         List<AttributeOption> iclsAttributeOptions = new ArrayList<>();
@@ -61,7 +77,7 @@ public class ThemeConverter {
             if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName)) {
                 List<String> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
                 for (String iclsColorOption : iclsOptionsWithColor)
-                    iclsColorOptions.put(iclsColorOption, eclipseColor.getColorValue());
+                    iclsColorOptions.put(iclsColorOption, formatHexValue(eclipseColor.getColorValue()));
             } else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName)) {
                 String iclsAttributeOptionName = ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName);
                 Map<String, String> attributeOptions = new HashMap<>();
