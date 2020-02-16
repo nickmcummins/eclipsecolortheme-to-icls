@@ -9,11 +9,11 @@ import static java.util.Map.entry;
 
 public class ThemeConverter {
     private static final Map<String, List<String>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
-            "background", List.of("CONSOLE_BACKGROUND_KEY", "GUTTER_BACKGROUND", "RIGHT_MARGIN_COLOR", "TEARLINE_COLOR"),
+            "background", List.of("CONSOLE_BACKGROUND_KEY", "GUTTER_BACKGROUND"),
             "selectionForeground", List.of("SELECTION_FOREGROUND"),
             "selectionBackground", List.of("SELECTION_BACKGROUND"),
             "currentLine", List.of("CARET_ROW_COLOR"),
-            "lineNumber", List.of("CARET_COLOR", "LINE_NUMBERS_COLOR")
+            "lineNumber", List.of("CARET_COLOR", "LINE_NUMBERS_COLOR", "RIGHT_MARGIN_COLOR", "TEARLINE_COLOR")
     );
     private static final Map<String, String> ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
             entry("occurrenceIndication", "IDENTIFIER_UNDER_CARET_ATTRIBUTES"),

@@ -23,6 +23,10 @@ public class AttributeOption {
                         .collect(Collectors.toMap(option -> option.attr("name"), option -> option.attr("value"))));
     }
 
+    public String getName() {
+        return name;
+    }
+
     public String toString() {
         String valueOptions = values.entrySet().stream()
                 .map(entry -> String.format("<option name=\"%s\" value=\"%s\" />", entry.getKey(), formatHexValue(entry.getValue())))
