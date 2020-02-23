@@ -7,17 +7,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static java.net.http.HttpResponse.BodyHandlers;
+import static com.nickmcummins.webscraping.Util.get;
 
 public class EclipseColorTheme implements ThemeFile {
     private static final String EXTENSION = "xml";
@@ -35,16 +31,22 @@ public class EclipseColorTheme implements ThemeFile {
         this.settingsByName = settingsByName;
     }
 
-    public static EclipseColorTheme fromWebpage(String url) {
-        Document soup = Jsoup.parse(get(url));
+    public static EclipseColorTheme fromWebpage(String url) throws IOException, InterruptedException {
+        String webpage = get(url);
+        Document soup = Jsoup.parse(webpage);
         return new EclipseColorTheme(
-                url.split("&")[url.split("&").length - 1].split("=")[1],
+                idFromUrl(url),
                 soup.selectFirst("h2").select("b").text(),
                 soup.selectFirst("h2").selectFirst("span").selectFirst("span").child(0).text(),
                 null,
                 soup.select("div[class='setting-entry']").stream()
                         .map(ColorThemeElement::fromHtmlPageDiv)
                         .collect(Collectors.toMap(entry -> entry.name, Function.identity())));
+    }
+
+    public static String idFromUrl(String url)
+    {
+        return url.split("&")[url.split("&").length - 1].split("=")[1];
     }
 
     public static EclipseColorTheme fromXml(String filename) {
@@ -59,16 +61,6 @@ public class EclipseColorTheme implements ThemeFile {
                             .collect(Collectors.toMap(Element::tagName, ColorThemeElement::fromXmlElement)));
         } catch (IOException e) {
             throw new RuntimeException(String.format("Exception while trying to parse file %s", filename), e);
-        }
-    }
-
-    private static String get(String url) {
-        HttpClient requests = HttpClient.newBuilder().build();
-        try {
-            HttpResponse<String> response = requests.send(HttpRequest.newBuilder(URI.create(url)).build(), BodyHandlers.ofString());
-            return response.body();
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
         }
     }
 

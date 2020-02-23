@@ -8,14 +8,21 @@ public interface ThemeFile {
 
     String getExtension();
 
-    default void writeToFile() {
-        String filename = String.format("%s.%s", getName().replaceAll(" ", "-"), getExtension());
+    default void writeToFile()
+    {
+        writeToFile("");
+    }
+
+    default String writeToFile(String directory) {
+        directory = String.format("%s/", directory);
+        String filename = String.format("%s%s.%s", directory, getName().replaceAll(" ", "-"), getExtension());
         try (FileWriter file = new FileWriter(filename)) {
             file.write(toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
-            System.out.println(String.format("Successfully wrote %s", filename));
         }
+
+        System.out.println(String.format("Successfully wrote %s", filename));
+        return filename;
     }
 }
