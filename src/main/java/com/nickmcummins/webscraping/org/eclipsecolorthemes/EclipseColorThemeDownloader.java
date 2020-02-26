@@ -19,8 +19,9 @@ import static com.nickmcummins.webscraping.Util.get;
 
 public class EclipseColorThemeDownloader {
     private static final String START_PAGE = "https://web.archive.org/web/20190630000453/http://www.eclipsecolorthemes.org/?list=all&page=1";
-    private static final String OUTPUT_DIR = String.format("%s/Downloads/Themes/eclipse-color-themes/downloader", "/home/nick");
+    private static final String OUTPUT_DIR = String.format("%s/Downloads/Themes/eclipse-color-themes/downloader", System.getProperty("user.home"));
     private static final String THEME_INDEX = String.format("%s/themes.yaml", OUTPUT_DIR);
+    private static final String PAGES_INDEX = String.format("%s/pages.yaml", OUTPUT_DIR);
 
     private static final Yaml YAML;
     static {
@@ -81,6 +82,7 @@ public class EclipseColorThemeDownloader {
         }
 
         writeDownloadedThemesIndex();
+
     }
 
     public static void main(String[] args) throws Exception
