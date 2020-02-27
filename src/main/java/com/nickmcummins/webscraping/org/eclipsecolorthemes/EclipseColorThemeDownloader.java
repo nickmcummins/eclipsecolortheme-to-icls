@@ -2,6 +2,7 @@ package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 
 import com.nickmcummins.webscraping.persistence.yaml.YamlFilePersistence;
 import org.jsoup.Jsoup;
+import org.jsoup.internal.StringUtil;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
@@ -56,9 +57,18 @@ public class EclipseColorThemeDownloader {
         yamlFilePersistence.writeDownloadedThemesIndex();
     }
 
+    private void updatePageIndex() throws IOException, InterruptedException {
+        Document ectPage = Jsoup.parse(get(START_PAGE));
+        List<String> pageUrls = ectPage.select("div[class='selector'] li a").stream()
+                .map(a -> a.attr("href"))
+                .collect(Collectors.toList());
+        System.out.println(StringUtil.join(pageUrls, "\n"));
+    }
+
     public static void main(String[] args) throws Exception
     {
         EclipseColorThemeDownloader ectDownloader = new EclipseColorThemeDownloader(START_PAGE);
         //ectDownloader.downloadThemesOnPage();
+        ectDownloader.updatePageIndex();
     }
 }
