@@ -22,7 +22,11 @@ public class YamlFilePersistence {
         YAML = new Yaml(options);
     }
     private final Map<Integer, String> downloadedThemesIndex;
-    private final Map<String, Map<Integer, List<String>>> downloadedPagesIndex;
+    private final List<String> downloadedPagesIndex;
+    private final Map<String, Object> INDEXES = Map.of(
+            THEME_INDEX, (Object)downloadedThemesIndex,
+            PAGES_INDEX, (Object)downloadedPagesIndex
+    )
 
     public YamlFilePersistence() {
         this.downloadedThemesIndex = loadDownloadedThemesIndex();
@@ -37,7 +41,7 @@ public class YamlFilePersistence {
         }
     }
 
-    private Map<String, Map<Integer, List<String>>> loadDownloadedPagesIndex() {
+    private List<String> loadDownloadedPagesIndex() {
         try {
             return YAML.load(new String(Files.readAllBytes(Paths.get(PAGES_INDEX))));
         } catch (IOException e) {
@@ -45,14 +49,16 @@ public class YamlFilePersistence {
         }
     }
 
-    public void writeDownloadedThemesIndex()
+    public void writeIndexes()
     {
-        try (FileWriter file = new FileWriter(THEME_INDEX)) {
-            StringWriter writer = new StringWriter();
-            YAML.dump(downloadedThemesIndex, writer);
-            file.write(writer.toString());
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to update downloaded theme index file", e);
+        for (String index : INDEXES) {
+            try (FileWriter file = new FileWriter(index)) {
+                StringWriter writer = new StringWriter();
+                YAML.dump(downloadedThemesIndex, writer);
+                file.write(writer.toString());
+            } catch (IOException e) {
+                throw new RuntimeException(String.format("Failed to update downloaded index file %s", index), e);
+            }
         }
     }
 
@@ -61,7 +67,7 @@ public class YamlFilePersistence {
         return downloadedThemesIndex;
     }
 
-    public Map<String, Map<Integer, List<String>>> getDownloadedPagesIndex()
+    public List<String> getDownloadedPagesIndex()
     {
         return downloadedPagesIndex;
     }
