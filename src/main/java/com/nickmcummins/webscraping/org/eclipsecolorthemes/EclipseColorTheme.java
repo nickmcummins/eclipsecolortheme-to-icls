@@ -31,7 +31,7 @@ public class EclipseColorTheme implements ThemeFile {
         this.settingsByName = settingsByName;
     }
 
-    public static EclipseColorTheme fromWebpage(String url) throws IOException, InterruptedException {
+    public static EclipseColorTheme fromWebpage(String url) throws IOException, InterruptedException, CannotDownloadException {
         String webpage = get(url);
         Document soup = Jsoup.parse(webpage);
         return new EclipseColorTheme(
