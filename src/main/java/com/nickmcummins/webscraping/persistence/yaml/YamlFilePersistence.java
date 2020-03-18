@@ -30,41 +30,24 @@ public class YamlFilePersistence {
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         YAML = new Yaml(options);
     }
-    private final Map<Integer, String> downloadedThemesIndex;
-    private List<String> pageListIndex;
-    private List<String> downloadedPagesIndex;
+    private final Map<Integer, String> downloadedThemes;
+    private List<String> pagesList;
+    private List<String> downloadedPages;
 
 
-    public YamlFilePersistence() {
-        this.downloadedThemesIndex = loadDownloadedThemesIndex();
-        this.pageListIndex = loadPagesIndex(PAGES_INDEX);
-        this.downloadedPagesIndex = loadPagesIndex(DOWNLOADED_PAGES_INDEX);
-
+    public YamlFilePersistence() throws IOException {
+        this.downloadedThemes = YAML.load(new String(Files.readAllBytes(Paths.get(THEME_INDEX))));
+        this.pagesList = YAML.load(new String(Files.readAllBytes(Paths.get(PAGES_INDEX))));
+        this.downloadedPages = YAML.load(new String(Files.readAllBytes(Paths.get(DOWNLOADED_PAGES_INDEX))));
     }
 
-    private Map<Integer, String> loadDownloadedThemesIndex() {
-        try {
-            return YAML.load(new String(Files.readAllBytes(Paths.get(THEME_INDEX))));
-        } catch (IOException e) {
-            throw new RuntimeException("Exception loading downloaded theme index", e);
-        }
-    }
-
-    private List<String> loadPagesIndex(String pageIndex) {
-        try {
-            return YAML.load(new String(Files.readAllBytes(Paths.get(pageIndex))));
-        } catch (IOException e) {
-            throw new RuntimeException("Exception loading downloaded pages index", e);
-        }
-    }
-
-    public List<String> updatePageIndex(String startPage) throws IOException, InterruptedException, CannotDownloadException {
+    public List<String> refreshPageList(String startPage) throws IOException, InterruptedException, CannotDownloadException {
         Document ectPage = Jsoup.parse(get(startPage));
         List<String> pageUrls = new ArrayList<>(ectPage.select("div[class='selector'] li a").stream()
                 .map(a -> a.attr("href"))
                 .filter(url -> url.contains("page="))
                 .collect(Collectors.toSet()));
-        this.downloadedPagesIndex = pageUrls;
+        this.downloadedPages = pageUrls;
         writePageListIndex();
         return pageUrls;
 
@@ -84,7 +67,7 @@ public class YamlFilePersistence {
     {
         try (FileWriter file = new FileWriter(index)) {
             StringWriter writer = new StringWriter();
-            YAML.dump(index.equals(THEME_INDEX) ? downloadedThemesIndex : downloadedPagesIndex, writer);
+            YAML.dump(index.equals(THEME_INDEX) ? downloadedThemes : downloadedPages, writer);
             file.write(writer.toString());
         } catch (IOException e) {
             throw new RuntimeException(String.format("Failed to update downloaded index file %s", index), e);
@@ -92,17 +75,17 @@ public class YamlFilePersistence {
 
     }
 
-    public Map<Integer, String> getDownloadedThemesIndex()
+    public Map<Integer, String> getDownloadedThemes()
     {
-        return downloadedThemesIndex;
+        return downloadedThemes;
     }
 
-    public List<String> getPageListIndex() {
-        return pageListIndex;
+    public List<String> getPagesList() {
+        return pagesList;
     }
 
-    public List<String> getDownloadedPagesIndex()
+    public List<String> getDownloadedPages()
     {
-        return downloadedPagesIndex;
+        return downloadedPages;
     }
 }
