@@ -14,6 +14,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.Util.get;
+import static com.nickmcummins.webscraping.persistence.FileIndexUtil.ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY;
 
 public class EclipseColorTheme implements ThemeFile {
     private static final String EXTENSION = "xml";
@@ -91,5 +92,12 @@ public class EclipseColorTheme implements ThemeFile {
     @Override
     public String getExtension() {
         return EXTENSION;
+    }
+
+    @Override
+    public void writeToFile() throws IOException {
+        String outputDir = String.format("%s/%s", ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY, id);
+        Files.createDirectory(Paths.get(outputDir));
+        ThemeFile.super.writeToFile(outputDir);
     }
 }

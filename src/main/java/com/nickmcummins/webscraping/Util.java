@@ -35,4 +35,9 @@ public class Util {
 
         return response.body();
     }
+
+    public static void print(String message, Object... args)
+    {
+        System.out.println(String.format(message, args));
+    }
 }

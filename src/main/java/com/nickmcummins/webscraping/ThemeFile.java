@@ -8,8 +8,7 @@ public interface ThemeFile {
 
     String getExtension();
 
-    default void writeToFile()
-    {
+    default void writeToFile() throws IOException {
         writeToFile("");
     }
 

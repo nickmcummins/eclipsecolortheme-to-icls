@@ -4,6 +4,7 @@ import com.nickmcummins.webscraping.com.jetbrains.AttributeOption;
 import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import com.nickmcummins.webscraping.com.jetbrains.SchemeType;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.*;
 
@@ -125,7 +126,7 @@ public class ThemeConverter {
             return formattedHex.substring(numZeroDigits);
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Map<String, String> iclsColorOptions = new HashMap<>();
         List<AttributeOption> iclsAttributeOptions = new ArrayList<>();
 
