@@ -6,7 +6,7 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
 
 @Command(name = "download", description = "Download from eclipsecolorthemes.org.")
-public class EclipseColorThemeDownload implements Runnable {
+public class EclipseColorThemeDownloadCommand implements Runnable {
     @Option(names = {"-s", "--start-id"})
     public String startId;
 

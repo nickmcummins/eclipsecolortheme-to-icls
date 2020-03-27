@@ -1,11 +1,8 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 
 import com.nickmcummins.webscraping.com.jetbrains.AttributeOption;
-import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import com.nickmcummins.webscraping.com.jetbrains.SchemeType;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.*;
 
 import static com.nickmcummins.webscraping.com.jetbrains.SchemeType.LIGHT;
@@ -13,14 +10,14 @@ import static com.nickmcummins.webscraping.com.jetbrains.SchemeType.DARK;
 import static java.util.Map.entry;
 
 public class ThemeConverter {
-    private static final Map<String, List<String>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
+    public static final Map<String, List<String>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
             "background", List.of("CONSOLE_BACKGROUND_KEY", "GUTTER_BACKGROUND"),
             "selectionForeground", List.of("SELECTION_FOREGROUND"),
             "selectionBackground", List.of("SELECTION_BACKGROUND"),
             "currentLine", List.of("CARET_ROW_COLOR"),
             "lineNumber", List.of("CARET_COLOR", "LINE_NUMBERS_COLOR", "RIGHT_MARGIN_COLOR", "TEARLINE_COLOR")
     );
-    private static final Map<String, List<String>> ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
+    public static final Map<String, List<String>> ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
             entry("occurrenceIndication", List.of("IDENTIFIER_UNDER_CARET_ATTRIBUTES")),
             entry("writeOccurrenceIndication", List.of("WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES")),
             entry("singleLineComment", List.of("DEFAULT_LINE_COMMENT")),
@@ -49,7 +46,7 @@ public class ThemeConverter {
             entry("typeParameter", List.of("TYPE_PARAMETER_NAME_ATTRIBUTES")),
             entry("constant", List.of("DEFAULT_CONSTANT")
     ));
-    private static final Map<SchemeType, List<AttributeOption>> ICLS_CONSOLE_DEFAULTS = Map.of(
+    public static final Map<SchemeType, List<AttributeOption>> ICLS_CONSOLE_DEFAULTS = Map.of(
             LIGHT, List.of(
                     new AttributeOption("BAD_CHARACTER", Map.of("EFFECT_COLOR", "ffcccc", "EFFECT_TYPE", "2")),
                     new AttributeOption("BREAKPOINT_ATTRIBUTES", Map.of("BACKGROUND", "faeae6", "ERROR_STRIPE_COLOR", "ffc8c8")),
@@ -124,44 +121,5 @@ public class ThemeConverter {
             return String.valueOf(formattedHex.charAt(formattedHex.length() - 1));
         else
             return formattedHex.substring(numZeroDigits);
-    }
-
-    public static void main(String[] args) throws IOException {
-        Map<String, String> iclsColorOptions = new HashMap<>();
-        List<AttributeOption> iclsAttributeOptions = new ArrayList<>();
-
-        EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromXml(args[0]);
-        SchemeType type = SchemeType.valueOf(args[1].toUpperCase());
-        for (Map.Entry<String, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
-            String eclipseFieldName = colorThemeElement.getKey();
-            ColorThemeElement eclipseColor = colorThemeElement.getValue();
-            if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName)) {
-                List<String> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
-                for (String iclsColorOption : iclsOptionsWithColor)
-                    iclsColorOptions.put(iclsColorOption, formatHexValue(eclipseColor.getColorValue()));
-            } else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName)) {
-                for (String iclsAttributeOptionName : ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName)) {
-                    Map<String, String> attributeOptions = new HashMap<>();
-                    attributeOptions.put("FOREGROUND", eclipseColor.getColorValue());
-                    if (eclipseColor.isBold())
-                        attributeOptions.put("FONT_TYPE", "1");
-                    if (eclipseColor.isItalic())
-                        attributeOptions.put("FONT_TYPE", "2");
-                    if (eclipseColor.isStrikethrough())
-                        attributeOptions.put("EFFECT_TYPE", "3");
-                    iclsAttributeOptions.add(new AttributeOption(iclsAttributeOptionName, attributeOptions));
-                }
-            } else
-                System.out.println(String.format("Skipping unmapped %s in Eclipse XML.", eclipseFieldName));
-        }
-        iclsAttributeOptions.addAll(ICLS_CONSOLE_DEFAULTS.get(type));
-
-        IntellijIdeaColorScheme icls = new IntellijIdeaColorScheme(
-                eclipseColorTheme.getModified(),
-                eclipseColorTheme.getName(),
-                iclsColorOptions,
-                iclsAttributeOptions);
-        icls.writeToFile();
-        System.out.println(icls);
     }
 }

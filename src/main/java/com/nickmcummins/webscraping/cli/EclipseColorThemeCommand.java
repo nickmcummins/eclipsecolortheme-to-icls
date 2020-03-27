@@ -5,8 +5,8 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Spec;
 import static picocli.CommandLine.Model.CommandSpec;
 
-@Command(name = "eclipsecolortheme", subcommands = {EclipseColorThemeDownload.class })
-public class EclipseColorTheme implements Runnable {
+@Command(name = "eclipsecolortheme", subcommands = {EclipseColorThemeDownloadCommand.class, EclipseColorThemeConvertCommand.class })
+public class EclipseColorThemeCommand implements Runnable {
     @Spec
     CommandSpec spec;
 
@@ -16,7 +16,7 @@ public class EclipseColorTheme implements Runnable {
     }
 
     public static void main(String[] args) {
-        CommandLine cmd = new CommandLine(new EclipseColorTheme());
+        CommandLine cmd = new CommandLine(new EclipseColorThemeCommand());
         cmd.execute(args);
     }
 }

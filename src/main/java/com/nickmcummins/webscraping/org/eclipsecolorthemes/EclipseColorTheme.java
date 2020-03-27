@@ -50,7 +50,7 @@ public class EclipseColorTheme implements ThemeFile {
         return url.split("&")[url.split("&").length - 1].split("=")[1];
     }
 
-    public static EclipseColorTheme fromXml(String filename) {
+    public static EclipseColorTheme fromXmlFile(String filename) {
         try {
             Element colorTheme = Jsoup.parse(new String(Files.readAllBytes(Paths.get(filename))), "", Parser.xmlParser()).selectFirst("colorTheme");
             return new EclipseColorTheme(
