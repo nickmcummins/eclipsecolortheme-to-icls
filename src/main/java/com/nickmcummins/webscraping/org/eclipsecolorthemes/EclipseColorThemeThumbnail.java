@@ -21,7 +21,7 @@ import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnai
 
 public class EclipseColorThemeThumbnail {
     private static final String wkhtmltoimage = "wkhtmltoimage";
-    private static final List<String> DEFAULT_OPTS = List.of("--crop-w", "420", "--crop-h", "324");
+    private static final List<String> DEFAULT_OPTS = List.of("--crop-w", "362");
 
     private final String xmlFilepath;
     private final String imageFilename;
