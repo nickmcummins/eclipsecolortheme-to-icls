@@ -5,7 +5,11 @@ import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Spec;
 import static picocli.CommandLine.Model.CommandSpec;
 
-@Command(name = "eclipsecolortheme", subcommands = {EclipseColorThemeDownloadCommand.class, EclipseColorThemeConvertCommand.class })
+@Command(name = "eclipsecolortheme", subcommands = {
+        EclipseColorThemeDownloadCommand.class,
+        EclipseColorThemeConvertCommand.class,
+        EclipseColorThemeGenerateThumbnailCommand.class
+})
 public class EclipseColorThemeCommand implements Runnable {
     @Spec
     CommandSpec spec;

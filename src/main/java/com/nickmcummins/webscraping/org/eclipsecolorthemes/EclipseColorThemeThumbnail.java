@@ -1,0 +1,85 @@
+package com.nickmcummins.webscraping.org.eclipsecolorthemes;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.buildobjects.process.ProcBuilder;
+import org.buildobjects.process.ProcResult;
+import org.jsoup.internal.StringUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.nickmcummins.webscraping.Util.print;
+import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnailCommand.THUMBNAILS_DIRECTORY;
+
+public class EclipseColorThemeThumbnail {
+    private static final String wkhtmltoimage = "wkhtmltoimage";
+    private static final List<String> DEFAULT_OPTS = List.of("--crop-w", "420", "--crop-h", "324");
+
+    private final String xmlFilepath;
+    private final String imageFilename;
+    private final Path cssFilepath;
+    private final Path htmlFilepath;
+
+    public EclipseColorThemeThumbnail(String xmlFilepath) {
+        this.xmlFilepath = xmlFilepath;
+        String[] xmlFilepathParts = xmlFilepath.split("/");
+        String xmlFilename = xmlFilepathParts[xmlFilepathParts.length - 1];
+        String xmlFileDirectory = xmlFilepathParts[xmlFilepathParts.length - 2];
+        String imageFilePrefix = NumberUtils.isDigits(xmlFileDirectory) ? String.format("%s-", xmlFileDirectory) : "";
+
+        this.imageFilename = String.format("%s/%s%s", THUMBNAILS_DIRECTORY, imageFilePrefix, xmlFilename.replace(".xml", ".png"));
+        try {
+            Path tmpDirectory = Files.createTempDirectory("eclipsecolortheme_thumbnail_");
+            this.cssFilepath = Files.createTempFile(tmpDirectory, null, ".css");
+            this.htmlFilepath = Files.createTempFile(tmpDirectory, null, ".html");
+        } catch (IOException e) {
+            throw new RuntimeException("Exception writing thumbnail HTML/CSS files", e);
+        }
+    }
+
+    public void generate() {
+        if (new File(imageFilename).exists()) {
+            print("Skipping creation of already existing file %s", imageFilename);
+        } else {
+            EclipseColorThemeThumbnailCss previewCss = new EclipseColorThemeThumbnailCss(xmlFilepath);
+            try (FileWriter cssFile = new FileWriter(cssFilepath.toFile()); FileWriter htmlFile = new FileWriter(htmlFilepath.toFile())) {
+                cssFile.write(previewCss.toString());
+                System.out.println(String.format("Successfully wrote %s", cssFilepath));
+
+                String previewHtml = IOUtils.toString(new FileInputStream("src/main/resources/eclipsecolortheme-preview.html"), StandardCharsets.UTF_8).replace("eclipsecolortheme.css", cssFilepath.toString());
+                htmlFile.write(previewHtml);
+                System.out.println(String.format("Successfully wrote %s", htmlFilepath));
+            } catch (IOException e) {
+                throw new RuntimeException("Exception generating thumbnail file", e);
+            }
+
+            wkhtmltoimageCmd();
+        }
+    }
+
+    private void wkhtmltoimageCmd() {
+
+        List<String> args = new ArrayList<>(DEFAULT_OPTS.size() + 2);
+        args.addAll(DEFAULT_OPTS);
+        args.add(htmlFilepath.toString());
+        args.add(imageFilename);
+
+        System.out.println(String.format("Executing %s %s", wkhtmltoimage, StringUtil.join(args, " ")));
+
+        ProcResult result = new ProcBuilder("wkhtmltoimage")
+                .withArgs(args.toArray(new String[0]))
+                .run();
+        if (new File(imageFilename).exists())
+            print("Successfully wrote %s", imageFilename);
+        else
+            throw new RuntimeException(String.format("Error generating %s: %s", imageFilename, result.getErrorString()));
+    }
+}
