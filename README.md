@@ -19,7 +19,11 @@ Usage: eclipsecolortheme download [-l] [-n=<numberToDownload>] [-s=<startId>]
    
      -s, --start-id=<startId>
 ```
-
+### Thumbnailer 
+```
+Usage: eclipsecolortheme thumbnail [-i=<xmlFilename>]
+  -i, --xml-file=<xmlFilename>
+```
 
 ### Converter (WIP)
 ```
