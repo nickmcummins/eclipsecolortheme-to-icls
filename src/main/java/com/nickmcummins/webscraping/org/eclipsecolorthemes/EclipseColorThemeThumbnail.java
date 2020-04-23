@@ -62,6 +62,7 @@ public class EclipseColorThemeThumbnail {
             }
 
             wkhtmltoimageCmd();
+            pngoutCmd();
         }
     }
 
@@ -81,5 +82,14 @@ public class EclipseColorThemeThumbnail {
             print("Successfully wrote %s", imageFilename);
         else
             throw new RuntimeException(String.format("Error generating %s: %s", imageFilename, result.getErrorString()));
+    }
+
+    private void pngoutCmd() {
+        ProcResult result = new ProcBuilder("pngout")
+                .withArg(imageFilename)
+                .withNoTimeout()
+                .run();
+        print("Executing pngout %s", imageFilename);
+        System.out.println(result.getOutputString());
     }
 }
