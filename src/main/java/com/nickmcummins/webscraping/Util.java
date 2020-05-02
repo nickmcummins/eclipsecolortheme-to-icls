@@ -33,8 +33,8 @@ public class Util {
                 }
             } catch (IOException ce) {
                 if (ce instanceof ConnectException || ce.getMessage().equals("Received RST_STREAM: Internal error")) {
-                    System.out.println(String.format("Connection exception when attempting to download %s. Sleeping 10 seconds.", url));
-                    sleep(10000);
+                    System.out.println(String.format("Connection exception when attempting to download %s. Sleeping %d seconds.", url, 10 * tries));
+                    sleep(10000 * tries);
                 }
             }
         } while ((response != null && response.statusCode() == 302) || (!success && tries < MAX_RETRIES));
