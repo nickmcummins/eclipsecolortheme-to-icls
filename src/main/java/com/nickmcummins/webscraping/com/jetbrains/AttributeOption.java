@@ -3,11 +3,13 @@ package com.nickmcummins.webscraping.com.jetbrains;
 import org.jsoup.nodes.Element;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
+import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ATTRIBUTE_OPTION_VALUE_ORDER;
 
 public class AttributeOption {
     private final String name;
@@ -36,7 +38,7 @@ public class AttributeOption {
             formattedValueOptions = "<value />";
         else {
             formattedValueOptions = values.entrySet().stream()
-                    .sorted(Map.Entry.comparingByKey())
+                    .sorted(Comparator.comparing(option -> ATTRIBUTE_OPTION_VALUE_ORDER.indexOf(option.getKey())))
                     .map(entry -> String.format("                <option name=\"%s\" value=\"%s\"/>", entry.getKey(), formatHexValue(entry.getValue())))
                     .collect(Collectors.joining("\n"));
         }

@@ -35,7 +35,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry("interface", List.of("DEFAULT_INTERFACE_NAME")),
             entry("method", List.of("DEFAULT_FUNCTION_CALL")),
             entry("methodDeclaration", List.of("DEFAULT_FUNCTION_DECLARATION")),
-            entry("bracket", List.of("DEFAULT_BRACKETS")),
+            entry("bracket", List.of("DEFAULT_BRACES", "DEFAULT_BRACKETS")),
             entry("number", List.of("DEFAULT_NUMBER")),
             entry("string", List.of("DEFAULT_VALID_STRING_ESCAPE")),
             entry("operator", List.of("DEFAULT_DOT", "DEFAULT_SEMICOLON", "DEFAULT_OPERATION_SIGN", "DEFAULT_COMMA")),

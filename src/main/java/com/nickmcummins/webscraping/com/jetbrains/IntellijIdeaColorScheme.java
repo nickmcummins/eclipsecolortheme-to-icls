@@ -12,6 +12,8 @@ import java.util.stream.Collectors;
 public class IntellijIdeaColorScheme implements ColorTheme {
     private static final String EXTENSION = "icls";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    public static final List<String> ATTRIBUTE_OPTION_VALUE_ORDER = List.of("FOREGROUND", "FONT_TYPE", "BACKGROUND",
+            "EFFECT_COLOR", "ERROR_STRIPE_COLOR", "EFFECT_TYPE");
     private final Map<String, String> metaInfo;
     private final Map<String, String> colorOptions;
     private final List<AttributeOption> attributeOptions;
@@ -45,9 +47,7 @@ public class IntellijIdeaColorScheme implements ColorTheme {
     }
 
     public String toString() {
-        String originalScheme = metaInfo.get("originalScheme");
-        String created = metaInfo.get("created");
-        String modified = metaInfo.get("modified");
+        String name = metaInfo.get("originalScheme");
 
         String metaInfoProperties = metaInfo.entrySet().stream()
                 .sorted(Map.Entry.comparingByKey())
@@ -73,7 +73,7 @@ public class IntellijIdeaColorScheme implements ColorTheme {
                     <attributes>
                 %s
                     </attributes>
-                </scheme>""", originalScheme, metaInfoProperties, colorsOptions, attributesOptions
+                </scheme>""", name, metaInfoProperties, colorsOptions, attributesOptions
         );
     }
 }
