@@ -1,4 +1,4 @@
-package com.nickmcummins.webscraping.com.jetbrains;
+package com.nickmcummins.webscraping;
 
 public enum SchemeType {
     LIGHT("light"),

@@ -16,8 +16,6 @@ public class EclipseColorThemeGenerateThumbnailCommand implements Runnable {
     @Option(names = {"-i", "--xml-file"})
     public String xmlFilename;
 
-
-
     @Override
     public void run() {
         List<String> xmlFilenames = (xmlFilename) != null ? List.of(xmlFilename) : getDownloadedXmls();

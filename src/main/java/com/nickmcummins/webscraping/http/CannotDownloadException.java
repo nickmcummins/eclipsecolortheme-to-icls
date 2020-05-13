@@ -1,4 +1,4 @@
-package com.nickmcummins.webscraping.org.eclipsecolorthemes;
+package com.nickmcummins.webscraping.http;
 
 public class CannotDownloadException extends Throwable {
     public  CannotDownloadException() {

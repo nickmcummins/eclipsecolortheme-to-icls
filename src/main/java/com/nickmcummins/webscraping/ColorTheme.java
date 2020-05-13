@@ -4,7 +4,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public interface ThemeFile {
+public interface ColorTheme {
     List<String> INVALID_CHARACTERS = List.of(" ", "/");
 
     String getName();

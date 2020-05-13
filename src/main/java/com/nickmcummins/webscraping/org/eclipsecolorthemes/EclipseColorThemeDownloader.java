@@ -1,5 +1,7 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 
+import com.nickmcummins.webscraping.http.CannotDownloadException;
+
 import java.io.IOException;
 
 import static com.nickmcummins.webscraping.Util.print;

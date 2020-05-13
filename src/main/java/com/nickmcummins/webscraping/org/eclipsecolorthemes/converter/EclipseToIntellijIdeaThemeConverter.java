@@ -1,15 +1,20 @@
-package com.nickmcummins.webscraping.org.eclipsecolorthemes;
+package com.nickmcummins.webscraping.org.eclipsecolorthemes.converter;
 
 import com.nickmcummins.webscraping.com.jetbrains.AttributeOption;
-import com.nickmcummins.webscraping.com.jetbrains.SchemeType;
+import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
+import com.nickmcummins.webscraping.SchemeType;
+import com.nickmcummins.webscraping.converter.ThemeConverter;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.ColorThemeElement;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
 
 import java.util.*;
 
-import static com.nickmcummins.webscraping.com.jetbrains.SchemeType.LIGHT;
-import static com.nickmcummins.webscraping.com.jetbrains.SchemeType.DARK;
+import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
+import static com.nickmcummins.webscraping.SchemeType.LIGHT;
+import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static java.util.Map.entry;
 
-public class ThemeConverter {
+public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<EclipseColorTheme, IntellijIdeaColorScheme> {
     public static final Map<String, List<String>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
             "background", List.of("CONSOLE_BACKGROUND_KEY", "GUTTER_BACKGROUND"),
             "selectionForeground", List.of("SELECTION_FOREGROUND"),
@@ -48,7 +53,7 @@ public class ThemeConverter {
     ));
     public static final Map<SchemeType, List<AttributeOption>> ICLS_CONSOLE_DEFAULTS = Map.of(
             LIGHT, List.of(
-                    new AttributeOption("BAD_CHARACTER", Map.of("EFFECT_COLOR", "ffcccc", "EFFECT_TYPE", "2")),
+                    new AttributeOption("BAD_CHARACTER", Map.of("BACKGROUND", "ffcccc")),
                     new AttributeOption("BREAKPOINT_ATTRIBUTES", Map.of("BACKGROUND", "faeae6", "ERROR_STRIPE_COLOR", "ffc8c8")),
                     new AttributeOption("CONSOLE_BLACK_OUTPUT", Map.of("FOREGROUND", "0")),
                     new AttributeOption("CONSOLE_BLUE_BRIGHT_OUTPUT", Map.of("FOREGROUND", "5c5cff")),
@@ -77,7 +82,7 @@ public class ThemeConverter {
                     new AttributeOption("DIFF_INSERTED", Map.of("BACKGROUND", "bee6be")),
                     new AttributeOption("DIFF_MODIFIED", Map.of("BACKGROUND", "cad9fa"))),
             DARK, List.of(
-                    new AttributeOption("BAD_CHARACTER", Map.of("EFFECT_COLOR", "ff0000", "EFFECT_TYPE", "2")),
+                    new AttributeOption("BAD_CHARACTER", Map.of("BACKGROUND", "ff0000")),
                     new AttributeOption("BREAKPOINT_ATTRIBUTES", Map.of("BACKGROUND", "3a2323", "ERROR_STRIPE_COLOR", "664233")),
                     new AttributeOption("CONSOLE_BLACK_OUTPUT", Map.of("FOREGROUND", "ffffff")),
                     new AttributeOption("CONSOLE_BLUE_BRIGHT_OUTPUT", Map.of("FOREGROUND", "7eaef1")),
@@ -107,19 +112,39 @@ public class ThemeConverter {
                     new AttributeOption("DIFF_MODIFIED", Map.of("BACKGROUND", "385570")))
     );
 
-    public static String formatHexValue(String hexColor) {
-        String formattedHex = hexColor.replaceFirst("#", "").toLowerCase();
-        int numZeroDigits = 0;
-        int i = 0;
-        while (numZeroDigits == i && i < formattedHex.length()) {
-            if (formattedHex.charAt(i) == '0')
-                numZeroDigits += 1;
-            i += 1;
-        }
+    @Override
+    public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
+        Map<String, String> iclsColorOptions = new HashMap<>();
+        List<AttributeOption> iclsAttributeOptions = new ArrayList<>();
 
-        if (numZeroDigits == i)
-            return String.valueOf(formattedHex.charAt(formattedHex.length() - 1));
-        else
-            return formattedHex.substring(numZeroDigits);
+        for (Map.Entry<String, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
+            String eclipseFieldName = colorThemeElement.getKey();
+            ColorThemeElement eclipseColor = colorThemeElement.getValue();
+            if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName)) {
+                List<String> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
+                for (String iclsColorOption : iclsOptionsWithColor)
+                    iclsColorOptions.put(iclsColorOption, formatHexValue(eclipseColor.getColorValue()));
+            } else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName)) {
+                for (String iclsAttributeOptionName : ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName)) {
+                    Map<String, String> attributeOptions = new HashMap<>();
+                    attributeOptions.put("FOREGROUND", eclipseColor.getColorValue());
+                    if (eclipseColor.isBold())
+                        attributeOptions.put("FONT_TYPE", "1");
+                    if (eclipseColor.isItalic())
+                        attributeOptions.put("FONT_TYPE", "2");
+                    if (eclipseColor.isStrikethrough())
+                        attributeOptions.put("EFFECT_TYPE", "3");
+                    iclsAttributeOptions.add(new AttributeOption(iclsAttributeOptionName, attributeOptions));
+                }
+            } else
+                System.out.println(String.format("Skipping unmapped %s in Eclipse XML.", eclipseFieldName));
+        }
+        iclsAttributeOptions.addAll(ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()));
+
+        return new IntellijIdeaColorScheme(
+                eclipseColorTheme.getModified(),
+                eclipseColorTheme.getName(),
+                iclsColorOptions,
+                iclsAttributeOptions);
     }
 }
