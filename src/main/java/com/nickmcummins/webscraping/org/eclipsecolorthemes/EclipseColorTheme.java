@@ -14,9 +14,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.Util.get;
+import static com.nickmcummins.webscraping.Util.print;
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY;
 
 public class EclipseColorTheme implements ThemeFile {
+    private static final String URL_UNAVAILABLE = "No URL has been captured for this domain.";
+    private static final String SITE_MAINTENANCE = "We’ll be back soon!";
     private static final String EXTENSION = "xml";
     private final String id;
     private final String name;
@@ -32,17 +35,25 @@ public class EclipseColorTheme implements ThemeFile {
         this.settingsByName = settingsByName;
     }
 
-    public static EclipseColorTheme fromWebpage(String url) throws IOException, InterruptedException, CannotDownloadException {
+    public static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {
         String webpage = get(url);
-        Document soup = Jsoup.parse(webpage);
-        return new EclipseColorTheme(
-                idFromUrl(url),
-                soup.selectFirst("h2").select("b").text(),
-                soup.selectFirst("h2").selectFirst("span").selectFirst("span").child(0).text(),
-                null,
-                soup.select("div[class='setting-entry']").stream()
-                        .map(ColorThemeElement::fromHtmlPageDiv)
-                        .collect(Collectors.toMap(entry -> entry.name, Function.identity())));
+        if (webpage.contains(URL_UNAVAILABLE) || webpage.contains(SITE_MAINTENANCE)) {
+            throw new CannotDownloadException();
+        }
+        try {
+            Document soup = Jsoup.parse(webpage);
+            return new EclipseColorTheme(
+                    idFromUrl(url),
+                    soup.selectFirst("h2").select("b").text(),
+                    soup.selectFirst("h2").selectFirst("span").selectFirst("span").child(0).text(),
+                    null,
+                    soup.select("div[class='setting-entry']").stream()
+                            .map(ColorThemeElement::fromHtmlPageDiv)
+                            .collect(Collectors.toMap(entry -> entry.name, Function.identity())));
+        } catch (Exception e) {
+            print(webpage);
+            throw new CannotDownloadException(e);
+        }
     }
 
     public static String idFromUrl(String url)

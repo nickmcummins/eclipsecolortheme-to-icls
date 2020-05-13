@@ -20,6 +20,7 @@ public class EclipseColorThemeDownloader {
             String ectThemeUrl = String.format("https://web.archive.org/web/20190824073023/http://www.eclipsecolorthemes.org/?view=theme&id=%d", themeId);
             EclipseColorTheme eclipseColorTheme;
             try {
+                print("Attempting to download %s", ectThemeUrl);
                 eclipseColorTheme = EclipseColorTheme.fromWebpage(ectThemeUrl);
                 eclipseColorTheme.writeToFile();
             } catch (IOException | InterruptedException e) {
