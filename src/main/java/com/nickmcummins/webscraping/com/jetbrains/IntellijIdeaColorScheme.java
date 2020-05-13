@@ -10,21 +10,35 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class IntellijIdeaColorScheme implements ColorTheme {
+    public enum ColorOption {
+        CARET_COLOR,
+        CARET_ROW_COLOR,
+        CONSOLE_BACKGROUND_KEY,
+        GUTTER_BACKGROUND,
+        INDENT_GUIDE,
+        LINE_NUMBERS_COLOR,
+        RIGHT_MARGIN_COLOR,
+        SELECTION_BACKGROUND,
+        SELECTION_FOREGROUND,
+        SOFT_WRAP_SIGN_COLOR,
+        TEARLINE_COLOR,
+        WHITESPACES
+    }
     private static final String EXTENSION = "icls";
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
     public static final List<String> ATTRIBUTE_OPTION_VALUE_ORDER = List.of("FOREGROUND", "FONT_TYPE", "BACKGROUND",
             "EFFECT_COLOR", "ERROR_STRIPE_COLOR", "EFFECT_TYPE");
     private final Map<String, String> metaInfo;
-    private final Map<String, String> colorOptions;
+    private final Map<ColorOption, String> colorOptions;
     private final List<AttributeOption> attributeOptions;
 
-    public IntellijIdeaColorScheme(Map<String, String> metaInfo, Map<String, String> colorOptions, List<AttributeOption> attributeOptions) {
+    public IntellijIdeaColorScheme(Map<String, String> metaInfo, Map<ColorOption, String> colorOptions, List<AttributeOption> attributeOptions) {
         this.metaInfo = metaInfo;
         this.colorOptions = colorOptions;
         this.attributeOptions = attributeOptions;
     }
 
-    public IntellijIdeaColorScheme(String created, String name, Map<String, String> colorOptions, List<AttributeOption> attributeOptions) {
+    public IntellijIdeaColorScheme(String created, String name, Map<ColorOption, String> colorOptions, List<AttributeOption> attributeOptions) {
         this(Map.of(
                 "created", DATE_FORMAT.format(StringUtil.isBlank(created) ? System.currentTimeMillis() : created),
                 "modified", DATE_FORMAT.format(System.currentTimeMillis()),

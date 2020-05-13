@@ -12,15 +12,22 @@ import java.util.*;
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
+import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ColorOption.*;
 import static java.util.Map.entry;
 
 public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<EclipseColorTheme, IntellijIdeaColorScheme> {
-    public static final Map<String, List<String>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
-            "background", List.of("CONSOLE_BACKGROUND_KEY", "GUTTER_BACKGROUND"),
-            "selectionForeground", List.of("SELECTION_FOREGROUND"),
-            "selectionBackground", List.of("SELECTION_BACKGROUND"),
-            "currentLine", List.of("CARET_ROW_COLOR"),
-            "lineNumber", List.of("CARET_COLOR", "LINE_NUMBERS_COLOR", "RIGHT_MARGIN_COLOR", "TEARLINE_COLOR")
+    public static final Map<String, List<IntellijIdeaColorScheme.ColorOption>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
+            "background", List.of(CONSOLE_BACKGROUND_KEY, GUTTER_BACKGROUND),
+            "selectionForeground", List.of(SELECTION_FOREGROUND),
+            "selectionBackground", List.of(SELECTION_BACKGROUND),
+            "currentLine", List.of(CARET_ROW_COLOR),
+            "lineNumber", List.of(CARET_COLOR, LINE_NUMBERS_COLOR, RIGHT_MARGIN_COLOR, TEARLINE_COLOR)
+    );
+    private static final Map<SchemeType, Map<IntellijIdeaColorScheme.ColorOption, String>> ICLS_COLOR_OPTION_DEFAULTS = Map.of(
+            LIGHT, Map.of(
+                    INDENT_GUIDE, "a8a8a8",
+                    SOFT_WRAP_SIGN_COLOR, "a8a8a8",
+                    WHITESPACES, "a8a8a8")
     );
     public static final Map<String, List<String>> ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
             entry("occurrenceIndication", List.of("IDENTIFIER_UNDER_CARET_ATTRIBUTES")),
@@ -114,15 +121,15 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
 
     @Override
     public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
-        Map<String, String> iclsColorOptions = new HashMap<>();
+        Map<IntellijIdeaColorScheme.ColorOption, String> iclsColorOptions = new HashMap<>();
         List<AttributeOption> iclsAttributeOptions = new ArrayList<>();
 
         for (Map.Entry<String, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
             String eclipseFieldName = colorThemeElement.getKey();
             ColorThemeElement eclipseColor = colorThemeElement.getValue();
             if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName)) {
-                List<String> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
-                for (String iclsColorOption : iclsOptionsWithColor)
+                List<IntellijIdeaColorScheme.ColorOption> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
+                for (IntellijIdeaColorScheme.ColorOption iclsColorOption : iclsOptionsWithColor)
                     iclsColorOptions.put(iclsColorOption, formatHexValue(eclipseColor.getColorValue()));
             } else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName)) {
                 for (String iclsAttributeOptionName : ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName)) {
@@ -139,6 +146,11 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             } else
                 System.out.println(String.format("Skipping unmapped %s in Eclipse XML.", eclipseFieldName));
         }
+
+        for (Map.Entry<IntellijIdeaColorScheme.ColorOption, String> colorOptionDefault : ICLS_COLOR_OPTION_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).entrySet()) {
+            iclsColorOptions.put(colorOptionDefault.getKey(), colorOptionDefault.getValue());
+        }
+
         iclsAttributeOptions.addAll(ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()));
 
         return new IntellijIdeaColorScheme(
