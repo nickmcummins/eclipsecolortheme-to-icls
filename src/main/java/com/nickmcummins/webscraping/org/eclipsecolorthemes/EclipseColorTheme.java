@@ -13,6 +13,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,19 +22,94 @@ import static com.nickmcummins.webscraping.http.HttpUtil.get;
 import static com.nickmcummins.webscraping.Util.print;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.background;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.foreground;
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY;
 
 public class EclipseColorTheme implements ColorTheme {
+    public enum SettingField {
+        selectionBackground,
+        typeParameter,
+        methodDeclaration,
+        multiLineComment,
+        constant,
+        stringColor("string"),
+        searchResultIndication,
+        typeArgument,
+        singleLineComment,
+        foreground,
+        interfaceColor("interface"),
+        operator,
+        staticField,
+        javadocKeyword,
+        javadoc,
+        number,
+        staticFinalField,
+        localVariable,
+        deletionIndication,
+        bracket,
+        deprecatedMember,
+        keyword,
+        classColor("class"),
+        inheritedMethod,
+        currentLine,
+        annotation,
+        writeOccurrenceIndication,
+        javadocLink,
+        selectionForeground,
+        method,
+        findScope,
+        javadocTag,
+        parameterVariable,
+        enumColor("enum"),
+        commentTaskTag,
+        localVariableDeclaration,
+        field,
+        background,
+        occurrenceIndication,
+        abstractMethod,
+        lineNumber,
+        staticMethod,
+        filteredSearchResultIndication,
+        sourceHoverBackground;
+
+        private static final Map<String, SettingField> stringToSettings = Arrays.stream(SettingField.values())
+                .collect(Collectors.toMap(settingField -> settingField.name != null ? settingField.name : settingField.toString(), settingField -> settingField));
+
+        private final String name;
+
+        SettingField() {
+            this(null);
+        }
+
+        SettingField(String name) {
+            this.name = name;
+        }
+
+        public static SettingField fromString(String settingString) {
+            return stringToSettings.get(settingString);
+        }
+
+        public static SettingField fromColorThemeElement(ColorThemeElement colorThemeElement) {
+            return fromString(colorThemeElement.name);
+        }
+
+        public static SettingField fromXmlElement(Element xmlElement) {
+            return fromString(xmlElement.tagName());
+        }
+
+    }
+
     private static final String URL_UNAVAILABLE = "No URL has been captured for this domain.";
     private static final String SITE_MAINTENANCE = "We’ll be back soon!";
     private static final String EXTENSION = "xml";
     private final String id;
     private final String name;
     private final String author;
-    private String modified;
-    private final Map<String, ColorThemeElement> settingsByName;
+    private final String modified;
+    private final Map<SettingField, ColorThemeElement> settingsByName;
 
-    public EclipseColorTheme(String id, String name, String author, String modified, Map<String, ColorThemeElement> settingsByName) {
+    public EclipseColorTheme(String id, String name, String author, String modified, Map<SettingField, ColorThemeElement> settingsByName) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -55,7 +131,7 @@ public class EclipseColorTheme implements ColorTheme {
                     null,
                     soup.select("div[class='setting-entry']").stream()
                             .map(ColorThemeElement::fromHtmlPageDiv)
-                            .collect(Collectors.toMap(entry -> entry.name, Function.identity())));
+                            .collect(Collectors.toMap(SettingField::fromColorThemeElement, Function.identity())));
         } catch (Exception e) {
             print(webpage);
             throw new CannotDownloadException(e);
@@ -75,7 +151,7 @@ public class EclipseColorTheme implements ColorTheme {
                 colorTheme.attr("author"),
                 colorTheme.attr("modified"),
                 colorTheme.children().stream()
-                        .collect(Collectors.toMap(Element::tagName, ColorThemeElement::fromXmlElement)));
+                        .collect(Collectors.toMap(SettingField::fromXmlElement, ColorThemeElement::fromXmlElement)));
     }
 
     public static EclipseColorTheme fromXmlFile(String filename) {
@@ -88,13 +164,13 @@ public class EclipseColorTheme implements ColorTheme {
 
     public SchemeType getLightOrDark()
     {
-        Color backgroundColor = Color.decode(settingsByName.get("background").getColorValue());
-        Color textColor = Color.decode(settingsByName.get("foreground").getColorValue());
+        Color backgroundColor = Color.decode(settingsByName.get(background).getColorValue());
+        Color textColor = Color.decode(settingsByName.get(foreground).getColorValue());
         print("Determined %s to be dark.", name);
         return ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
     }
 
-    public Map<String, ColorThemeElement> getSettingsByName() {
+    public Map<SettingField, ColorThemeElement> getSettingsByName() {
         return settingsByName;
     }
 
