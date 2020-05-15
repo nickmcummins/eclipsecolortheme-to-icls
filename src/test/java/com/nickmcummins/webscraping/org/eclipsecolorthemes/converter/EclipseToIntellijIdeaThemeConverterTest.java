@@ -1,8 +1,8 @@
-package com.nickmcummins.webscraping.org.eclipsecolorthemes;
+package com.nickmcummins.webscraping.org.eclipsecolorthemes.converter;
 
 import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import com.nickmcummins.webscraping.converter.ThemeConverter;
-import com.nickmcummins.webscraping.org.eclipsecolorthemes.converter.EclipseToIntellijIdeaThemeConverter;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 

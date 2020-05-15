@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -22,8 +24,7 @@ import static com.nickmcummins.webscraping.http.HttpUtil.get;
 import static com.nickmcummins.webscraping.Util.print;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
-import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.background;
-import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.foreground;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.*;
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY;
 
 public class EclipseColorTheme implements ColorTheme {
@@ -103,6 +104,14 @@ public class EclipseColorTheme implements ColorTheme {
     private static final String URL_UNAVAILABLE = "No URL has been captured for this domain.";
     private static final String SITE_MAINTENANCE = "We’ll be back soon!";
     private static final String EXTENSION = "xml";
+    private static final List<SettingField> SETTINGS_ORDER = List.of(searchResultIndication,
+            filteredSearchResultIndication, occurrenceIndication, writeOccurrenceIndication, findScope,
+            deletionIndication, sourceHoverBackground, singleLineComment, multiLineComment,
+            commentTaskTag, javadoc, javadocLink, javadocTag, javadocKeyword, classColor, interfaceColor, method,
+            methodDeclaration, bracket, number, stringColor, operator, keyword, annotation, staticMethod,
+            localVariable, localVariableDeclaration, field, staticField, staticFinalField, deprecatedMember,
+            enumColor, inheritedMethod, abstractMethod, parameterVariable, typeArgument, typeParameter, constant,
+            background, currentLine, foreground, lineNumber, selectionBackground, selectionForeground);
     private final String id;
     private final String name;
     private final String author;
@@ -175,15 +184,15 @@ public class EclipseColorTheme implements ColorTheme {
     }
 
     public String toString() {
-        String settingsTags = settingsByName.values().stream()
-                .map(colorThemeElement -> String.format("\t%s", colorThemeElement))
+        String settingsTags = settingsByName.entrySet().stream()
+                .sorted(Comparator.comparing(setting -> SETTINGS_ORDER.indexOf(setting.getKey())))
+                .map(setting -> String.format("    %s", setting.getValue()))
                 .collect(Collectors.joining("\n"));
         return String.format("""
                 <?xml version="1.0" encoding="utf-8"?>
                 <colorTheme id="%s" name="%s" author="%s">
                 %s
-                </colorTheme>
-                    """, id, name, author, settingsTags);
+                </colorTheme>""", id, name, author, settingsTags);
     }
 
     public String getName() {

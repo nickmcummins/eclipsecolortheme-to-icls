@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="1733" name="DefaultPretty" author="Delirys">
+    <searchResultIndication color="#CC6633" />
+    <filteredSearchResultIndication color="#CC6633" />
+    <occurrenceIndication color="#CC6633" />
+    <writeOccurrenceIndication color="#CC6633" />
+    <findScope color="#BCADAD" />
+    <deletionIndication color="#9b5656" />
+    <sourceHoverBackground color="#EEEEEE" />
+    <singleLineComment color="#736AFF" bold="true" italic="true" />
+    <multiLineComment color="#736AFF" bold="true" italic="true" />
+    <commentTaskTag color="#736AFF" />
+    <javadoc color="#05314d" />
+    <javadocLink color="#05314d" />
+    <javadocTag color="#05314d" />
+    <javadocKeyword color="#CC9393" />
+    <class color="#F52887" bold="true" />
+    <interface color="#ca3349" />
+    <method color="#1589FF" />
+    <methodDeclaration color="#1589FF" />
+    <bracket color="#000F6A" />
+    <number color="#000F6A" />
+    <string color="#8D38C9" />
+    <operator color="#5f97a9" />
+    <keyword color="#8D38C9" bold="true" />
+    <annotation color="#808080" />
+    <staticMethod color="#1589FF" />
+    <localVariable color="#2b6488" />
+    <localVariableDeclaration color="#000000" />
+    <field color="#566874" />
+    <staticField color="#464646" />
+    <staticFinalField color="#464646" />
+    <deprecatedMember color="#ab2525" />
+    <enum color="#135a20" />
+    <inheritedMethod color="#2c577c" />
+    <abstractMethod color="#2c577c" />
+    <parameterVariable color="#5c8198" />
+    <typeArgument color="#d07fcd" />
+    <typeParameter color="#d07fcd" />
+    <constant color="#ae25ab" />
+    <background color="#FFFFFF" />
+    <currentLine color="#999999" />
+    <foreground color="#430400" />
+    <lineNumber color="#999999" />
+    <selectionBackground color="#f4fdff" />
+    <selectionForeground color="#FFFFFF" />
+</colorTheme>

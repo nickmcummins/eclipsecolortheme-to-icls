@@ -32,6 +32,7 @@ public class HttpUtil {
             } catch (IOException ce) {
                 if (ce instanceof ConnectException || ce.getMessage().equals("Received RST_STREAM: Internal error")) {
                     System.out.println(String.format("Connection exception when attempting to download %s. Sleeping %d seconds.", url, 10 * tries));
+                    System.out.println(ce);
                     sleep(10000 * tries);
                 }
             }

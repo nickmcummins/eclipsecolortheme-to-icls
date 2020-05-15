@@ -3,6 +3,9 @@ package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ColorThemeElement {
     public final String name;
     // values
@@ -25,10 +28,10 @@ public class ColorThemeElement {
         return new ColorThemeElement(
                 div.select("div[class='setting']").get(0).text(),
                 div.select("input").get(0).attr("value"),
-                !div.select("a[class='format-bold']").isEmpty() && div.select("a[class='format-bold']").get(0).attr("href").contains("false"),
+                !div.select("a[class='format-bold-active']").isEmpty() && div.select("a[class='format-bold-active']").get(0).attr("href").contains("false"),
                 !div.select("a[class='format-italic-active']").isEmpty() && div.select("a[class='format-italic-active']").get(0).attr("href").contains("false"),
-                !div.select("a[class='format-underline']").isEmpty() && div.select("a[class='format-underline']").get(0).attr("href").contains("false"),
-                !div.select("a[class='format-strikethrough']").isEmpty() && div.select("a[class='format-strikethrough']").get(0).attr("href").contains("false")
+                !div.select("a[class='format-underline-active']").isEmpty() && div.select("a[class='format-underline-active']").get(0).attr("href").contains("false"),
+                !div.select("a[class='format-strikethrough-active']").isEmpty() && div.select("a[class='format-strikethrough-active']").get(0).attr("href").contains("false")
         );
     }
 
@@ -46,7 +49,20 @@ public class ColorThemeElement {
     }
 
     public String toString() {
-        return String.format("<%s color=\"%s\" />", name, colorValue);
+        List<String> fontProperties = new ArrayList<>(4);
+        if (bold)
+            fontProperties.add("bold=\"true\"");
+        if (italic)
+            fontProperties.add("italic=\"true\"");
+        if (underline)
+            fontProperties.add("underline=\"true\"");
+        if (strikethrough)
+            fontProperties.add("strikethrough=\"true\"");
+
+        if (!fontProperties.isEmpty())
+            fontProperties.add("");
+
+        return String.format("<%s color=\"%s\" %s/>", name, colorValue, String.join(" ", fontProperties));
     }
 
     public String getColorValue() {
