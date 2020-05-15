@@ -88,6 +88,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(CONSOLE_WHITE_OUTPUT, Map.of(FOREGROUND, "ffffff")),
                     new AttributeOptionValues(CONSOLE_YELLOW_BRIGHT_OUTPUT, Map.of(FOREGROUND, "eaea00")),
                     new AttributeOptionValues(CONSOLE_YELLOW_OUTPUT, Map.of(FOREGROUND, "c4a000")),
+                    new AttributeOptionValues(CTRL_CLICKABLE, Map.of(FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, "1")),
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "868686", FONT_TYPE, "2")),
                     new AttributeOptionValues(DIFF_ABSENT, Map.of(FOREGROUND, "f0f0f0")),
                     new AttributeOptionValues(DIFF_CONFLICT, Map.of(BACKGROUND, "ffd5cc")),

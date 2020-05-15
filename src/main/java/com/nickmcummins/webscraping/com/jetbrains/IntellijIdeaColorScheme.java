@@ -60,6 +60,7 @@ public class IntellijIdeaColorScheme implements ColorTheme {
         CONSOLE_WHITE_OUTPUT,
         CONSOLE_YELLOW_BRIGHT_OUTPUT,
         CONSOLE_YELLOW_OUTPUT,
+        CTRL_CLICKABLE,
         DEBUGGER_INLINED_VALUES,
         DEFAULT_BRACES,
         DEFAULT_BRACKETS,
