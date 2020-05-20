@@ -7,8 +7,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.List;
+
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.*;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.TestUtil.loadResourceAsString;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.TestUtil.toObjectArrayArray;
 import static org.testng.Assert.assertEquals;
 
 public class EclipseToIntellijIdeaThemeConverterTest {
@@ -21,9 +24,9 @@ public class EclipseToIntellijIdeaThemeConverterTest {
 
     @DataProvider
     public Object[][] lightThemes() {
-        return new Object[][] {
-                new Object[] { "github-theme.xml" }
-        };
+        return toObjectArrayArray(List.of(
+                "github-theme.xml"
+        ));
     }
 
     @Test(dataProvider = "lightThemes")
