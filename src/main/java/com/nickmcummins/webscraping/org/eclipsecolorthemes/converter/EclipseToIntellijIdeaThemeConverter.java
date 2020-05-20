@@ -35,9 +35,6 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     WHITESPACES, "a8a8a8")
     );
     public static final Map<EclipseColorTheme.SettingField, List<IntellijIdeaColorScheme.AttributeOption>> ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
-            entry(writeOccurrenceIndication, List.of(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES)),
-            entry(singleLineComment, List.of(DEFAULT_LINE_COMMENT)),
-            entry(multiLineComment, List.of(DEFAULT_BLOCK_COMMENT)),
             entry(commentTaskTag, List.of(TODO_DEFAULT_ATTRIBUTES)),
             entry(javadoc, List.of(DEFAULT_DOC_COMMENT)),
             entry(javadocTag, List.of(DEFAULT_DOC_MARKUP)),
@@ -56,8 +53,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(enumColor, List.of(ENUM_NAME_ATTRIBUTES)),
             entry(inheritedMethod, List.of(INHERITED_METHOD_ATTRIBUTES)),
             entry(abstractMethod, List.of(ABSTRACT_METHOD_ATTRIBUTES)),
-            entry(typeParameter, List.of(TYPE_PARAMETER_NAME_ATTRIBUTES)),
-            entry(constant, List.of(DEFAULT_CONSTANT))
+            entry(typeParameter, List.of(TYPE_PARAMETER_NAME_ATTRIBUTES))
     );
     public static final Map<SchemeType, List<AttributeOptionValues>> ICLS_CONSOLE_DEFAULTS = Map.of(
             LIGHT, List.of(
@@ -87,10 +83,13 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "868686", FONT_TYPE, "2")),
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES_EXECUTION_LINE, Map.of(FOREGROUND, "a9b7d6", FONT_TYPE, "2")),
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES_MODIFIED, Map.of(FOREGROUND, "ca8021", FONT_TYPE, "2")),
+                    new AttributeOptionValues(DEFAULT_BLOCK_COMMENT, Map.of(FOREGROUND, multiLineComment.toString())),
+                    new AttributeOptionValues(DEFAULT_CONSTANT, Map.of(FOREGROUND, constant.toString())),
                     new AttributeOptionValues(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground.toString(), BACKGROUND, background.toString())),
                     new AttributeOptionValues(DEFAULT_ENTITY, Map.of(FOREGROUND, localVariableDeclaration.toString(), FONT_TYPE, "1")),
                     new AttributeOptionValues(DEFAULT_INVALID_STRING_ESCAPE, Map.of(FOREGROUND, "8000", BACKGROUND, "ffcccc")),
                     new AttributeOptionValues(DEFAULT_KEYWORD, Map.of(FOREGROUND, keyword.toString(), FONT_TYPE, "1")),
+                    new AttributeOptionValues(DEFAULT_LINE_COMMENT, Map.of(FOREGROUND, singleLineComment.toString())),
                     new AttributeOptionValues(DEFAULT_LOCAL_VARIABLE, Map.of(FOREGROUND, localVariable.toString())),
                     new AttributeOptionValues(DEFAULT_PARAMETER, Map.of(FOREGROUND, parameterVariable.toString())),
                     new AttributeOptionValues(DEFAULT_PARENTHS, Map.of(FOREGROUND, bracket.toString())),
@@ -116,7 +115,23 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(INFORMATION_ATTRIBUTES, Map.of()),
                     new AttributeOptionValues(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "cccccc", ERROR_STRIPE_COLOR, "d9cfad", EFFECT_TYPE, "2")),
                     new AttributeOptionValues(LINE_FULL_COVERAGE, Map.of(FOREGROUND, "ccffcc", FONT_TYPE, "1")),
-                    new AttributeOptionValues(LINE_NONE_COVERAGE, Map.of(FOREGROUND, "ffcccc", FONT_TYPE, "1"))),
+                    new AttributeOptionValues(LINE_NONE_COVERAGE, Map.of(FOREGROUND, "ffcccc", FONT_TYPE, "1")),
+                    new AttributeOptionValues(LINE_PARTIAL_COVERAGE, Map.of(FOREGROUND, "ffffcc", FONT_TYPE, "1")),
+                    new AttributeOptionValues(LOG_ERROR_OUTPUT, Map.of(FOREGROUND, "cd0000")),
+                    new AttributeOptionValues(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, foreground.toString())),
+                    new AttributeOptionValues(LOG_WARNING_OUTPUT, Map.of(FOREGROUND, "a66f00")),
+                    new AttributeOptionValues(MATCHED_BRACE_ATTRIBUTES, Map.of(EFFECT_COLOR, "a8a8a8")),
+                    new AttributeOptionValues(NOT_TOP_FRAME_ATTRIBUTES, Map.of(BACKGROUND, "c0d0f0")),
+                    new AttributeOptionValues(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(FOREGROUND, "808080")),
+                    new AttributeOptionValues(SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
+                    new AttributeOptionValues(TEXT, Map.of(FOREGROUND, foreground.toString(), BACKGROUND, background.toString())),
+                    new AttributeOptionValues(TEXT_SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
+                    new AttributeOptionValues(WARNING_ATTRIBUTES, Map.of(BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, "1")),
+                    new AttributeOptionValues(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
+                    new AttributeOptionValues(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000")),
+                    new AttributeOptionValues(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field.name())),
+                    new AttributeOptionValues(XML_TAG_NAME, Map.of(FOREGROUND, keyword.name()))),
+
             DARK, List.of(
                     new AttributeOptionValues(BAD_CHARACTER, Map.of(BACKGROUND, "ff0000")),
                     new AttributeOptionValues(BREAKPOINT_ATTRIBUTES, Map.of(BACKGROUND, "3a2323", ERROR_STRIPE_COLOR, "664233")),

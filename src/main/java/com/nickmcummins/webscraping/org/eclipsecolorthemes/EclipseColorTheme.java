@@ -117,6 +117,7 @@ public class EclipseColorTheme implements ColorTheme {
     private final String author;
     private final String modified;
     private final Map<SettingField, ColorThemeElement> settingsByName;
+    SchemeType lightOrDark;
 
     public EclipseColorTheme(String id, String name, String author, String modified, Map<SettingField, ColorThemeElement> settingsByName) {
         this.id = id;
@@ -124,6 +125,11 @@ public class EclipseColorTheme implements ColorTheme {
         this.author = author;
         this.modified = modified;
         this.settingsByName = settingsByName;
+
+        Color backgroundColor = Color.decode(settingsByName.get(background).getColorValue());
+        Color textColor = Color.decode(settingsByName.get(foreground).getColorValue());
+        this.lightOrDark = ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
+        print("Determined %s to be %s.", name, lightOrDark);
     }
 
     public static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {
@@ -171,12 +177,8 @@ public class EclipseColorTheme implements ColorTheme {
         }
     }
 
-    public SchemeType getLightOrDark()
-    {
-        Color backgroundColor = Color.decode(settingsByName.get(background).getColorValue());
-        Color textColor = Color.decode(settingsByName.get(foreground).getColorValue());
-        print("Determined %s to be dark.", name);
-        return ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
+    public SchemeType getLightOrDark() {
+        return lightOrDark;
     }
 
     public Map<SettingField, ColorThemeElement> getSettingsByName() {
