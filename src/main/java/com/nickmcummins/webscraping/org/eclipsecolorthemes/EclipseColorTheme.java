@@ -74,7 +74,7 @@ public class EclipseColorTheme implements ColorTheme {
         filteredSearchResultIndication,
         sourceHoverBackground;
 
-        private static final Map<String, SettingField> stringToSettings = Arrays.stream(SettingField.values())
+        public static final Map<String, SettingField> STRING_TO_SETTINGS = Arrays.stream(SettingField.values())
                 .collect(Collectors.toMap(settingField -> settingField.name != null ? settingField.name : settingField.toString(), settingField -> settingField));
 
         private final String name;
@@ -88,7 +88,7 @@ public class EclipseColorTheme implements ColorTheme {
         }
 
         public static SettingField fromString(String settingString) {
-            return stringToSettings.get(settingString);
+            return STRING_TO_SETTINGS.get(settingString);
         }
 
         public static SettingField fromColorThemeElement(ColorThemeElement colorThemeElement) {

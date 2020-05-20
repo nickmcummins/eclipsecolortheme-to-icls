@@ -15,7 +15,7 @@ import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme
 
 public class AttributeOptionValues {
     private final AttributeOption attributeOption;
-    private final Map<OptionProperty, String> values;
+    private Map<OptionProperty, String> values;
 
     public AttributeOptionValues(AttributeOption attributeOption, Map<OptionProperty, String> values) {
         this.attributeOption = attributeOption;
@@ -27,6 +27,12 @@ public class AttributeOptionValues {
                 AttributeOption.valueOf(attributeOption.attr("name")),
                 attributeOption.select("value").select("option").stream()
                         .collect(Collectors.toMap(option -> OptionProperty.valueOf(option.attr("name")), option -> option.attr("value"))));
+    }
+
+    public AttributeOptionValues withMappedValues(Map<String, String> valueMappings) {
+        this.values = this.values.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, value -> valueMappings.getOrDefault(value.getValue(), value.getValue())));
+        return this;
     }
 
     public AttributeOption getAttributeOption() {
