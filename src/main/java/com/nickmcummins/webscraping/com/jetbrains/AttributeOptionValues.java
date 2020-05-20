@@ -50,6 +50,7 @@ public class AttributeOptionValues {
                     .map(entry -> String.format("                <option name=\"%s\" value=\"%s\"/>", entry.getKey(), formatHexValue(entry.getValue())))
                     .collect(Collectors.joining("\n"));
         }
-        return String.format("        <option name=\"%s\">\n            <value>\n%s\n            </value>\n        </option>", attributeOption, formattedValueOptions);
+        String valuesTag = values.isEmpty() ? "<value/>\n" : String.format("<value>\n%s\n            </value>\n", formattedValueOptions);
+        return String.format("        <option name=\"%s\">\n            %s        </option>", attributeOption, valuesTag);
     }
 }
