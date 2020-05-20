@@ -55,6 +55,28 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(abstractMethod, List.of(ABSTRACT_METHOD_ATTRIBUTES)),
             entry(typeParameter, List.of(TYPE_PARAMETER_NAME_ATTRIBUTES))
     );
+    public static final Map<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
+            entry(DEFAULT_BLOCK_COMMENT, Map.of(FOREGROUND, multiLineComment)),
+            entry(DEFAULT_CONSTANT, Map.of(FOREGROUND, constant)),
+            entry(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
+            entry(DEFAULT_ENTITY, Map.of(FOREGROUND, localVariableDeclaration)),
+            entry(DEFAULT_KEYWORD, Map.of(FOREGROUND, keyword)),
+            entry(DEFAULT_LINE_COMMENT, Map.of(FOREGROUND, singleLineComment)),
+            entry(DEFAULT_LOCAL_VARIABLE, Map.of(FOREGROUND, localVariable)),
+            entry(DEFAULT_PARAMETER, Map.of(FOREGROUND, parameterVariable)),
+            entry(DEFAULT_PARENTHS, Map.of(FOREGROUND, bracket)),
+            entry(DEFAULT_STATIC_FIELD, Map.of(FOREGROUND, staticField)),
+            entry(DEFAULT_STRING, Map.of(FOREGROUND, stringColor)),
+            entry(DEFAULT_TAG, Map.of(FOREGROUND, typeArgument)),
+            entry(DEFAULT_VALID_STRING_ESCAPE, Map.of(FOREGROUND, stringColor)),
+            entry(HTML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
+            entry(HTML_TAG_NAME, Map.of(FOREGROUND, keyword)),
+            entry(IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, occurrenceIndication)),
+            entry(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, foreground)),
+            entry(TEXT, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
+            entry(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
+            entry(XML_TAG_NAME, Map.of(FOREGROUND, keyword))
+    );
     public static final Map<SchemeType, List<AttributeOptionValues>> ICLS_CONSOLE_DEFAULTS = Map.of(
             LIGHT, List.of(
                     new AttributeOptionValues(BAD_CHARACTER, Map.of(BACKGROUND, "ffcccc")),
