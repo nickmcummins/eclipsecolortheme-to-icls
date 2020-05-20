@@ -4,6 +4,7 @@ import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import com.nickmcummins.webscraping.converter.ThemeConverter;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.*;
@@ -18,10 +19,17 @@ public class EclipseToIntellijIdeaThemeConverterTest {
         eclipseToIntellijThemeConverter = new EclipseToIntellijIdeaThemeConverter();
     }
 
-    @Test
-    public void testConvertLightTheme() throws Exception {
-        String eclipseColorThemeXml = loadResourceAsString("github-theme.xml");
-        String expectedIcls = loadResourceAsString("github-theme.icls");
+    @DataProvider
+    public Object[][] lightThemes() {
+        return new Object[][] {
+                new Object[] { "github-theme.xml" }
+        };
+    }
+
+    @Test(dataProvider = "lightThemes")
+    public void testConvertLightTheme(String lightThemeFilename) throws Exception {
+        String eclipseColorThemeXml = loadResourceAsString(lightThemeFilename);
+        String expectedIcls = loadResourceAsString(lightThemeFilename.replace("xml", "icls"));
         IntellijIdeaColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(EclipseColorTheme.fromString(eclipseColorThemeXml));
         convertedIcls.updateMetaInfo(created, "2020-05-13T14:05:37");
         convertedIcls.updateMetaInfo(ide, "idea");

@@ -4,6 +4,7 @@ import com.nickmcummins.webscraping.ColorTheme;
 import org.jsoup.internal.StringUtil;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -143,6 +144,32 @@ public class IntellijIdeaColorScheme implements ColorTheme {
         FOREGROUND,
         FONT_TYPE,
         BACKGROUND
+    }
+    public enum FontType {
+        NORMAL("0"),
+        BOLD("1"),
+        ITALIC("2"),
+        BOLD_ITALIC("3");
+
+        private static final Map<String, FontType> BY_VALUES = Arrays.stream(FontType.values())
+                .collect(Collectors.toMap(fontType -> fontType.value, fontType -> fontType));
+        private final String value;
+
+        FontType(String value) {
+            this.value = value;
+        }
+
+        public int toNumber() {
+            return Integer.parseInt(value);
+        }
+
+        public String toString() {
+            return value;
+        }
+
+        public static FontType fromNumeric(int numeric) {
+            return BY_VALUES.get(Integer.toString(numeric));
+        }
     }
 
     private static final String EXTENSION = "icls";

@@ -67,7 +67,6 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(DEFAULT_PARENTHS, Map.of(FOREGROUND, bracket)),
             entry(DEFAULT_STATIC_FIELD, Map.of(FOREGROUND, staticField)),
             entry(DEFAULT_STRING, Map.of(FOREGROUND, stringColor)),
-            entry(DEFAULT_TAG, Map.of(FOREGROUND, typeArgument)),
             entry(DEFAULT_VALID_STRING_ESCAPE, Map.of(FOREGROUND, stringColor)),
             entry(HTML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
             entry(HTML_TAG_NAME, Map.of(FOREGROUND, keyword)),
@@ -117,7 +116,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(DEFAULT_PARENTHS, Map.of(FOREGROUND, bracket.toString())),
                     new AttributeOptionValues(DEFAULT_STATIC_FIELD, Map.of(FOREGROUND, staticField.toString())),
                     new AttributeOptionValues(DEFAULT_STRING, Map.of(FOREGROUND, stringColor.name())),
-                    new AttributeOptionValues(DEFAULT_TAG, Map.of(FOREGROUND, typeArgument.name())),
+                    new AttributeOptionValues(DEFAULT_TAG, Map.of(FOREGROUND, localVariable.name())),
                     new AttributeOptionValues(DEFAULT_VALID_STRING_ESCAPE, Map.of(FOREGROUND, stringColor.name(), FONT_TYPE, "1")),
                     new AttributeOptionValues(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "404040", EFFECT_TYPE, "3")),
                     new AttributeOptionValues(DIFF_ABSENT, Map.of(BACKGROUND, "f0f0f0")),
@@ -201,10 +200,15 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                 for (IntellijIdeaColorScheme.AttributeOption iclsAttributeOptionName : ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName)) {
                     Map<IntellijIdeaColorScheme.OptionProperty, String> attributeOptions = new HashMap<>();
                     attributeOptions.put(FOREGROUND, eclipseColor.getColorValue());
+                    int fontType = IntellijIdeaColorScheme.FontType.NORMAL.toNumber();
                     if (eclipseColor.isBold())
-                        attributeOptions.put(FONT_TYPE, "1");
+                        fontType += IntellijIdeaColorScheme.FontType.BOLD.toNumber();
                     if (eclipseColor.isItalic())
-                        attributeOptions.put(FONT_TYPE, "2");
+                        fontType += IntellijIdeaColorScheme.FontType.ITALIC.toNumber();
+
+                    if (fontType != IntellijIdeaColorScheme.FontType.NORMAL.toNumber())
+                        attributeOptions.put(FONT_TYPE, IntellijIdeaColorScheme.FontType.fromNumeric(fontType).toString());
+
                     if (eclipseColor.isStrikethrough())
                         attributeOptions.put(EFFECT_TYPE, "3");
                     iclsAttributeOptions.add(new AttributeOptionValues(iclsAttributeOptionName, attributeOptions));
