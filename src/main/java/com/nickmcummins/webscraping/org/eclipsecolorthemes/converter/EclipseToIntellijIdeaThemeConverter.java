@@ -34,45 +34,48 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     SOFT_WRAP_SIGN_COLOR, "a8a8a8",
                     WHITESPACES, "a8a8a8")
     );
-    public static final Map<EclipseColorTheme.SettingField, List<IntellijIdeaColorScheme.AttributeOption>> ECLIPSE_TO_IDEA_ATTRIBUTES = Map.ofEntries(
-            entry(commentTaskTag, List.of(TODO_DEFAULT_ATTRIBUTES)),
-            entry(javadoc, List.of(DEFAULT_DOC_COMMENT)),
-            entry(javadocTag, List.of(DEFAULT_DOC_MARKUP)),
-            entry(javadocKeyword, List.of(DEFAULT_DOC_COMMENT_TAG)),
-            entry(classColor, List.of(DEFAULT_CLASS_NAME)),
-            entry(interfaceColor, List.of(DEFAULT_INTERFACE_NAME)),
-            entry(method, List.of(DEFAULT_FUNCTION_CALL)),
-            entry(methodDeclaration, List.of(DEFAULT_FUNCTION_DECLARATION)),
-            entry(bracket, List.of(DEFAULT_BRACES, DEFAULT_BRACKETS)),
-            entry(number, List.of(DEFAULT_NUMBER)),
-            entry(operator, List.of(DEFAULT_DOT, DEFAULT_SEMICOLON, DEFAULT_OPERATION_SIGN, DEFAULT_COMMA)),
-            entry(annotation, List.of(DEFAULT_METADATA)),
-            entry(staticMethod, List.of(DEFAULT_STATIC_METHOD)),
-            entry(field, List.of(DEFAULT_INSTANCE_FIELD)),
-            entry(staticFinalField, List.of(STATIC_FINAL_FIELD_ATTRIBUTES)),
-            entry(enumColor, List.of(ENUM_NAME_ATTRIBUTES)),
-            entry(inheritedMethod, List.of(INHERITED_METHOD_ATTRIBUTES)),
-            entry(abstractMethod, List.of(ABSTRACT_METHOD_ATTRIBUTES)),
-            entry(typeParameter, List.of(TYPE_PARAMETER_NAME_ATTRIBUTES))
-    );
     public static final Map<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
+            entry(ABSTRACT_METHOD_ATTRIBUTES, Map.of(FOREGROUND, abstractMethod)),
+            entry(DEFAULT_BRACES, Map.of(FOREGROUND, bracket)),
+            entry(DEFAULT_BRACKETS, Map.of(FOREGROUND, bracket)),
             entry(DEFAULT_BLOCK_COMMENT, Map.of(FOREGROUND, multiLineComment)),
+            entry(DEFAULT_COMMA, Map.of(FOREGROUND, operator)),
             entry(DEFAULT_CONSTANT, Map.of(FOREGROUND, constant)),
-            entry(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
+            entry(DEFAULT_DOC_COMMENT, Map.of(FOREGROUND, javadoc)),
+            entry(DEFAULT_DOC_MARKUP, Map.of(FOREGROUND, javadocTag)),
+            entry(DEFAULT_DOC_COMMENT_TAG, Map.of(FOREGROUND, javadocKeyword)),
+            entry(DEFAULT_DOT, Map.of(FOREGROUND, operator)),
+            entry(DEFAULT_CLASS_NAME, Map.of(FOREGROUND, classColor)),
             entry(DEFAULT_ENTITY, Map.of(FOREGROUND, localVariableDeclaration)),
+            entry(DEFAULT_FUNCTION_CALL, Map.of(FOREGROUND, method)),
+            entry(DEFAULT_FUNCTION_DECLARATION, Map.of(FOREGROUND, methodDeclaration)),
+            entry(DEFAULT_INTERFACE_NAME, Map.of(FOREGROUND, interfaceColor)),
+            entry(DEFAULT_INSTANCE_FIELD, Map.of(FOREGROUND, field)),
+            entry(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
             entry(DEFAULT_KEYWORD, Map.of(FOREGROUND, keyword)),
             entry(DEFAULT_LINE_COMMENT, Map.of(FOREGROUND, singleLineComment)),
             entry(DEFAULT_LOCAL_VARIABLE, Map.of(FOREGROUND, localVariable)),
             entry(DEFAULT_PARAMETER, Map.of(FOREGROUND, parameterVariable)),
+            entry(DEFAULT_METADATA, Map.of(FOREGROUND, annotation)),
+            entry(DEFAULT_NUMBER, Map.of(FOREGROUND, number)),
+            entry(DEFAULT_OPERATION_SIGN, Map.of(FOREGROUND, operator)),
             entry(DEFAULT_PARENTHS, Map.of(FOREGROUND, bracket)),
+            entry(DEFAULT_SEMICOLON, Map.of(FOREGROUND, operator)),
             entry(DEFAULT_STATIC_FIELD, Map.of(FOREGROUND, staticField)),
+            entry(DEFAULT_STATIC_METHOD, Map.of(FOREGROUND, staticMethod)),
             entry(DEFAULT_STRING, Map.of(FOREGROUND, stringColor)),
+            entry(DEFAULT_TAG, Map.of(FOREGROUND, localVariable)),
             entry(DEFAULT_VALID_STRING_ESCAPE, Map.of(FOREGROUND, stringColor)),
+            entry(ENUM_NAME_ATTRIBUTES, Map.of(FOREGROUND, enumColor)),
             entry(HTML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
             entry(HTML_TAG_NAME, Map.of(FOREGROUND, keyword)),
             entry(IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, occurrenceIndication)),
+            entry(INHERITED_METHOD_ATTRIBUTES, Map.of(FOREGROUND, inheritedMethod)),
             entry(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, foreground)),
+            entry(STATIC_FINAL_FIELD_ATTRIBUTES, Map.of(FOREGROUND, staticFinalField)),
             entry(TEXT, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
+            entry(TODO_DEFAULT_ATTRIBUTES, Map.of(FOREGROUND, commentTaskTag)),
+            entry(TYPE_PARAMETER_NAME_ATTRIBUTES, Map.of(FOREGROUND, typeParameter)),
             entry(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
             entry(XML_TAG_NAME, Map.of(FOREGROUND, keyword))
     );
@@ -104,20 +107,10 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "868686", FONT_TYPE, "2")),
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES_EXECUTION_LINE, Map.of(FOREGROUND, "a9b7d6", FONT_TYPE, "2")),
                     new AttributeOptionValues(DEBUGGER_INLINED_VALUES_MODIFIED, Map.of(FOREGROUND, "ca8021", FONT_TYPE, "2")),
-                    new AttributeOptionValues(DEFAULT_BLOCK_COMMENT, Map.of(FOREGROUND, multiLineComment.toString())),
-                    new AttributeOptionValues(DEFAULT_CONSTANT, Map.of(FOREGROUND, constant.toString())),
-                    new AttributeOptionValues(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground.toString(), BACKGROUND, background.toString())),
-                    new AttributeOptionValues(DEFAULT_ENTITY, Map.of(FOREGROUND, localVariableDeclaration.toString(), FONT_TYPE, "1")),
+                    new AttributeOptionValues(DEFAULT_ENTITY, Map.of(FONT_TYPE, "1")),
                     new AttributeOptionValues(DEFAULT_INVALID_STRING_ESCAPE, Map.of(FOREGROUND, "8000", BACKGROUND, "ffcccc")),
-                    new AttributeOptionValues(DEFAULT_KEYWORD, Map.of(FOREGROUND, keyword.toString(), FONT_TYPE, "1")),
-                    new AttributeOptionValues(DEFAULT_LINE_COMMENT, Map.of(FOREGROUND, singleLineComment.toString())),
-                    new AttributeOptionValues(DEFAULT_LOCAL_VARIABLE, Map.of(FOREGROUND, localVariable.toString())),
-                    new AttributeOptionValues(DEFAULT_PARAMETER, Map.of(FOREGROUND, parameterVariable.toString())),
-                    new AttributeOptionValues(DEFAULT_PARENTHS, Map.of(FOREGROUND, bracket.toString())),
-                    new AttributeOptionValues(DEFAULT_STATIC_FIELD, Map.of(FOREGROUND, staticField.toString())),
-                    new AttributeOptionValues(DEFAULT_STRING, Map.of(FOREGROUND, stringColor.name())),
-                    new AttributeOptionValues(DEFAULT_TAG, Map.of(FOREGROUND, localVariable.name())),
-                    new AttributeOptionValues(DEFAULT_VALID_STRING_ESCAPE, Map.of(FOREGROUND, stringColor.name(), FONT_TYPE, "1")),
+                    new AttributeOptionValues(DEFAULT_KEYWORD, Map.of(FONT_TYPE, "1")),
+                    new AttributeOptionValues(DEFAULT_VALID_STRING_ESCAPE, Map.of(FONT_TYPE, "1")),
                     new AttributeOptionValues(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "404040", EFFECT_TYPE, "3")),
                     new AttributeOptionValues(DIFF_ABSENT, Map.of(BACKGROUND, "f0f0f0")),
                     new AttributeOptionValues(DIFF_CONFLICT, Map.of(BACKGROUND, "ffd5cc", ERROR_STRIPE_COLOR, "ffc8bd")),
@@ -129,29 +122,22 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(EXECUTIONPOINT_ATTRIBUTES, Map.of(FOREGROUND, "ffffff", BACKGROUND, "2154a6", ERROR_STRIPE_COLOR, "2154a6")),
                     new AttributeOptionValues(FOLLOWED_HYPERLINK_ATTRIBUTES, Map.of(FOREGROUND, "ff", BACKGROUND, "e9e9e9", EFFECT_COLOR, "ff", EFFECT_TYPE, "1")),
                     new AttributeOptionValues(GENERIC_SERVER_ERROR_OR_WARNING, Map.of(EFFECT_COLOR, "f49810", ERROR_STRIPE_COLOR, "e69317", EFFECT_TYPE, "2")),
-                    new AttributeOptionValues(HTML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field.name())),
-                    new AttributeOptionValues(HTML_TAG_NAME, Map.of(FOREGROUND, keyword.name())),
                     new AttributeOptionValues(HYPERLINK_ATTRIBUTES, Map.of(FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, "1")),
-                    new AttributeOptionValues(IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, occurrenceIndication.toString())),
                     new AttributeOptionValues(INFORMATION_ATTRIBUTES, Map.of()),
                     new AttributeOptionValues(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "cccccc", ERROR_STRIPE_COLOR, "d9cfad", EFFECT_TYPE, "2")),
                     new AttributeOptionValues(LINE_FULL_COVERAGE, Map.of(FOREGROUND, "ccffcc", FONT_TYPE, "1")),
                     new AttributeOptionValues(LINE_NONE_COVERAGE, Map.of(FOREGROUND, "ffcccc", FONT_TYPE, "1")),
                     new AttributeOptionValues(LINE_PARTIAL_COVERAGE, Map.of(FOREGROUND, "ffffcc", FONT_TYPE, "1")),
                     new AttributeOptionValues(LOG_ERROR_OUTPUT, Map.of(FOREGROUND, "cd0000")),
-                    new AttributeOptionValues(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, foreground.toString())),
                     new AttributeOptionValues(LOG_WARNING_OUTPUT, Map.of(FOREGROUND, "a66f00")),
                     new AttributeOptionValues(MATCHED_BRACE_ATTRIBUTES, Map.of(EFFECT_COLOR, "a8a8a8")),
                     new AttributeOptionValues(NOT_TOP_FRAME_ATTRIBUTES, Map.of(BACKGROUND, "c0d0f0")),
                     new AttributeOptionValues(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(FOREGROUND, "808080")),
                     new AttributeOptionValues(SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
-                    new AttributeOptionValues(TEXT, Map.of(FOREGROUND, foreground.toString(), BACKGROUND, background.toString())),
                     new AttributeOptionValues(TEXT_SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
                     new AttributeOptionValues(WARNING_ATTRIBUTES, Map.of(BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, "1")),
                     new AttributeOptionValues(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
-                    new AttributeOptionValues(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000")),
-                    new AttributeOptionValues(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field.name())),
-                    new AttributeOptionValues(XML_TAG_NAME, Map.of(FOREGROUND, keyword.name()))),
+                    new AttributeOptionValues(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000"))),
 
             DARK, List.of(
                     new AttributeOptionValues(BAD_CHARACTER, Map.of(BACKGROUND, "ff0000")),
@@ -187,7 +173,8 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
     @Override
     public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
         Map<IntellijIdeaColorScheme.ColorOption, String> iclsColorOptions = new HashMap<>();
-        List<AttributeOptionValues> iclsAttributeOptions = new ArrayList<>();
+        Map<IntellijIdeaColorScheme.AttributeOption, AttributeOptionValues> attributeOptionsValuesByName = ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
+                .collect(Collectors.toMap(AttributeOptionValues::getAttributeOption, iclsAttributeOption -> iclsAttributeOption));
 
         for (Map.Entry<EclipseColorTheme.SettingField, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
             EclipseColorTheme.SettingField eclipseFieldName = colorThemeElement.getKey();
@@ -196,40 +183,25 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                 List<IntellijIdeaColorScheme.ColorOption> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
                 for (IntellijIdeaColorScheme.ColorOption iclsColorOption : iclsOptionsWithColor)
                     iclsColorOptions.put(iclsColorOption, formatHexValue(eclipseColor.getColorValue()));
-            } else if (ECLIPSE_TO_IDEA_ATTRIBUTES.containsKey(eclipseFieldName)) {
-                for (IntellijIdeaColorScheme.AttributeOption iclsAttributeOptionName : ECLIPSE_TO_IDEA_ATTRIBUTES.get(eclipseFieldName)) {
-                    Map<IntellijIdeaColorScheme.OptionProperty, String> attributeOptions = new HashMap<>();
-                    attributeOptions.put(FOREGROUND, eclipseColor.getColorValue());
-                    int fontType = IntellijIdeaColorScheme.FontType.NORMAL.toNumber();
-                    if (eclipseColor.isBold())
-                        fontType += IntellijIdeaColorScheme.FontType.BOLD.toNumber();
-                    if (eclipseColor.isItalic())
-                        fontType += IntellijIdeaColorScheme.FontType.ITALIC.toNumber();
-
-                    if (fontType != IntellijIdeaColorScheme.FontType.NORMAL.toNumber())
-                        attributeOptions.put(FONT_TYPE, IntellijIdeaColorScheme.FontType.fromNumeric(fontType).toString());
-
-                    if (eclipseColor.isStrikethrough())
-                        attributeOptions.put(EFFECT_TYPE, "3");
-                    iclsAttributeOptions.add(new AttributeOptionValues(iclsAttributeOptionName, attributeOptions));
-                }
-            } else
-                System.out.println(String.format("Skipping unmapped %s in Eclipse XML.", eclipseFieldName));
+            }
         }
 
         for (Map.Entry<IntellijIdeaColorScheme.ColorOption, String> colorOptionDefault : ICLS_COLOR_OPTION_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).entrySet()) {
             iclsColorOptions.put(colorOptionDefault.getKey(), colorOptionDefault.getValue());
         }
 
-        Map<String, String> eclipseToIclsValueMappings = eclipseColorTheme.getSettingsByName().entrySet().stream()
-                .collect(Collectors.toMap(entry -> entry.getKey().name(), entry -> entry.getValue().getColorValue()));
+        for (Map.Entry<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {
+            IntellijIdeaColorScheme.AttributeOption attributeOptionName = iclsMappedEclipseAttribute.getKey();
+            for (Map.Entry<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField> iclsAttributeOptionPropertyValue : iclsMappedEclipseAttribute.getValue().entrySet()) {
+                IntellijIdeaColorScheme.OptionProperty optionPropertyName = iclsAttributeOptionPropertyValue.getKey();
+                String optionPropertyValue = eclipseColorTheme.getSettingsByName().get(iclsAttributeOptionPropertyValue.getValue()).getColorValue();
+                if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
+                    attributeOptionsValuesByName.put(attributeOptionName, new AttributeOptionValues(attributeOptionName, new HashMap<>()));
+                attributeOptionsValuesByName.get(attributeOptionName).addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
+            }
+        }
 
-        List<AttributeOptionValues> consoleAttributeOptions = ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
-                .map(consoleAttributeOption -> consoleAttributeOption.withMappedValues(eclipseToIclsValueMappings))
-                .collect(Collectors.toList());
-
-        iclsAttributeOptions.addAll(consoleAttributeOptions);
-
+        List<AttributeOptionValues> iclsAttributeOptions = Arrays.asList(attributeOptionsValuesByName.values().toArray(new AttributeOptionValues[0]));
         return new IntellijIdeaColorScheme(
                 eclipseColorTheme.getModified(),
                 eclipseColorTheme.getName(),

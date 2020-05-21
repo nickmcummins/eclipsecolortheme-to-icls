@@ -2,10 +2,7 @@ package com.nickmcummins.webscraping.com.jetbrains;
 
 import org.jsoup.nodes.Element;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
@@ -29,14 +26,19 @@ public class AttributeOptionValues {
                         .collect(Collectors.toMap(option -> OptionProperty.valueOf(option.attr("name")), option -> option.attr("value"))));
     }
 
-    public AttributeOptionValues withMappedValues(Map<String, String> valueMappings) {
-        this.values = this.values.entrySet().stream()
-                .collect(Collectors.toMap(Map.Entry::getKey, value -> valueMappings.getOrDefault(value.getValue(), value.getValue())));
-        return this;
+    public void addAttributeOptionPropertyValue(OptionProperty optionPropertyName, String value) {
+        if (!(values instanceof HashMap))
+            values = new HashMap<>(values);
+
+        values.put(optionPropertyName, value);
     }
 
     public AttributeOption getAttributeOption() {
         return attributeOption;
+    }
+
+    public Map<OptionProperty, String> getValues() {
+        return values;
     }
 
     public String toString() {
