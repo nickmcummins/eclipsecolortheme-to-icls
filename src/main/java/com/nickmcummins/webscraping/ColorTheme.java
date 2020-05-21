@@ -24,7 +24,7 @@ public interface ColorTheme {
             throw new RuntimeException(e);
         }
 
-        System.out.println(String.format("Successfully wrote %s", filename));
+        System.out.println(String.format("\tSuccessfully wrote %s", filename));
         return filename;
     }
 

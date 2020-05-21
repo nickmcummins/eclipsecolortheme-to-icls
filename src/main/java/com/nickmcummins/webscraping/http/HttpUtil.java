@@ -6,18 +6,33 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import static com.nickmcummins.webscraping.Util.print;
 import static java.lang.Thread.sleep;
 
 public class HttpUtil {
     private static final int MAX_RETRIES = 5;
+    private static final List<LocalDateTime> CONNECTION_REFUSED_TIMESTAMPS = new ArrayList<>();
+    private static final Duration CONNECT_REFUSED_EXPIRATION = Duration.ofMinutes(10);
 
     public static String get(String url) throws InterruptedException, CannotDownloadException {
         HttpClient requests = HttpClient.newBuilder().build();
         HttpResponse<String> response = null;
         boolean success = false;
         int tries = 0;
+
         do {
+            removeExpiredConnectRefusedTimestamps();
+            if (!CONNECTION_REFUSED_TIMESTAMPS.isEmpty()) {
+                print("\tSleeping 60 seconds because of %d connection refused responses within the past 10 minutes: %s", CONNECTION_REFUSED_TIMESTAMPS.size(), CONNECTION_REFUSED_TIMESTAMPS.toString());
+                sleep(60000);
+            }
+
             if (response != null && response.statusCode() == 302)
                 url = response.headers().allValues("location").get(0);
             try {
@@ -26,14 +41,18 @@ public class HttpUtil {
                 if (response.statusCode() == 200)
                     success = true;
                 else if (response.statusCode() == 404) {
-                    System.out.println(String.format("Received 404 attempting to download %s; skipping", url));
+                    System.out.println(String.format("\tReceived 404 attempting to download %s; skipping", url));
                     throw new CannotDownloadException();
                 }
             } catch (IOException ce) {
                 if (ce instanceof ConnectException || ce.getMessage().equals("Received RST_STREAM: Internal error")) {
-                    System.out.println(String.format("Connection exception when attempting to download %s. Sleeping %d seconds.", url, 10 * tries));
+                    if (ce.getMessage().equals("Connection refused"))
+                        CONNECTION_REFUSED_TIMESTAMPS.add(LocalDateTime.now());
+                    else {
+                        System.out.println(String.format("\tConnection exception when attempting to download %s. Sleeping %d seconds.", url, 10 * tries));
+                        sleep(10000 * tries);
+                    }
                     System.out.println(ce);
-                    sleep(10000 * tries);
                 }
             }
         } while ((response != null && response.statusCode() == 302) || (!success && tries < MAX_RETRIES));
@@ -41,5 +60,18 @@ public class HttpUtil {
             throw new CannotDownloadException();
 
         return response.body();
+    }
+
+    private static void removeExpiredConnectRefusedTimestamps() {
+        if (CONNECTION_REFUSED_TIMESTAMPS.isEmpty())
+            return;
+
+        LocalDateTime now = LocalDateTime.now();
+        List<LocalDateTime> expired = CONNECTION_REFUSED_TIMESTAMPS.stream()
+                .filter(timestamp -> Duration.between(timestamp, now).compareTo(CONNECT_REFUSED_EXPIRATION) > 0)
+                .collect(Collectors.toList());
+        print("\tRemoving %d timestamps from the connect timeout list", expired.size());
+        CONNECTION_REFUSED_TIMESTAMPS.removeAll(expired);
+
     }
 }

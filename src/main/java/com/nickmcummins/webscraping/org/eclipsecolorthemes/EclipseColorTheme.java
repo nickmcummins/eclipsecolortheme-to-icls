@@ -129,7 +129,6 @@ public class EclipseColorTheme implements ColorTheme {
         Color backgroundColor = Color.decode(settingsByName.get(background).getColorValue());
         Color textColor = Color.decode(settingsByName.get(foreground).getColorValue());
         this.lightOrDark = ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
-        print("Determined %s to be %s.", name, lightOrDark);
     }
 
     public static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {

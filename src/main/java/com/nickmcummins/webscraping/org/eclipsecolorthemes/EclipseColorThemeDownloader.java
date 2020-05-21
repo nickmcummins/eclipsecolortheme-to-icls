@@ -27,7 +27,7 @@ public class EclipseColorThemeDownloader {
             if (writeToFile)
                 eclipseColorTheme.writeToFile();
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(String.format("Exception downloading theme %s", ectThemeUrl), e);
+            throw new RuntimeException(String.format("\tException downloading theme %s", ectThemeUrl), e);
         }
 
         return eclipseColorTheme;
@@ -38,7 +38,7 @@ public class EclipseColorThemeDownloader {
             try {
                 downloadTheme(themeId, true);
             } catch (CannotDownloadException ce) {
-                print("Exception downloading theme id %d, skipping.", themeId);
+                print("\tException downloading theme id %d, skipping.", themeId);
             }
         }
     }
