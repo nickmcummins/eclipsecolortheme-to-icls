@@ -1,7 +1,6 @@
 package com.nickmcummins.webscraping.com.jetbrains;
 
 import com.nickmcummins.webscraping.ColorTheme;
-import org.jsoup.internal.StringUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -10,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.nickmcummins.webscraping.Util.formatDate;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.created;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.modified;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.originalScheme;
@@ -188,7 +188,7 @@ public class IntellijIdeaColorScheme implements ColorTheme {
 
     public IntellijIdeaColorScheme(String createdValue, String name, Map<ColorOption, String> colorOptions, List<AttributeOptionValues> attributeOptions) {
         this(Map.of(
-                created, DATE_FORMAT.format(StringUtil.isBlank(createdValue) ? System.currentTimeMillis() : createdValue),
+                created, formatDate(DATE_FORMAT, createdValue),
                 modified, DATE_FORMAT.format(System.currentTimeMillis()),
                 originalScheme, name)
                         .entrySet().stream().collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)),
