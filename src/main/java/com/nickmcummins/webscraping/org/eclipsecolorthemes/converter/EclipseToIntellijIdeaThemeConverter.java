@@ -169,6 +169,16 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(DIFF_INSERTED, Map.of(BACKGROUND, "294436")),
                     new AttributeOptionValues(DIFF_MODIFIED, Map.of(BACKGROUND, "385570")))
     );
+    
+    private static IntellijIdeaColorScheme.FontType iclsFontTypeFromEclipseSetting(ColorThemeElement eclipseSetting) {
+        int fontType = IntellijIdeaColorScheme.FontType.NORMAL.toNumber();
+        if (eclipseSetting.isBold())
+            fontType += IntellijIdeaColorScheme.FontType.BOLD.toNumber();
+        if (eclipseSetting.isItalic())
+            fontType += IntellijIdeaColorScheme.FontType.ITALIC.toNumber();
+        
+        return IntellijIdeaColorScheme.FontType.fromNumeric(fontType); 
+    }
 
     @Override
     public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
@@ -192,12 +202,21 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
 
         for (Map.Entry<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {
             IntellijIdeaColorScheme.AttributeOption attributeOptionName = iclsMappedEclipseAttribute.getKey();
-            for (Map.Entry<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField> iclsAttributeOptionPropertyValue : iclsMappedEclipseAttribute.getValue().entrySet()) {
+            Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField> eclipseMappedIclsOptionProperties = iclsMappedEclipseAttribute.getValue();
+            for (Map.Entry<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField> iclsAttributeOptionPropertyValue : eclipseMappedIclsOptionProperties.entrySet()) {
                 IntellijIdeaColorScheme.OptionProperty optionPropertyName = iclsAttributeOptionPropertyValue.getKey();
-                String optionPropertyValue = eclipseColorTheme.getSettingsByName().get(iclsAttributeOptionPropertyValue.getValue()).getColorValue();
+                ColorThemeElement eclipseSetting = eclipseColorTheme.getSettingsByName().get(iclsAttributeOptionPropertyValue.getValue());
+                String optionPropertyValue = eclipseSetting.getColorValue();
                 if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
                     attributeOptionsValuesByName.put(attributeOptionName, new AttributeOptionValues(attributeOptionName, new HashMap<>()));
-                attributeOptionsValuesByName.get(attributeOptionName).addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
+                AttributeOptionValues attributeOptionValues = attributeOptionsValuesByName.get(attributeOptionName);
+                attributeOptionValues.addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
+
+                IntellijIdeaColorScheme.FontType fontType = iclsFontTypeFromEclipseSetting(eclipseSetting);
+                if (fontType != IntellijIdeaColorScheme.FontType.NORMAL)
+                    attributeOptionValues.addAttributeOptionPropertyValue(FONT_TYPE, fontType.toString());
+                if (eclipseSetting.isStrikethrough())
+                    attributeOptionValues.addAttributeOptionPropertyValue(EFFECT_TYPE, "3");
             }
         }
 
