@@ -68,7 +68,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(DEFAULT_VALID_STRING_ESCAPE, Map.of(FOREGROUND, stringColor)),
             entry(ENUM_NAME_ATTRIBUTES, Map.of(FOREGROUND, enumColor)),
             entry(HTML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
-            entry(HTML_TAG_NAME, Map.of(FOREGROUND, keyword)),
+            entry(HTML_TAG_NAME, Map.of(FOREGROUND, localVariableDeclaration)),
             entry(IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, occurrenceIndication)),
             entry(INHERITED_METHOD_ATTRIBUTES, Map.of(FOREGROUND, inheritedMethod)),
             entry(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, foreground)),
@@ -76,6 +76,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(TEXT, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
             entry(TODO_DEFAULT_ATTRIBUTES, Map.of(FOREGROUND, commentTaskTag)),
             entry(TYPE_PARAMETER_NAME_ATTRIBUTES, Map.of(FOREGROUND, typeParameter)),
+            entry(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, writeOccurrenceIndication)),
             entry(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
             entry(XML_TAG_NAME, Map.of(FOREGROUND, keyword))
     );
@@ -136,7 +137,6 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
                     new AttributeOptionValues(TEXT_SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
                     new AttributeOptionValues(WARNING_ATTRIBUTES, Map.of(BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, "1")),
-                    new AttributeOptionValues(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
                     new AttributeOptionValues(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000"))),
 
             DARK, List.of(
