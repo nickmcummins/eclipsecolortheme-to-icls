@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="58692" name="Sariizback" modified="2019-09-15 18:44:15" author="Sari38" website="http://www.eclipsecolorthemes.org/?view=firsttheme">
+    <searchResultIndication color="#000000" />
+    <filteredSearchResultIndication color="#000000" />
+    <occurrenceIndication color="#000000" />
+    <writeOccurrenceIndication color="#000000" />
+    <findScope color="#333333" />
+    <deletionIndication color="#00FF00" bold="true" />
+    <sourceHoverBackground color="#000000" />
+    <singleLineComment color="#00FF00" bold="true" italic="false" />
+    <multiLineComment color="#0000FF" bold="true" italic="false" />
+    <commentTaskTag color="#7730FF" bold="true" italic="false" />
+    <javadoc color="#00DF32" bold="true" italic="false" />
+    <javadocLink color="#FF33FF" bold="true" italic="false" />
+    <javadocTag color="#DD0000" bold="true" italic="false" />
+    <javadocKeyword color="#00FF66" bold="true" italic="false" />
+    <class color="#880000" bold="true" underline="false" strikethrough="false" />
+    <interface color="#00FF33" bold="true" />
+    <method color="#CC0000" bold="true" />
+    <methodDeclaration color="#0066FF" bold="true" />
+    <bracket color="#333333" bold="true" />
+    <number color="#452300" bold="true" />
+    <string color="#000000" bold="true" />
+    <operator color="#009900" bold="true" />
+    <keyword color="#000045" bold="true" />
+    <annotation color="#FF0000" bold="true" />
+    <staticMethod color="#00FF00" bold="true" />
+    <localVariable color="#000033" bold="true" />
+    <localVariableDeclaration color="#0033FF" bold="true" />
+    <field color="#FF0000" bold="true" />
+    <staticField color="#000033" bold="true" />
+    <staticFinalField color="#FF0000" bold="true" />
+    <deprecatedMember color="#000033" bold="true" underline="false" strikethrough="false" />
+    <enum color="#000033" bold="true" />
+    <inheritedMethod color="#FF0000" bold="true" />
+    <abstractMethod color="#000033" bold="true" />
+    <parameterVariable color="#00FF00" bold="true" />
+    <typeArgument color="#000033" bold="true" />
+    <typeParameter color="#00FF00" bold="true" />
+    <constant color="#FF0099" bold="true" />
+    <background color="#FFFFFF" />
+    <currentLine color="#FFFFFF" />
+    <foreground color="#000000" />
+    <lineNumber color="#000066" />
+    <selectionBackground color="#FFFFFF" />
+    <selectionForeground color="#000000" />
+</colorTheme>
