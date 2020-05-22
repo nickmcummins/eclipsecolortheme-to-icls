@@ -47,16 +47,16 @@ public class EclipseColorThemeThumbnail {
 
     public void generate() {
         if (new File(imageFilename).exists()) {
-            print("Skipping creation of already existing file %s", imageFilename);
+            print("\tSkipping creation of already existing file %s", imageFilename);
         } else {
             EclipseColorThemeThumbnailCss previewCss = new EclipseColorThemeThumbnailCss(xmlFilepath);
             try (FileWriter cssFile = new FileWriter(cssFilepath.toFile()); FileWriter htmlFile = new FileWriter(htmlFilepath.toFile())) {
                 cssFile.write(previewCss.toString());
-                System.out.println(String.format("Successfully wrote %s", cssFilepath));
+                System.out.println(String.format("\tSuccessfully wrote %s", cssFilepath));
 
                 String previewHtml = IOUtils.toString(new FileInputStream("src/main/resources/eclipsecolortheme-preview.html"), StandardCharsets.UTF_8).replace("eclipsecolortheme.css", cssFilepath.toString());
                 htmlFile.write(previewHtml);
-                System.out.println(String.format("Successfully wrote %s", htmlFilepath));
+                System.out.println(String.format("\tSuccessfully wrote %s", htmlFilepath));
             } catch (IOException e) {
                 throw new RuntimeException("Exception generating thumbnail file", e);
             }
@@ -73,7 +73,7 @@ public class EclipseColorThemeThumbnail {
         args.add(htmlFilepath.toString());
         args.add(imageFilename);
 
-        System.out.println(String.format("Executing %s %s", wkhtmltoimage, StringUtil.join(args, " ")));
+        System.out.println(String.format("\tExecuting %s %s", wkhtmltoimage, StringUtil.join(args, " ")));
 
         ProcResult result = new ProcBuilder("wkhtmltoimage")
                 .withArgs(args.toArray(new String[0]))
@@ -89,7 +89,6 @@ public class EclipseColorThemeThumbnail {
                 .withArg(imageFilename)
                 .withNoTimeout()
                 .run();
-        print("Executing pngout %s", imageFilename);
-        //System.out.println(result.getOutputString());
+        print("\tExecuting pngout %s", imageFilename);
     }
 }
