@@ -90,6 +90,6 @@ public class EclipseColorThemeThumbnail {
                 .withNoTimeout()
                 .run();
         print("Executing pngout %s", imageFilename);
-        System.out.println(result.getOutputString());
+        //System.out.println(result.getOutputString());
     }
 }
