@@ -1,5 +1,6 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes.converter;
 
+import com.nickmcummins.webscraping.ColorUtil;
 import com.nickmcummins.webscraping.com.jetbrains.AttributeOptionValues;
 import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import com.nickmcummins.webscraping.SchemeType;
@@ -32,7 +33,12 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             LIGHT, Map.of(
                     INDENT_GUIDE, "a8a8a8",
                     SOFT_WRAP_SIGN_COLOR, "a8a8a8",
-                    WHITESPACES, "a8a8a8")
+                    WHITESPACES, "a8a8a8"),
+            DARK, Map.of()
+    );
+    private static final Map<SchemeType, Map<IntellijIdeaColorScheme.OptionProperty, String>> OMIT_OPTION_VALUES = Map.of(
+            LIGHT, Map.of(BACKGROUND,"ffffff"),
+            DARK, Map.of()
     );
     public static final Map<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
             entry(ABSTRACT_METHOD_ATTRIBUTES, Map.of(FOREGROUND, abstractMethod)),
@@ -72,14 +78,15 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, occurrenceIndication)),
             entry(INHERITED_METHOD_ATTRIBUTES, Map.of(FOREGROUND, inheritedMethod)),
             entry(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, foreground)),
+            entry(SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, searchResultIndication)),
             entry(STATIC_FINAL_FIELD_ATTRIBUTES, Map.of(FOREGROUND, staticFinalField)),
             entry(TEXT, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
             entry(TEXT_SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, searchResultIndication)),
             entry(TODO_DEFAULT_ATTRIBUTES, Map.of(FOREGROUND, commentTaskTag)),
-            entry(TYPE_PARAMETER_NAME_ATTRIBUTES, Map.of(FOREGROUND, typeParameter)),
+            entry(TYPE_PARAMETER_NAME_ATTRIBUTES, Map.of(FOREGROUND, typeArgument)),
             entry(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, writeOccurrenceIndication)),
             entry(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
-            entry(XML_TAG_NAME, Map.of(FOREGROUND, keyword))
+            entry(XML_TAG_NAME, Map.of(FOREGROUND, localVariableDeclaration))
     );
     public static final Map<SchemeType, List<AttributeOptionValues>> ICLS_CONSOLE_DEFAULTS = Map.of(
             LIGHT, List.of(
@@ -135,10 +142,8 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new AttributeOptionValues(MATCHED_BRACE_ATTRIBUTES, Map.of(EFFECT_COLOR, "a8a8a8")),
                     new AttributeOptionValues(NOT_TOP_FRAME_ATTRIBUTES, Map.of(BACKGROUND, "c0d0f0")),
                     new AttributeOptionValues(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(FOREGROUND, "808080")),
-                    new AttributeOptionValues(SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, "dddddd")),
                     new AttributeOptionValues(WARNING_ATTRIBUTES, Map.of(BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, "1")),
                     new AttributeOptionValues(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000"))),
-
             DARK, List.of(
                     new AttributeOptionValues(BAD_CHARACTER, Map.of(BACKGROUND, "ff0000")),
                     new AttributeOptionValues(BREAKPOINT_ATTRIBUTES, Map.of(BACKGROUND, "3a2323", ERROR_STRIPE_COLOR, "664233")),
@@ -180,6 +185,11 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
         return IntellijIdeaColorScheme.FontType.fromNumeric(fontType); 
     }
 
+    private static boolean omitOption(SchemeType schemeType, IntellijIdeaColorScheme.OptionProperty optionPropertyName, String optionPropertyValue) {
+        Map<IntellijIdeaColorScheme.OptionProperty, String> omitOptionValues = OMIT_OPTION_VALUES.get(schemeType);
+        return omitOptionValues.containsKey(optionPropertyName) && ColorUtil.sameColor(omitOptionValues.get(optionPropertyName), optionPropertyValue);
+    }
+
     @Override
     public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
         Map<IntellijIdeaColorScheme.ColorOption, String> iclsColorOptions = new HashMap<>();
@@ -210,7 +220,9 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                 if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
                     attributeOptionsValuesByName.put(attributeOptionName, new AttributeOptionValues(attributeOptionName, new HashMap<>()));
                 AttributeOptionValues attributeOptionValues = attributeOptionsValuesByName.get(attributeOptionName);
-                attributeOptionValues.addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
+
+                if (!omitOption(eclipseColorTheme.getLightOrDark(), optionPropertyName, optionPropertyValue))
+                    attributeOptionValues.addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
 
                 IntellijIdeaColorScheme.FontType fontType = iclsFontTypeFromEclipseSetting(eclipseSetting);
                 if (fontType != IntellijIdeaColorScheme.FontType.NORMAL)

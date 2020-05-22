@@ -111,6 +111,17 @@ public class ColorUtil {
         return Math.sqrt(a * a + b * b + c * c);
     }
 
+    public static double colorDistance(Color colorA, Color colorB) {
+        return colorDistance(colorA.getRed(), colorA.getGreen(), colorA.getBlue(),
+                colorB.getRed(), colorB.getGreen(), colorB.getBlue());
+    }
+
+    public static double colorDistance(String hexA, String hexB) {
+        if (!hexA.startsWith("#")) hexA = String.format("#%s", hexA);
+        if (!hexB.startsWith("#")) hexB = String.format("#%s", hexB);
+        return colorDistance(Color.decode(hexA), Color.decode(hexB));
+    }
+
     /**
      * Check if a color is more dark than light. Useful if an entity of
      * this color is to be labeled: Use white label on a "dark" color and
@@ -162,6 +173,10 @@ public class ColorUtil {
             return String.valueOf(formattedHex.charAt(formattedHex.length() - 1));
         else
             return formattedHex.substring(numZeroDigits);
+    }
+
+    public static boolean sameColor(String hexColorA, String hexColorB) {
+        return hexColorA.replace("#", "").toLowerCase().equals(hexColorB.replace("#", "").toLowerCase());
     }
 }
 
