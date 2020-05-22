@@ -12,10 +12,12 @@ public class EclipseColorThemeDownloader {
     private static final int LATEST_ARCHIVED_THEME_ID = 58465;
     private final int startIndex;
     private final int endIndex;
+    private final boolean generateThumbnails;
 
-    public EclipseColorThemeDownloader(String startIndex, String numberToDownload, boolean useLastIndexForStart) {
+    public EclipseColorThemeDownloader(String startIndex, String numberToDownload, boolean useLastIndexForStart, boolean generateThumbnails) {
         this.startIndex = useLastIndexForStart || startIndex == null ? getLastDownloadedIndex() + 1 : Integer.parseInt(startIndex);
         this.endIndex = numberToDownload != null ? Math.max(this.startIndex + Integer.parseInt(numberToDownload), LATEST_ARCHIVED_THEME_ID) : LATEST_ARCHIVED_THEME_ID;
+        this.generateThumbnails = generateThumbnails;
     }
 
     public static EclipseColorTheme downloadTheme(int themeId, boolean writeToFile) throws CannotDownloadException {
@@ -36,7 +38,9 @@ public class EclipseColorThemeDownloader {
     public void downloadThemes() {
         for (int themeId = startIndex; themeId < endIndex; themeId++) {
             try {
-                downloadTheme(themeId, true);
+                EclipseColorTheme eclipseColorTheme = downloadTheme(themeId, true);
+                if (generateThumbnails)
+                    new EclipseColorThemeThumbnail(eclipseColorTheme.getFilename()).generate();
             } catch (CannotDownloadException ce) {
                 print("\tException downloading theme id %d, skipping.", themeId);
             }

@@ -52,7 +52,7 @@ public class HttpUtil {
                         System.out.println(String.format("\tConnection exception when attempting to download %s. Sleeping %d seconds.", url, 10 * tries));
                         sleep(10000 * tries);
                     }
-                    System.out.println(ce);
+                    System.out.println("\t" + ce);
                 }
             }
         } while ((response != null && response.statusCode() == 302) || (!success && tries < MAX_RETRIES));

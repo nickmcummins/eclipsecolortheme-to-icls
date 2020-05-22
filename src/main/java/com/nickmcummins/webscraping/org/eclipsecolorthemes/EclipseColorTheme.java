@@ -118,6 +118,7 @@ public class EclipseColorTheme implements ColorTheme {
     private final String modified;
     private final Map<SettingField, ColorThemeElement> settingsByName;
     SchemeType lightOrDark;
+    private String filename;
 
     public EclipseColorTheme(String id, String name, String author, String modified, Map<SettingField, ColorThemeElement> settingsByName) {
         this.id = id;
@@ -204,6 +205,10 @@ public class EclipseColorTheme implements ColorTheme {
         return modified;
     }
 
+    public String getFilename() {
+        return filename;
+    }
+
     @Override
     public String getExtension() {
         return EXTENSION;
@@ -213,6 +218,6 @@ public class EclipseColorTheme implements ColorTheme {
     public void writeToFile() throws IOException {
         String outputDir = String.format("%s/%s", ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY, id);
         Files.createDirectory(Paths.get(outputDir));
-        ColorTheme.super.writeToFile(outputDir);
+        this.filename = ColorTheme.super.writeToFile(outputDir);
     }
 }
