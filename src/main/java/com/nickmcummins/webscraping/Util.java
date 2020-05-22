@@ -1,6 +1,10 @@
 package com.nickmcummins.webscraping;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
@@ -23,5 +27,12 @@ public class Util {
             }
         }
         return formattedDate;
+    }
+
+    public static List<String> listFilesInDirectory(String directory, String extension) {
+        return Arrays.stream(new File(directory).list())
+                .filter(file -> file.contains(extension))
+                .map(file -> String.format("%s/%s", directory, file))
+                .collect(Collectors.toList());
     }
 }

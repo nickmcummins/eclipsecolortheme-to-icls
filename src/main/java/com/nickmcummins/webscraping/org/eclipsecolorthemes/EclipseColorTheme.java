@@ -103,7 +103,7 @@ public class EclipseColorTheme implements ColorTheme {
 
     private static final String URL_UNAVAILABLE = "No URL has been captured for this domain.";
     private static final String SITE_MAINTENANCE = "We’ll be back soon!";
-    private static final String EXTENSION = "xml";
+    public static final String EXTENSION = "xml";
     private static final List<SettingField> SETTINGS_ORDER = List.of(searchResultIndication,
             filteredSearchResultIndication, occurrenceIndication, writeOccurrenceIndication, findScope,
             deletionIndication, sourceHoverBackground, singleLineComment, multiLineComment,

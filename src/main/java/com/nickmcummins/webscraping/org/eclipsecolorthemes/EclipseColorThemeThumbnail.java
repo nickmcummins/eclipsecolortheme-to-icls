@@ -28,14 +28,18 @@ public class EclipseColorThemeThumbnail {
     private final Path cssFilepath;
     private final Path htmlFilepath;
 
-    public EclipseColorThemeThumbnail(String xmlFilepath) {
+    public EclipseColorThemeThumbnail(String xmlFilepath, String thumbnailsDirectory) {
         this.xmlFilepath = xmlFilepath;
         String[] xmlFilepathParts = xmlFilepath.split("/");
-        String xmlFilename = xmlFilepathParts[xmlFilepathParts.length - 1];
-        String xmlFileDirectory = xmlFilepathParts[xmlFilepathParts.length - 2];
-        String imageFilePrefix = NumberUtils.isDigits(xmlFileDirectory) ? String.format("%s-", xmlFileDirectory) : "";
+        String imageFilename = xmlFilepathParts[xmlFilepathParts.length - 1].replace(".xml", ".png");
 
-        this.imageFilename = String.format("%s/%s%s", THUMBNAILS_DIRECTORY, imageFilePrefix, xmlFilename.replace(".xml", ".png"));
+        if (thumbnailsDirectory.equals(THUMBNAILS_DIRECTORY)) {
+            String xmlFileDirectory = xmlFilepathParts[xmlFilepathParts.length - 2];
+            String imageFilePrefix = NumberUtils.isDigits(xmlFileDirectory) ? String.format("%s-", xmlFileDirectory) : "";
+            this.imageFilename = String.format("%s/%s%s", thumbnailsDirectory, imageFilePrefix, imageFilename);
+        }
+        else
+            this.imageFilename = String.format("%s/%s", thumbnailsDirectory, imageFilename);
         try {
             Path tmpDirectory = Files.createTempDirectory("eclipsecolortheme_thumbnail_");
             this.cssFilepath = Files.createTempFile(tmpDirectory, null, ".css");

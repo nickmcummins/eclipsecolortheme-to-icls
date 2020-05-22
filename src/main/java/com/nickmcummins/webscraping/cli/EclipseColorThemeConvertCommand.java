@@ -1,7 +1,6 @@
 package com.nickmcummins.webscraping.cli;
 
 import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
-import com.nickmcummins.webscraping.SchemeType;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.converter.EclipseToIntellijIdeaThemeConverter;
 
@@ -15,9 +14,6 @@ import static picocli.CommandLine.Option;
 public class EclipseColorThemeConvertCommand implements Runnable {
     @Option(names = {"-i", "--xml-file"}, required = true)
     public String xmlFile;
-
-    @Option(names = {"-t", "--light-or-dark"}, required = true)
-    public SchemeType type;
 
     @Override
     public void run() {

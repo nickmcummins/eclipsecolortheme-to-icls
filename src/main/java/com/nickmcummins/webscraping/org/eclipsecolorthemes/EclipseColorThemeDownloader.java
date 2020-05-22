@@ -5,6 +5,7 @@ import com.nickmcummins.webscraping.http.CannotDownloadException;
 import java.io.IOException;
 
 import static com.nickmcummins.webscraping.Util.print;
+import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnailCommand.THUMBNAILS_DIRECTORY;
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.getLastDownloadedIndex;
 
 public class EclipseColorThemeDownloader {
@@ -40,7 +41,7 @@ public class EclipseColorThemeDownloader {
             try {
                 EclipseColorTheme eclipseColorTheme = downloadTheme(themeId, true);
                 if (generateThumbnails)
-                    new EclipseColorThemeThumbnail(eclipseColorTheme.getFilename()).generate();
+                    new EclipseColorThemeThumbnail(eclipseColorTheme.getFilename(), THUMBNAILS_DIRECTORY).generate();
             } catch (CannotDownloadException ce) {
                 print("\tException downloading theme id %d, skipping.", themeId);
             }
