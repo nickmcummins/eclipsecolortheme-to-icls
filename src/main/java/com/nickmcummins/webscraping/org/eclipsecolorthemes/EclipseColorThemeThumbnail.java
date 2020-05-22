@@ -79,7 +79,7 @@ public class EclipseColorThemeThumbnail {
                 .withArgs(args.toArray(new String[0]))
                 .run();
         if (new File(imageFilename).exists())
-            print("Successfully wrote %s", imageFilename);
+            print("\tSuccessfully wrote %s", imageFilename);
         else
             throw new RuntimeException(String.format("Error generating %s: %s", imageFilename, result.getErrorString()));
     }
