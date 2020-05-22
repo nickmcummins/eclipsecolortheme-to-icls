@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.joining;
 
@@ -21,11 +23,14 @@ public class EclipseColorThemeThumbnailCss {
                 color: %s; 
             }      
             """;
-    private final Element colorTheme;
+    private static final String UNSET_COLOR = "#FFFFFF";
+    private final Map<String, Element> colorTheme;
 
     public EclipseColorThemeThumbnailCss(String eclipseColorThemeXml) {
         try {
-            this.colorTheme = Jsoup.parse(new String(Files.readAllBytes(Paths.get(eclipseColorThemeXml))), "", Parser.xmlParser()).selectFirst("colorTheme");
+            this.colorTheme = Jsoup.parse(new String(Files.readAllBytes(Paths.get(eclipseColorThemeXml))), "", Parser.xmlParser())
+                    .selectFirst("colorTheme").children().stream()
+                    .collect(Collectors.toMap(element -> element.tagName().toLowerCase(), element -> element));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +44,10 @@ public class EclipseColorThemeThumbnailCss {
 
 
     private String fieldColor(String fieldName) {
-        return colorTheme.selectFirst(fieldName).attr("color");
+        if (colorTheme.containsKey(fieldName))
+            return colorTheme.get(fieldName).attr("color");
+        else
+            return UNSET_COLOR;
     }
 
     public String toString() {
