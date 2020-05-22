@@ -1,0 +1,25 @@
+github-theme:
+  inputHex: F9FCF7
+  outputHex: a8a8a8
+  intputRgb: "rgb(85,85,85)"
+  outputRgb: "rgb(168,168,168)" # rgb(83, 83, 83)
+DefaultPretty:
+  inputHex: 430400
+  outputHex: a18280
+  intputRgb: "rgb(67,4,0)"
+  outputRgb: "rgb(161,130,128)" # rgb(94, 126, 128)
+Sariizback:
+  inputHex: 000000
+  outputHex: 808080
+  intputRgb: "rgb(0,0,0)"
+  outputRgb: "rgb(128,128,128)" # rgb(128, 128, 128)
+LightGreenCPlusPlus:
+  inputHex: 007400
+  outputHex: 7db87c
+  intputRgb: "rgb(0,116,0)"
+  outputRgb: "rgb(125,184,124)" # rgb(125, 68, 124)
+416berry:
+  inputHex: 585858
+  outputHex: a7a7a7
+  intputRgb: "rgb(88, 88, 88)"
+  outputRgb: "rgb(167,167,167)" # rgb(79, 79, 79)
