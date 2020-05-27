@@ -48,9 +48,11 @@ public class EclipseColorThemeThumbnail {
     }
 
     public void generate() {
+
         if (new File(imageFilename).exists()) {
             print("\tSkipping creation of already existing file %s", imageFilename);
         } else {
+            print("\tGenerating thumbnail %s", imageFilename);
             EclipseColorThemeThumbnailCss previewCss = new EclipseColorThemeThumbnailCss(xmlFilepath);
             try (FileWriter cssFile = new FileWriter(cssFilepath.toFile()); FileWriter htmlFile = new FileWriter(htmlFilepath.toFile())) {
                 cssFile.write(previewCss.toString());

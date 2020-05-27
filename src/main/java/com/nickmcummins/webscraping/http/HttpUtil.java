@@ -19,6 +19,7 @@ public class HttpUtil {
     private static final int MAX_RETRIES = 5;
     private static final List<LocalDateTime> CONNECTION_REFUSED_TIMESTAMPS = new ArrayList<>();
     private static final Duration CONNECT_REFUSED_EXPIRATION = Duration.ofMinutes(10);
+    private static final int SECONDS_IN_MS = 1000;
 
     public static String get(String url) throws InterruptedException, CannotDownloadException {
         HttpClient requests = HttpClient.newBuilder().build();
@@ -29,8 +30,9 @@ public class HttpUtil {
         do {
             removeExpiredConnectRefusedTimestamps();
             if (!CONNECTION_REFUSED_TIMESTAMPS.isEmpty()) {
-                print("\tSleeping 60 seconds because of %d connection refused responses within the past 10 minutes: %s", CONNECTION_REFUSED_TIMESTAMPS.size(), CONNECTION_REFUSED_TIMESTAMPS.toString());
-                sleep(60000);
+                int seconds = 60 + 30 * (CONNECTION_REFUSED_TIMESTAMPS.size()-1);
+                print("\tSleeping %d seconds because of %d connection refused responses within the past 10 minutes: %s", seconds, CONNECTION_REFUSED_TIMESTAMPS.size(), CONNECTION_REFUSED_TIMESTAMPS.toString());
+                sleep(seconds * SECONDS_IN_MS);
             }
 
             if (response != null && response.statusCode() == 302)
