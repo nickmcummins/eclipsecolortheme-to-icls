@@ -56,7 +56,8 @@ public class EclipseColorThemeThumbnail {
                 cssFile.write(previewCss.toString());
                 System.out.println(String.format("\tSuccessfully wrote %s", cssFilepath));
 
-                String previewHtml = getResourceAsString("eclipsecolortheme-preview.html");
+                String previewHtml = getResourceAsString("eclipsecolortheme-preview.html")
+                        .replace("eclipsecolortheme.css", cssFilepath.toString());
                 htmlFile.write(previewHtml);
                 System.out.println(String.format("\tSuccessfully wrote %s", htmlFilepath));
             } catch (IOException e) {
