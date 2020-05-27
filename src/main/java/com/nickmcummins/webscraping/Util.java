@@ -1,11 +1,15 @@
 package com.nickmcummins.webscraping;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Util {
@@ -34,5 +38,12 @@ public class Util {
                 .filter(file -> file.contains(extension))
                 .map(file -> String.format("%s/%s", directory, file))
                 .collect(Collectors.toList());
+    }
+
+
+    public static String getResourceAsString(String filename) {
+        return new BufferedReader(new InputStreamReader(Util.class.getResourceAsStream(String.format("/%s", filename)), UTF_8))
+                .lines()
+                .collect(joining("\n"));
     }
 }

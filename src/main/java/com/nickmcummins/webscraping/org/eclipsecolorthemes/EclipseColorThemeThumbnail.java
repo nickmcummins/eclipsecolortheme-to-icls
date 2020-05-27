@@ -1,21 +1,19 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.buildobjects.process.ProcBuilder;
 import org.buildobjects.process.ProcResult;
 import org.jsoup.internal.StringUtil;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.nickmcummins.webscraping.Util.getResourceAsString;
 import static com.nickmcummins.webscraping.Util.print;
 import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnailCommand.THUMBNAILS_DIRECTORY;
 
@@ -58,7 +56,7 @@ public class EclipseColorThemeThumbnail {
                 cssFile.write(previewCss.toString());
                 System.out.println(String.format("\tSuccessfully wrote %s", cssFilepath));
 
-                String previewHtml = IOUtils.toString(new FileInputStream("src/main/resources/eclipsecolortheme-preview.html"), StandardCharsets.UTF_8).replace("eclipsecolortheme.css", cssFilepath.toString());
+                String previewHtml = getResourceAsString("eclipsecolortheme-preview.html");
                 htmlFile.write(previewHtml);
                 System.out.println(String.format("\tSuccessfully wrote %s", htmlFilepath));
             } catch (IOException e) {
