@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="28247" name="Sholight" modified="2014-07-04 22:58:55" author="Zekka">
+    <searchResultIndication color="#EFEFEF" />
+    <filteredSearchResultIndication color="#EFEFEF" />
+    <occurrenceIndication color="#EFEFEF" />
+    <writeOccurrenceIndication color="#EFEFEF" />
+    <findScope color="#BCADAD" />
+    <deletionIndication color="#9B5656" />
+    <sourceHoverBackground color="#EEEEEE" />
+    <singleLineComment color="#A08070" italic="false" underline="false" strikethrough="false" />
+    <multiLineComment color="#A08070" italic="false" />
+    <commentTaskTag color="#A08070" />
+    <javadoc color="#A08070" />
+    <javadocLink color="#608070" />
+    <javadocTag color="#608070" />
+    <javadocKeyword color="#608070" />
+    <class color="#205080" bold="true" />
+    <interface color="#9B5656" />
+    <method color="#205080" />
+    <methodDeclaration color="#205080" />
+    <bracket color="#101040" />
+    <number color="#EE6060" />
+    <string color="#9240BA" bold="false" italic="false" underline="false" strikethrough="false" />
+    <operator color="#101040" />
+    <keyword color="#80B600" bold="true" />
+    <annotation color="#608070" />
+    <staticMethod color="#205080" />
+    <localVariable color="#404040" />
+    <localVariableDeclaration color="#404040" />
+    <field color="#00A0D0" />
+    <staticField color="#885d3b" />
+    <staticFinalField color="#EE6060" />
+    <deprecatedMember color="#ab2525" />
+    <enum color="#205080" />
+    <inheritedMethod color="#205080" />
+    <abstractMethod color="#205080" />
+    <parameterVariable color="#404040" />
+    <typeArgument color="#407080" />
+    <typeParameter color="#407080" />
+    <constant color="#EE6060" />
+    <background color="#FFFFFF" />
+    <currentLine color="#EEEEEE" />
+    <foreground color="#000000" />
+    <lineNumber color="#999999" />
+    <selectionBackground color="#00A0D0" />
+    <selectionForeground color="#FFFFFF" />
+</colorTheme>
