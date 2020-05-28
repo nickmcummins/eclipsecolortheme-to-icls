@@ -175,6 +175,10 @@ public class ColorUtil {
             return formattedHex.substring(numZeroDigits);
     }
 
+    public static String rgbString(Color color) {
+        return String.format("rgb(%d, %d, %d)", color.getRed(), color.getGreen(), color.getBlue());
+    }
+
     public static boolean sameColor(String hexColorA, String hexColorB) {
         return hexColorA.replace("#", "").toLowerCase().equals(hexColorB.replace("#", "").toLowerCase());
     }

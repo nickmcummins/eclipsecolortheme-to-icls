@@ -1,5 +1,8 @@
 package com.nickmcummins.webscraping;
 
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -13,6 +16,13 @@ import static java.util.stream.Collectors.joining;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Util {
+    public static final Yaml YAML;
+    static {
+        DumperOptions options = new DumperOptions();
+        options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+        YAML = new Yaml(options);
+    }
+
     public static void print(String message, Object... args) {
         System.out.println(String.format(message, args));
     }

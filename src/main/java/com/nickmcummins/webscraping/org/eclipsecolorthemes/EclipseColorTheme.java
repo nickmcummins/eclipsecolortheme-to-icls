@@ -13,13 +13,13 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import static com.nickmcummins.webscraping.ColorUtil.rgbString;
+import static com.nickmcummins.webscraping.Util.YAML;
 import static com.nickmcummins.webscraping.http.HttpUtil.get;
 import static com.nickmcummins.webscraping.Util.print;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
@@ -183,6 +183,19 @@ public class EclipseColorTheme implements ColorTheme {
 
     public Map<SettingField, ColorThemeElement> getSettingsByName() {
         return settingsByName;
+    }
+
+    public String toColorsYaml() {
+        Map<String, Map<String, String>> colors = new HashMap<>();
+        for (ColorThemeElement colorThemeElement : settingsByName.values()) {
+            colors.put(colorThemeElement.name, Map.of(
+                    "hex", colorThemeElement.getColorValue(),
+                    "rgb", rgbString(Color.decode(colorThemeElement.getColorValue())))
+            );
+        }
+        Map<String, Map<String, Map<String, String>>> themeColors = Map.of(name, colors);
+
+        return YAML.dump(themeColors);
     }
 
     public String toString() {
