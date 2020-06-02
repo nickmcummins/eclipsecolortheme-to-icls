@@ -32,9 +32,10 @@ public class HttpUtil {
         boolean success = false;
         int tries = 0;
         do {
+            sleep((int)(Math.random() * 10) * SECONDS_IN_MS);
             removeExpiredConnectRefusedTimestamps();
             if (!CONNECTION_REFUSED_TIMESTAMPS.isEmpty()) {
-                int seconds = (int)(Math.random() * 10) * (CONNECTION_REFUSED_TIMESTAMPS.size()-1);
+                int seconds = 120 +  ((int)(Math.random() * 10) * (CONNECTION_REFUSED_TIMESTAMPS.size()-1));
                 print("\tSleeping %d seconds because of %d connection refused responses within the past 10 minutes: %s", seconds, CONNECTION_REFUSED_TIMESTAMPS.size(), CONNECTION_REFUSED_TIMESTAMPS.toString());
                 sleep(seconds * SECONDS_IN_MS);
             }
