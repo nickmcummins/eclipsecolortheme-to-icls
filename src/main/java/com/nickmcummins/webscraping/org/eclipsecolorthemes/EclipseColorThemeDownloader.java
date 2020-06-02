@@ -9,7 +9,7 @@ import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnai
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.getLastDownloadedIndex;
 
 public class EclipseColorThemeDownloader {
-    private static final String VIEW_THEME_URL = "https://web.archive.org/web/20190824073023/http://www.eclipsecolorthemes.org/?view=theme&id=%d";
+    private static final String VIEW_THEME_URL = "http://web.archive.org/web/20190824073023/http://www.eclipsecolorthemes.org/?view=theme&id=%d";
     private static final int LATEST_ARCHIVED_THEME_ID = 58465;
     private final int startIndex;
     private final int endIndex;
