@@ -29,13 +29,22 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             currentLine, List.of(CARET_ROW_COLOR),
             lineNumber, List.of(CARET_COLOR, LINE_NUMBERS_COLOR, RIGHT_MARGIN_COLOR, TEARLINE_COLOR)
     );
-    private static final Map<SchemeType, Map<IntellijIdeaColorScheme.ColorOption, String>> ICLS_COLOR_OPTION_DEFAULTS = Map.of(
-            LIGHT, Map.of(
-                    INDENT_GUIDE, "a8a8a8",
-                    SOFT_WRAP_SIGN_COLOR, "a8a8a8",
-                    WHITESPACES, "a8a8a8"),
-            DARK, Map.of()
+    private static final List<IntellijIdeaColorScheme.ColorOption> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_OPTIONS = List.of(
+            INDENT_GUIDE, SOFT_WRAP_SIGN_COLOR, WHITESPACES
     );
+    private static final Map<String, String> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS = Map.of(
+            "#000000", "808080",
+            "#007400", "7db87c",
+            "#333333", "999999",
+            "#430400", "a18280",
+            "#555555", "a8a8a8",
+            "#525B5B", "a9adad",
+            "#585858", "a7a7a7",
+            "#8000FF", "c080ff",
+            "#C0B6A8", "e0dbd4",
+            "#FF5050", "ffa8a8"
+    );
+
     private static final Map<SchemeType, Map<IntellijIdeaColorScheme.OptionProperty, String>> OMIT_OPTION_VALUES = Map.of(
             LIGHT, Map.of(BACKGROUND,"ffffff"),
             DARK, Map.of()
@@ -206,8 +215,9 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             }
         }
 
-        for (Map.Entry<IntellijIdeaColorScheme.ColorOption, String> colorOptionDefault : ICLS_COLOR_OPTION_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).entrySet()) {
-            iclsColorOptions.put(colorOptionDefault.getKey(), colorOptionDefault.getValue());
+        String eclipseForegroundHex = ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS.get(eclipseColorTheme.getSettingsByName().get(foreground).getColorValue());
+        for (IntellijIdeaColorScheme.ColorOption iclsColorOption : ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_OPTIONS) {
+            iclsColorOptions.put(iclsColorOption, eclipseForegroundHex);
         }
 
         for (Map.Entry<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {

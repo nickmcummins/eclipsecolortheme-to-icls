@@ -1,25 +1,50 @@
-github-theme:
-  inputHex: F9FCF7
-  outputHex: a8a8a8
-  intputRgb: "rgb(85,85,85)"
-  outputRgb: "rgb(168,168,168)" # rgb(83, 83, 83)
-DefaultPretty:
-  inputHex: 430400
-  outputHex: a18280
-  intputRgb: "rgb(67,4,0)"
-  outputRgb: "rgb(161,130,128)" # rgb(94, 126, 128)
 Sariizback:
   inputHex: 000000
   outputHex: 808080
-  intputRgb: "rgb(0,0,0)"
-  outputRgb: "rgb(128,128,128)" # rgb(128, 128, 128)
+  intputRgb: rgb(0,0,0)
+  outputRgb: rgb(128,128,128) # rgb(+128, +128, +128)
 LightGreenCPlusPlus:
   inputHex: 007400
   outputHex: 7db87c
-  intputRgb: "rgb(0,116,0)"
-  outputRgb: "rgb(125,184,124)" # rgb(125, 68, 124)
+  intputRgb: rgb(0,116,0)
+  outputRgb: rgb(125,184,124) # rgb(+125, +116, +124)
+houlind:
+  inputHex: 333333
+  outputHex: 999999
+  inputRgb: rgb(51, 51, 51)
+  outputRgb: rgb(153, 153, 153) # rgb(+102, +102, +102)
+DefaultPretty:
+  inputHex: 430400
+  outputHex: a18280
+  intputRgb: rgb(67,4,0)
+  outputRgb: rgb(161,130,128) # rgb(+94, +126, +128)
+temagossipnera:
+  inputHex: 525B5B
+  outputHex: a9adad
+  inputRgb: rgb(82, 91, 91)
+  outputRgb: rgb(169, 173, 173, 1) # rgb(+87, +82, +82)
+github-theme:
+  inputHex: 555555
+  outputHex: a8a8a8
+  intputRgb: rgb(85,85,85)
+  outputRgb: rgb(168,168,168) # rgb(+83, +83, +83)
 416berry:
   inputHex: 585858
   outputHex: a7a7a7
-  intputRgb: "rgb(88, 88, 88)"
-  outputRgb: "rgb(167,167,167)" # rgb(79, 79, 79)
+  intputRgb: rgb(88, 88, 88)
+  outputRgb: rgb(167,167,167) # rgb(79, 79, 79)
+NotepadppBeginner:
+  inputHex: 8000FF
+  outputHex: c080ff
+  inputRgb: rgb(128, 0, 255)
+  outputRgb: rgb(192, 128, 255) # rgb(+64, +128, +0)
+mads:
+  inputHex: C0B6A8
+  outputHex: e0dbd4
+  inputRgb: rgb(192, 182, 168)
+  outputRgb: rgb(224, 219, 212) # rgb(+32, +37, +44)
+cloud-light-theme:
+  inputHex: FF5050
+  outputHex: ffa8a8
+  inputRgb: rgb(255, 80, 80)
+  outputRgb: rgb(255, 168, 168) # rgb(+0, +88, +88)
