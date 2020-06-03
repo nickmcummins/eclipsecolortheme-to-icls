@@ -8,13 +8,12 @@ import java.util.stream.Collectors;
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ATTRIBUTE_OPTION_VALUE_ORDER;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.AttributeOptionName;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.OptionProperty;
 
 public class IclsAttributeOption {
     private final AttributeOptionName name;
-    private Map<OptionProperty, String> values;
+    private Map<IclsOptionProperty, String> values;
 
-    public IclsAttributeOption(AttributeOptionName name, Map<OptionProperty, String> values) {
+    public IclsAttributeOption(AttributeOptionName name, Map<IclsOptionProperty, String> values) {
         this.name = name;
         this.values = values;
     }
@@ -23,25 +22,25 @@ public class IclsAttributeOption {
         return new IclsAttributeOption(
                 AttributeOptionName.valueOf(attributeOption.attr("name")),
                 attributeOption.select("value").select("option").stream()
-                        .collect(Collectors.toMap(option -> OptionProperty.valueOf(option.attr("name")), option -> option.attr("value"))));
+                        .collect(Collectors.toMap(option -> IclsOptionProperty.valueOf(option.attr("name")), option -> option.attr("value"))));
     }
 
-    public void addAttributeOptionPropertyValue(OptionProperty optionPropertyName, String value) {
+    public void addAttributeIclsOptionPropertyValue(IclsOptionProperty IclsOptionPropertyName, String value) {
         if (!(values instanceof HashMap))
             values = new HashMap<>(values);
 
-        values.put(optionPropertyName, value);
+        values.put(IclsOptionPropertyName, value);
     }
 
-    public void removeAttributeOptionPropertyValue(OptionProperty optionPropertyName) {
-        values.remove(optionPropertyName);
+    public void removeAttributeIclsOptionPropertyValue(IclsOptionProperty IclsOptionPropertyName) {
+        values.remove(IclsOptionPropertyName);
     }
 
     public AttributeOptionName getName() {
         return name;
     }
 
-    public Map<OptionProperty, String> getValues() {
+    public Map<IclsOptionProperty, String> getValues() {
         return values;
     }
 

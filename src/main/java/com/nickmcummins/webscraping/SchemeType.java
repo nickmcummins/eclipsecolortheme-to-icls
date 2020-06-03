@@ -1,12 +1,7 @@
 package com.nickmcummins.webscraping;
 
 public enum SchemeType {
-    LIGHT("light"),
-    DARK("dark");
+    LIGHT,
+    DARK
 
-    private final String type;
-
-    SchemeType(String type) {
-        this.type = type;
-    }
 }

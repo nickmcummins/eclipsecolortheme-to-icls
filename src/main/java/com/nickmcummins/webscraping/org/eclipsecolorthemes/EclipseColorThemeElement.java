@@ -1,6 +1,5 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 
-import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -8,7 +7,7 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ColorThemeElement {
+public class EclipseColorThemeElement {
     public final String name;
     // values
     private final String colorValue;
@@ -17,7 +16,7 @@ public class ColorThemeElement {
     private final Boolean underline;
     private final Boolean strikethrough;
 
-    public ColorThemeElement(String name, String colorValue, Boolean bold, Boolean italic, Boolean underline, Boolean strikethrough) {
+    private EclipseColorThemeElement(String name, String colorValue, Boolean bold, Boolean italic, Boolean underline, Boolean strikethrough) {
         this.name = name;
         this.colorValue = colorValue;
         this.bold = bold;
@@ -26,7 +25,7 @@ public class ColorThemeElement {
         this.strikethrough = strikethrough;
     }
 
-    private static Boolean fontTypeFromHtmlElementAttr(Element div, IntellijIdeaColorScheme.FontType fontType) {
+    private static Boolean fontTypeFromHtmlElementAttr(Element div, EclipseFontProperty fontType) {
         String elementClassSelector = String.format("a[class='%s-active']", fontType.name().toLowerCase());
 
         Elements aElements = div.select(elementClassSelector);
@@ -37,18 +36,18 @@ public class ColorThemeElement {
         return null;
     }
 
-    public static ColorThemeElement fromHtmlPageDiv(Element div) {
-        return new ColorThemeElement(
+    static EclipseColorThemeElement fromHtmlPageDiv(Element div) {
+        return new EclipseColorThemeElement(
                 div.select("div[class='setting']").get(0).text(),
                 div.select("input").get(0).attr("value"),
-                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontBasicType.BOLD),
-                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontBasicType.ITALIC),
-                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontEffectType.UNDERLINE),
-                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontEffectType.STRIKETHROUGH)
+                fontTypeFromHtmlElementAttr(div, EclipseFontProperty.BOLD),
+                fontTypeFromHtmlElementAttr(div, EclipseFontProperty.ITALIC),
+                fontTypeFromHtmlElementAttr(div, EclipseFontProperty.UNDERLINE),
+                fontTypeFromHtmlElementAttr(div, EclipseFontProperty.STRIKETHROUGH)
         );
     }
 
-    private static Boolean fontTypeFromXmlElementAttr(Attributes attributes, IntellijIdeaColorScheme.FontType fontType) {
+    private static Boolean fontTypeFromXmlElementAttr(Attributes attributes, EclipseFontProperty fontType) {
         String attr = fontType.name().toLowerCase();
         if (attributes.hasKey(attr)) {
             return Boolean.parseBoolean(attributes.get(attr));
@@ -57,16 +56,16 @@ public class ColorThemeElement {
         return null;
     }
 
-    public static ColorThemeElement fromXmlElement(Element element) {
+    static EclipseColorThemeElement fromXmlElement(Element element) {
         String tagName = element.tagName();
         Attributes attributes = element.attributes();
-        return new ColorThemeElement(
+        return new EclipseColorThemeElement(
                 tagName,
                 attributes.get("color"),
-                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontBasicType.BOLD),
-                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontBasicType.ITALIC),
-                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontEffectType.UNDERLINE),
-                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontEffectType.STRIKETHROUGH)
+                fontTypeFromXmlElementAttr(attributes, EclipseFontProperty.BOLD),
+                fontTypeFromXmlElementAttr(attributes, EclipseFontProperty.ITALIC),
+                fontTypeFromXmlElementAttr(attributes, EclipseFontProperty.UNDERLINE),
+                fontTypeFromXmlElementAttr(attributes, EclipseFontProperty.STRIKETHROUGH)
         );
     }
 

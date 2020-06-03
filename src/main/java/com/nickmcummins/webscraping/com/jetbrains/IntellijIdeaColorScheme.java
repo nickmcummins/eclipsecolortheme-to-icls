@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static com.nickmcummins.webscraping.Util.formatDate;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.modified;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.originalScheme;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.OptionProperty.*;
+import static com.nickmcummins.webscraping.com.jetbrains.IclsOptionProperty.*;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.converter.EclipseToIntellijIdeaThemeConverter.ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS;
 
 public class IntellijIdeaColorScheme implements ColorTheme {
@@ -137,7 +137,7 @@ public class IntellijIdeaColorScheme implements ColorTheme {
         XML_ATTRIBUTE_NAME,
         XML_TAG_NAME;
 
-        public Map<String, String> colorMapper;
+        public final Map<String, String> colorMapper;
 
         AttributeOptionName(Map<String, String> colorMapper) {
             this.colorMapper = colorMapper;
@@ -148,76 +148,22 @@ public class IntellijIdeaColorScheme implements ColorTheme {
         }
     }
 
-    public enum OptionProperty {
-        EFFECT_COLOR,
-        ERROR_STRIPE_COLOR,
-        EFFECT_TYPE,
-        FOREGROUND,
-        FONT_TYPE,
-        BACKGROUND
-    }
-
-    public interface FontType {
-        String name();
-    }
-
-    public enum FontBasicType implements FontType {
-        NORMAL("0"),
-        BOLD("1"),
-        ITALIC("2"),
-        BOLD_ITALIC("3");
-
-        public final String value;
-
-        FontBasicType(String value) {
-            this.value = value;
-        }
-
-        public static FontBasicType of(boolean isBold, boolean isItalic) {
-            if (isBold) {
-                if (isItalic) return BOLD_ITALIC;
-                else return BOLD;
-            } else
-                if (isItalic) return ITALIC;
-                else return NORMAL;
-        }
-
-        public String toString() {
-            return value;
-        }
-    }
-
-    public enum FontEffectType implements FontType {
-        UNDERLINE("1"),
-        UNDERWAVE("2"),
-        STRIKETHROUGH("3");
-
-        public final String value;
-
-        FontEffectType(String value) {
-            this.value = value;
-        }
-
-        public String toString() {
-            return value;
-        }
-    }
-
     private static final String EXTENSION = "icls";
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-    public static final List<OptionProperty> ATTRIBUTE_OPTION_VALUE_ORDER = List.of(FOREGROUND, FONT_TYPE, BACKGROUND,
+    static final List<IclsOptionProperty> ATTRIBUTE_OPTION_VALUE_ORDER = List.of(FOREGROUND, FONT_TYPE, BACKGROUND,
             EFFECT_COLOR, ERROR_STRIPE_COLOR, EFFECT_TYPE);
+
     private final Map<MetaInfoProperty, String> metaInfo;
     private final Map<ColorOption, String> colorOptions;
-    private final List<IclsAttributeOption> attributeOptions;
+    private final Collection<IclsAttributeOption> attributeOptions;
 
-    public IntellijIdeaColorScheme(Map<MetaInfoProperty, String> metaInfo, Map<ColorOption, String> colorOptions, List<IclsAttributeOption> attributeOptions) {
+    private IntellijIdeaColorScheme(Map<MetaInfoProperty, String> metaInfo, Map<ColorOption, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
         this.metaInfo = metaInfo;
         this.colorOptions = colorOptions;
         this.attributeOptions = attributeOptions;
     }
 
-    public IntellijIdeaColorScheme(LocalDateTime created, String name, Map<ColorOption, String> colorOptions, List<IclsAttributeOption> attributeOptions) {
+    public IntellijIdeaColorScheme(LocalDateTime created, String name, Map<ColorOption, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
         this(new HashMap<>(Map.of(
                 MetaInfoProperty.created, formatDate(DATE_FORMAT, created),
                 modified, DATE_FORMAT.format(LocalDateTime.now()),

@@ -92,7 +92,7 @@ public class EclipseColorTheme implements ColorTheme {
             return STRING_TO_SETTINGS.get(settingString);
         }
 
-        public static SettingField fromColorThemeElement(ColorThemeElement colorThemeElement) {
+        public static SettingField fromColorThemeElement(EclipseColorThemeElement colorThemeElement) {
             return fromString(colorThemeElement.name);
         }
 
@@ -120,11 +120,11 @@ public class EclipseColorTheme implements ColorTheme {
     private final String name;
     private final String author;
     private final LocalDateTime modified;
-    private final Map<SettingField, ColorThemeElement> settingsByName;
-    SchemeType lightOrDark;
+    private final Map<SettingField, EclipseColorThemeElement> settingsByName;
+    private final SchemeType lightOrDark;
     private String filename;
 
-    public EclipseColorTheme(String id, String name, String author, String modified, Map<SettingField, ColorThemeElement> settingsByName) {
+    public EclipseColorTheme(String id, String name, String author, String modified, Map<SettingField, EclipseColorThemeElement> settingsByName) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -136,7 +136,7 @@ public class EclipseColorTheme implements ColorTheme {
         this.lightOrDark = ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
     }
 
-    public static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {
+    static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {
         String webpage = get(url);
         if (webpage.contains(URL_UNAVAILABLE) || webpage.contains(SITE_MAINTENANCE)) {
             throw new CannotDownloadException();
@@ -149,7 +149,7 @@ public class EclipseColorTheme implements ColorTheme {
                     soup.selectFirst("h2").selectFirst("span").selectFirst("span").child(0).text(),
                     null,
                     soup.select("div[class='setting-entry']").stream()
-                            .map(ColorThemeElement::fromHtmlPageDiv)
+                            .map(EclipseColorThemeElement::fromHtmlPageDiv)
                             .collect(Collectors.toMap(SettingField::fromColorThemeElement, Function.identity())));
         } catch (Exception e) {
             print(webpage);
@@ -157,7 +157,7 @@ public class EclipseColorTheme implements ColorTheme {
         }
     }
 
-    public static String idFromUrl(String url)
+    static String idFromUrl(String url)
     {
         return url.split("&")[url.split("&").length - 1].split("=")[1];
     }
@@ -170,7 +170,7 @@ public class EclipseColorTheme implements ColorTheme {
                 colorTheme.attr("author"),
                 colorTheme.attr("modified"),
                 colorTheme.children().stream()
-                        .collect(Collectors.toMap(SettingField::fromXmlElement, ColorThemeElement::fromXmlElement)));
+                        .collect(Collectors.toMap(SettingField::fromXmlElement, EclipseColorThemeElement::fromXmlElement)));
     }
 
     public static EclipseColorTheme fromXmlFile(String filename) {
@@ -185,11 +185,11 @@ public class EclipseColorTheme implements ColorTheme {
         return lightOrDark;
     }
 
-    public Map<SettingField, ColorThemeElement> getSettingsByName() {
+    public Map<SettingField, EclipseColorThemeElement> getSettingsByName() {
         return settingsByName;
     }
 
-    public ColorThemeElement getSettingByName(SettingField settingName) {
+    public EclipseColorThemeElement getSettingByName(SettingField settingName) {
         if (settingsByName.containsKey(settingName)) {
             return settingsByName.get(settingName);
         } else if (SETTING_FALLBACKS.containsKey(settingName)) {
@@ -199,9 +199,9 @@ public class EclipseColorTheme implements ColorTheme {
         return null;
     }
 
-    public String toColorsYaml() {
+    String toColorsYaml() {
         Map<String, Map<String, String>> colors = new HashMap<>();
-        for (ColorThemeElement colorThemeElement : settingsByName.values()) {
+        for (EclipseColorThemeElement colorThemeElement : settingsByName.values()) {
             colors.put(colorThemeElement.name, Map.of(
                     "hex", colorThemeElement.getColorValue(),
                     "rgb", rgbString(Color.decode(colorThemeElement.getColorValue())))
