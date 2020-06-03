@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="59277" name="mads" modified="2019-11-12 01:30:05" author="madi delin">
+    <searchResultIndication color="#464467" />
+    <filteredSearchResultIndication color="#3F3F6A" />
+    <occurrenceIndication color="#616161" />
+    <writeOccurrenceIndication color="#948567" />
+    <findScope color="#B9A185" />
+    <sourceHoverBackground color="#A19879" />
+    <singleLineComment color="#AEAEAE" bold="false" underline="false" strikethrough="false" />
+    <multiLineComment color="#AEAEAE" bold="false" underline="false" strikethrough="false" />
+    <commentTaskTag color="#ACC1AC" bold="false" underline="false" strikethrough="false" />
+    <javadoc color="#B3B5AF" underline="false" strikethrough="false" />
+    <javadocLink color="#AEAEAE" bold="false" underline="false" strikethrough="false" />
+    <javadocTag color="#AEAEAE" bold="false" underline="false" strikethrough="false" />
+    <javadocKeyword color="#CC9393" underline="false" strikethrough="false" />
+    <class color="#B8ADA0" underline="false" strikethrough="false" />
+    <interface color="#B8ADA0" underline="false" strikethrough="false" />
+    <method color="#84D1D1" bold="true" underline="false" strikethrough="false" />
+    <methodDeclaration color="#DFBE95" underline="false" strikethrough="false" />
+    <bracket color="#000000" underline="false" strikethrough="false" />
+    <number color="#B9A185" underline="false" strikethrough="false" />
+    <string color="#CC9393" bold="false" underline="false" strikethrough="false" />
+    <operator color="#F0EFD0" />
+    <keyword color="#A38474" underline="false" strikethrough="false" />
+    <annotation color="#808080" underline="false" strikethrough="false" />
+    <staticMethod color="#C4C4B7" underline="false" strikethrough="false" />
+    <localVariable color="#A19A83" bold="true" underline="false" strikethrough="false" />
+    <localVariableDeclaration color="#CC9393" bold="true" />
+    <field color="#B3B784" bold="false" />
+    <staticField color="#93A2CC" bold="false" />
+    <staticFinalField color="#93A2CC" bold="false" />
+    <deprecatedMember color="#F3D651" bold="false" />
+    <inheritedMethod color="#C0B6A8" bold="false" />
+    <abstractMethod color="#C0B6A8" />
+    <parameterVariable color="#A19A83" bold="false" />
+    <typeArgument color="#C0B6A8" />
+    <typeParameter color="#C0B6A8" />
+    <constant color="#93A2CC" />
+    <background color="#FFFFFF" />
+    <currentLine color="#000000" />
+    <foreground color="#C0B6A8" />
+    <lineNumber color="#C0C0C0" />
+    <selectionBackground color="#FFFFFF" />
+    <selectionForeground color="#B9A185" />
+</colorTheme>

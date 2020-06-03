@@ -6,14 +6,15 @@ import org.yaml.snakeyaml.Yaml;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.stream.Collectors.joining;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class Util {
     public static final Yaml YAML;
@@ -31,16 +32,24 @@ public class Util {
         System.out.println(object);
     }
 
-    public static String formatDate(SimpleDateFormat dateFormat, String dateString) {
-        String formattedDate = dateFormat.format(System.currentTimeMillis());
-        if (isNotBlank(dateString)) {
+    public static String formatDate(DateTimeFormatter dateFormat, LocalDateTime date) {
+        String formattedDate = dateFormat.format(LocalDateTime.now());
+        if (date != null) {
             try {
-                formattedDate = dateFormat.format(dateString);
+                formattedDate = dateFormat.format(date);
             } catch (Exception e) {
-                print("Exception attempting to parse %s as a date string: %s\nUsing current datetime of %s as date value.", dateString, e.getMessage(), formattedDate);
+                print("Exception attempting to format %s as a date string: %s\nUsing current datetime of %s as date value.", date, e.getMessage(), formattedDate);
             }
         }
         return formattedDate;
+    }
+
+    public static LocalDateTime parseDate(DateTimeFormatter dateFormat, String dateString) {
+        try {
+            return LocalDateTime.parse(dateString, dateFormat);
+        } catch (DateTimeParseException dtpe) {
+            return null;
+        }
     }
 
     public static List<String> listFilesInDirectory(String directory, String extension) {

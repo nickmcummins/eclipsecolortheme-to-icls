@@ -1,7 +1,6 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes.converter;
 
-import com.nickmcummins.webscraping.ColorUtil;
-import com.nickmcummins.webscraping.com.jetbrains.AttributeOptionValues;
+import com.nickmcummins.webscraping.com.jetbrains.IclsAttributeOption;
 import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import com.nickmcummins.webscraping.SchemeType;
 import com.nickmcummins.webscraping.converter.ThemeConverter;
@@ -14,8 +13,10 @@ import java.util.stream.Collectors;
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.AttributeOption.*;
+import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.AttributeOptionName.*;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ColorOption.*;
+import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.FontBasicType.BOLD;
+import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.FontEffectType.*;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.OptionProperty.*;
 
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.*;
@@ -32,7 +33,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
     private static final List<IntellijIdeaColorScheme.ColorOption> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_OPTIONS = List.of(
             INDENT_GUIDE, SOFT_WRAP_SIGN_COLOR, WHITESPACES
     );
-    private static final Map<String, String> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS = Map.of(
+    public static final Map<String, String> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS = Map.of(
             "#000000", "808080",
             "#007400", "7db87c",
             "#333333", "999999",
@@ -44,12 +45,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             "#C0B6A8", "e0dbd4",
             "#FF5050", "ffa8a8"
     );
-
-    private static final Map<SchemeType, Map<IntellijIdeaColorScheme.OptionProperty, String>> OMIT_OPTION_VALUES = Map.of(
-            LIGHT, Map.of(BACKGROUND,"ffffff"),
-            DARK, Map.of()
-    );
-    public static final Map<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
+    public static final Map<IntellijIdeaColorScheme.AttributeOptionName, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
             entry(ABSTRACT_METHOD_ATTRIBUTES, Map.of(FOREGROUND, abstractMethod)),
             entry(DEFAULT_BRACES, Map.of(FOREGROUND, bracket)),
             entry(DEFAULT_BRACKETS, Map.of(FOREGROUND, bracket)),
@@ -66,7 +62,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(DEFAULT_FUNCTION_DECLARATION, Map.of(FOREGROUND, methodDeclaration)),
             entry(DEFAULT_INTERFACE_NAME, Map.of(FOREGROUND, interfaceColor)),
             entry(DEFAULT_INSTANCE_FIELD, Map.of(FOREGROUND, field)),
-            entry(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
+            entry(DEFAULT_IDENTIFIER, Map.of(FOREGROUND, foreground)),
             entry(DEFAULT_KEYWORD, Map.of(FOREGROUND, keyword)),
             entry(DEFAULT_LINE_COMMENT, Map.of(FOREGROUND, singleLineComment)),
             entry(DEFAULT_LOCAL_VARIABLE, Map.of(FOREGROUND, localVariable)),
@@ -86,124 +82,125 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(HTML_TAG_NAME, Map.of(FOREGROUND, localVariableDeclaration)),
             entry(IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, occurrenceIndication)),
             entry(INHERITED_METHOD_ATTRIBUTES, Map.of(FOREGROUND, inheritedMethod)),
+            entry(MATCHED_BRACE_ATTRIBUTES, Map.of(EFFECT_COLOR, foreground)),
             entry(SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, searchResultIndication)),
             entry(STATIC_FINAL_FIELD_ATTRIBUTES, Map.of(FOREGROUND, staticFinalField)),
             entry(TEXT, Map.of(FOREGROUND, foreground, BACKGROUND, background)),
-            entry(TEXT_SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, searchResultIndication)),
+            entry(TEXT_SEARCH_RESULT_ATTRIBUTES, Map.of(BACKGROUND, filteredSearchResultIndication)),
             entry(TODO_DEFAULT_ATTRIBUTES, Map.of(FOREGROUND, commentTaskTag)),
             entry(TYPE_PARAMETER_NAME_ATTRIBUTES, Map.of(FOREGROUND, typeArgument)),
             entry(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(BACKGROUND, writeOccurrenceIndication)),
             entry(XML_ATTRIBUTE_NAME, Map.of(FOREGROUND, field)),
             entry(XML_TAG_NAME, Map.of(FOREGROUND, localVariableDeclaration))
     );
-    public static final Map<SchemeType, List<AttributeOptionValues>> ICLS_CONSOLE_DEFAULTS = Map.of(
+    public static final Map<SchemeType, List<IclsAttributeOption>> ICLS_CONSOLE_DEFAULTS = Map.of(
             LIGHT, List.of(
-                    new AttributeOptionValues(BAD_CHARACTER, Map.of(BACKGROUND, "ffcccc")),
-                    new AttributeOptionValues(BREAKPOINT_ATTRIBUTES, Map.of(BACKGROUND, "faeae6", ERROR_STRIPE_COLOR, "ffc8c8")),
-                    new AttributeOptionValues(CONSOLE_BLACK_OUTPUT, Map.of(FOREGROUND, "0")),
-                    new AttributeOptionValues(CONSOLE_BLUE_BRIGHT_OUTPUT, Map.of(FOREGROUND, "5c5cff")),
-                    new AttributeOptionValues(CONSOLE_BLUE_OUTPUT, Map.of(FOREGROUND, "ee")),
-                    new AttributeOptionValues(CONSOLE_CYAN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ffff")),
-                    new AttributeOptionValues(CONSOLE_CYAN_OUTPUT, Map.of(FOREGROUND, "cccc")),
-                    new AttributeOptionValues(CONSOLE_DARKGRAY_OUTPUT, Map.of(FOREGROUND, "555555")),
-                    new AttributeOptionValues(CONSOLE_ERROR_OUTPUT, Map.of(FOREGROUND, "7f0000")),
-                    new AttributeOptionValues(CONSOLE_GRAY_OUTPUT, Map.of(FOREGROUND, "aaaaaa")),
-                    new AttributeOptionValues(CONSOLE_GREEN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff00")),
-                    new AttributeOptionValues(CONSOLE_GREEN_OUTPUT, Map.of(FOREGROUND, "cd00")),
-                    new AttributeOptionValues(CONSOLE_MAGENTA_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff00ff")),
-                    new AttributeOptionValues(CONSOLE_MAGENTA_OUTPUT, Map.of(FOREGROUND, "cd00cd")),
-                    new AttributeOptionValues(CONSOLE_NORMAL_OUTPUT, Map.of(FOREGROUND, "0")),
-                    new AttributeOptionValues(CONSOLE_RED_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff0000")),
-                    new AttributeOptionValues(CONSOLE_RED_OUTPUT, Map.of(FOREGROUND, "cd0000")),
-                    new AttributeOptionValues(CONSOLE_SYSTEM_OUTPUT, Map.of(FOREGROUND, "7f")),
-                    new AttributeOptionValues(CONSOLE_USER_INPUT, Map.of(FOREGROUND, "7f00", FONT_TYPE, "2")),
-                    new AttributeOptionValues(CONSOLE_WHITE_OUTPUT, Map.of(FOREGROUND, "ffffff")),
-                    new AttributeOptionValues(CONSOLE_YELLOW_BRIGHT_OUTPUT, Map.of(FOREGROUND, "eaea00")),
-                    new AttributeOptionValues(CONSOLE_YELLOW_OUTPUT, Map.of(FOREGROUND, "c4a000")),
-                    new AttributeOptionValues(CTRL_CLICKABLE, Map.of(FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, "1")),
-                    new AttributeOptionValues(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "868686", FONT_TYPE, "2")),
-                    new AttributeOptionValues(DEBUGGER_INLINED_VALUES_EXECUTION_LINE, Map.of(FOREGROUND, "a9b7d6", FONT_TYPE, "2")),
-                    new AttributeOptionValues(DEBUGGER_INLINED_VALUES_MODIFIED, Map.of(FOREGROUND, "ca8021", FONT_TYPE, "2")),
-                    new AttributeOptionValues(DEFAULT_ENTITY, Map.of(FONT_TYPE, "1")),
-                    new AttributeOptionValues(DEFAULT_INVALID_STRING_ESCAPE, Map.of(FOREGROUND, "8000", BACKGROUND, "ffcccc")),
-                    new AttributeOptionValues(DEFAULT_KEYWORD, Map.of(FONT_TYPE, "1")),
-                    new AttributeOptionValues(DEFAULT_VALID_STRING_ESCAPE, Map.of(FONT_TYPE, "1")),
-                    new AttributeOptionValues(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "404040", EFFECT_TYPE, "3")),
-                    new AttributeOptionValues(DIFF_ABSENT, Map.of(BACKGROUND, "f0f0f0")),
-                    new AttributeOptionValues(DIFF_CONFLICT, Map.of(BACKGROUND, "ffd5cc", ERROR_STRIPE_COLOR, "ffc8bd")),
-                    new AttributeOptionValues(DIFF_DELETED, Map.of(BACKGROUND, "d6d6d6", ERROR_STRIPE_COLOR, "c8c8c8")),
-                    new AttributeOptionValues(DIFF_INSERTED, Map.of(BACKGROUND, "bee6be", ERROR_STRIPE_COLOR, "aadeaa")),
-                    new AttributeOptionValues(DIFF_MODIFIED, Map.of(BACKGROUND, "cad9fa", ERROR_STRIPE_COLOR, "b8cbf5")),
-                    new AttributeOptionValues(DUPLICATE_FROM_SERVER, Map.of(BACKGROUND, "f5f7f0")),
-                    new AttributeOptionValues(ERRORS_ATTRIBUTES, Map.of(EFFECT_COLOR, "ff0000", ERROR_STRIPE_COLOR, "cf5b56", EFFECT_TYPE, "2")),
-                    new AttributeOptionValues(EXECUTIONPOINT_ATTRIBUTES, Map.of(FOREGROUND, "ffffff", BACKGROUND, "2154a6", ERROR_STRIPE_COLOR, "2154a6")),
-                    new AttributeOptionValues(FOLLOWED_HYPERLINK_ATTRIBUTES, Map.of(FOREGROUND, "ff", BACKGROUND, "e9e9e9", EFFECT_COLOR, "ff", EFFECT_TYPE, "1")),
-                    new AttributeOptionValues(GENERIC_SERVER_ERROR_OR_WARNING, Map.of(EFFECT_COLOR, "f49810", ERROR_STRIPE_COLOR, "e69317", EFFECT_TYPE, "2")),
-                    new AttributeOptionValues(HYPERLINK_ATTRIBUTES, Map.of(FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, "1")),
-                    new AttributeOptionValues(INFORMATION_ATTRIBUTES, Map.of()),
-                    new AttributeOptionValues(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "cccccc", ERROR_STRIPE_COLOR, "d9cfad", EFFECT_TYPE, "2")),
-                    new AttributeOptionValues(LINE_FULL_COVERAGE, Map.of(FOREGROUND, "ccffcc", FONT_TYPE, "1")),
-                    new AttributeOptionValues(LINE_NONE_COVERAGE, Map.of(FOREGROUND, "ffcccc", FONT_TYPE, "1")),
-                    new AttributeOptionValues(LINE_PARTIAL_COVERAGE, Map.of(FOREGROUND, "ffffcc", FONT_TYPE, "1")),
-                    new AttributeOptionValues(LOG_ERROR_OUTPUT, Map.of(FOREGROUND, "cd0000")),
-                    new AttributeOptionValues(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, "555555")),
-                    new AttributeOptionValues(LOG_WARNING_OUTPUT, Map.of(FOREGROUND, "a66f00")),
-                    new AttributeOptionValues(MATCHED_BRACE_ATTRIBUTES, Map.of(EFFECT_COLOR, "a8a8a8")),
-                    new AttributeOptionValues(NOT_TOP_FRAME_ATTRIBUTES, Map.of(BACKGROUND, "c0d0f0")),
-                    new AttributeOptionValues(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(FOREGROUND, "808080")),
-                    new AttributeOptionValues(WARNING_ATTRIBUTES, Map.of(BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, "1")),
-                    new AttributeOptionValues(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000"))),
+                    new IclsAttributeOption(BAD_CHARACTER, Map.of(BACKGROUND, "ffcccc")),
+                    new IclsAttributeOption(BREAKPOINT_ATTRIBUTES, Map.of(BACKGROUND, "faeae6", ERROR_STRIPE_COLOR, "ffc8c8")),
+                    new IclsAttributeOption(CONSOLE_BLACK_OUTPUT, Map.of(FOREGROUND, "0")),
+                    new IclsAttributeOption(CONSOLE_BLUE_BRIGHT_OUTPUT, Map.of(FOREGROUND, "5c5cff")),
+                    new IclsAttributeOption(CONSOLE_BLUE_OUTPUT, Map.of(FOREGROUND, "ee")),
+                    new IclsAttributeOption(CONSOLE_CYAN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ffff")),
+                    new IclsAttributeOption(CONSOLE_CYAN_OUTPUT, Map.of(FOREGROUND, "cccc")),
+                    new IclsAttributeOption(CONSOLE_DARKGRAY_OUTPUT, Map.of(FOREGROUND, "555555")),
+                    new IclsAttributeOption(CONSOLE_ERROR_OUTPUT, Map.of(FOREGROUND, "7f0000")),
+                    new IclsAttributeOption(CONSOLE_GRAY_OUTPUT, Map.of(FOREGROUND, "aaaaaa")),
+                    new IclsAttributeOption(CONSOLE_GREEN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff00")),
+                    new IclsAttributeOption(CONSOLE_GREEN_OUTPUT, Map.of(FOREGROUND, "cd00")),
+                    new IclsAttributeOption(CONSOLE_MAGENTA_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff00ff")),
+                    new IclsAttributeOption(CONSOLE_MAGENTA_OUTPUT, Map.of(FOREGROUND, "cd00cd")),
+                    new IclsAttributeOption(CONSOLE_NORMAL_OUTPUT, Map.of(FOREGROUND, "0")),
+                    new IclsAttributeOption(CONSOLE_RED_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff0000")),
+                    new IclsAttributeOption(CONSOLE_RED_OUTPUT, Map.of(FOREGROUND, "cd0000")),
+                    new IclsAttributeOption(CONSOLE_SYSTEM_OUTPUT, Map.of(FOREGROUND, "7f")),
+                    new IclsAttributeOption(CONSOLE_USER_INPUT, Map.of(FOREGROUND, "7f00", FONT_TYPE, "2")),
+                    new IclsAttributeOption(CONSOLE_WHITE_OUTPUT, Map.of(FOREGROUND, "ffffff")),
+                    new IclsAttributeOption(CONSOLE_YELLOW_BRIGHT_OUTPUT, Map.of(FOREGROUND, "eaea00")),
+                    new IclsAttributeOption(CONSOLE_YELLOW_OUTPUT, Map.of(FOREGROUND, "c4a000")),
+                    new IclsAttributeOption(CTRL_CLICKABLE, Map.of(FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, UNDERLINE.value)),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "868686", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES_EXECUTION_LINE, Map.of(FOREGROUND, "a9b7d6", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES_MODIFIED, Map.of(FOREGROUND, "ca8021", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DEFAULT_ENTITY, Map.of(FONT_TYPE, BOLD.value)),
+                    new IclsAttributeOption(DEFAULT_KEYWORD, Map.of(FONT_TYPE, BOLD.value)),
+                    new IclsAttributeOption(DEFAULT_INVALID_STRING_ESCAPE, Map.of(FOREGROUND, "8000", BACKGROUND, "ffcccc")),
+                    new IclsAttributeOption(DEFAULT_VALID_STRING_ESCAPE, Map.of(FONT_TYPE, BOLD.value)),
+                    new IclsAttributeOption(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "404040", EFFECT_TYPE, STRIKETHROUGH.value)),
+                    new IclsAttributeOption(DIFF_ABSENT, Map.of(BACKGROUND, "f0f0f0")),
+                    new IclsAttributeOption(DIFF_CONFLICT, Map.of(BACKGROUND, "ffd5cc", ERROR_STRIPE_COLOR, "ffc8bd")),
+                    new IclsAttributeOption(DIFF_DELETED, Map.of(BACKGROUND, "d6d6d6", ERROR_STRIPE_COLOR, "c8c8c8")),
+                    new IclsAttributeOption(DIFF_INSERTED, Map.of(BACKGROUND, "bee6be", ERROR_STRIPE_COLOR, "aadeaa")),
+                    new IclsAttributeOption(DIFF_MODIFIED, Map.of(BACKGROUND, "cad9fa", ERROR_STRIPE_COLOR, "b8cbf5")),
+                    new IclsAttributeOption(DUPLICATE_FROM_SERVER, Map.of(BACKGROUND, "f5f7f0")),
+                    new IclsAttributeOption(ERRORS_ATTRIBUTES, Map.of(EFFECT_COLOR, "ff0000", ERROR_STRIPE_COLOR, "cf5b56", EFFECT_TYPE, UNDERWAVE.value)),
+                    new IclsAttributeOption(EXECUTIONPOINT_ATTRIBUTES, Map.of(FOREGROUND, "ffffff", BACKGROUND, "2154a6", ERROR_STRIPE_COLOR, "2154a6")),
+                    new IclsAttributeOption(FOLLOWED_HYPERLINK_ATTRIBUTES, Map.of(FOREGROUND, "ff", BACKGROUND, "e9e9e9", EFFECT_COLOR, "ff", EFFECT_TYPE, UNDERLINE.value)),
+                    new IclsAttributeOption(GENERIC_SERVER_ERROR_OR_WARNING, Map.of(EFFECT_COLOR, "f49810", ERROR_STRIPE_COLOR, "e69317", EFFECT_TYPE, UNDERWAVE.value)),
+                    new IclsAttributeOption(HYPERLINK_ATTRIBUTES, Map.of(FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, UNDERLINE.value)),
+                    new IclsAttributeOption(INFORMATION_ATTRIBUTES, Map.of()),
+                    new IclsAttributeOption(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "cccccc", ERROR_STRIPE_COLOR, "d9cfad", EFFECT_TYPE, UNDERWAVE.value)),
+                    new IclsAttributeOption(LINE_FULL_COVERAGE, Map.of(FOREGROUND, "ccffcc", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LINE_NONE_COVERAGE, Map.of(FOREGROUND, "ffcccc", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LINE_PARTIAL_COVERAGE, Map.of(FOREGROUND, "ffffcc", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LOG_ERROR_OUTPUT, Map.of(FOREGROUND, "cd0000")),
+                    new IclsAttributeOption(LOG_EXPIRED_ENTRY, Map.of(FOREGROUND, "555555")),
+                    new IclsAttributeOption(LOG_WARNING_OUTPUT, Map.of(FOREGROUND, "a66f00")),
+                    new IclsAttributeOption(NOT_TOP_FRAME_ATTRIBUTES, Map.of(BACKGROUND, "c0d0f0")),
+                    new IclsAttributeOption(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(FOREGROUND, "808080")),
+                    new IclsAttributeOption(WARNING_ATTRIBUTES, Map.of(BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, UNDERLINE.value)),
+                    new IclsAttributeOption(WRONG_REFERENCES_ATTRIBUTES, Map.of(FOREGROUND, "ff0000"))),
             DARK, List.of(
-                    new AttributeOptionValues(BAD_CHARACTER, Map.of(BACKGROUND, "ff0000")),
-                    new AttributeOptionValues(BREAKPOINT_ATTRIBUTES, Map.of(BACKGROUND, "3a2323", ERROR_STRIPE_COLOR, "664233")),
-                    new AttributeOptionValues(CONSOLE_BLACK_OUTPUT, Map.of(FOREGROUND, "ffffff")),
-                    new AttributeOptionValues(CONSOLE_BLUE_BRIGHT_OUTPUT, Map.of(FOREGROUND, "7eaef1")),
-                    new AttributeOptionValues(CONSOLE_BLUE_OUTPUT, Map.of(FOREGROUND, "5394ec")),
-                    new AttributeOptionValues(CONSOLE_CYAN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "6cdada")),
-                    new AttributeOptionValues(CONSOLE_CYAN_OUTPUT, Map.of(FOREGROUND, "299999")),
-                    new AttributeOptionValues(CONSOLE_DARKGRAY_OUTPUT, Map.of(FOREGROUND, "555555")),
-                    new AttributeOptionValues(CONSOLE_ERROR_OUTPUT, Map.of(FOREGROUND, "ff6b68")),
-                    new AttributeOptionValues(CONSOLE_GRAY_OUTPUT, Map.of(FOREGROUND, "999999")),
-                    new AttributeOptionValues(CONSOLE_GREEN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "a8c023")),
-                    new AttributeOptionValues(CONSOLE_GREEN_OUTPUT, Map.of(FOREGROUND, "a8c023")),
-                    new AttributeOptionValues(CONSOLE_MAGENTA_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff99ff")),
-                    new AttributeOptionValues(CONSOLE_MAGENTA_OUTPUT, Map.of(FOREGROUND, "ae8abe")),
-                    new AttributeOptionValues(CONSOLE_NORMAL_OUTPUT, Map.of(FOREGROUND, "bbbbbb")),
-                    new AttributeOptionValues(CONSOLE_RED_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff8785")),
-                    new AttributeOptionValues(CONSOLE_RED_OUTPUT, Map.of(FOREGROUND, "ff6b68")),
-                    new AttributeOptionValues(CONSOLE_SYSTEM_OUTPUT, Map.of(FOREGROUND, "bbbbbb")),
-                    new AttributeOptionValues(CONSOLE_USER_INPUT, Map.of(FOREGROUND, "7f00", FONT_TYPE, "2")),
-                    new AttributeOptionValues(CONSOLE_WHITE_OUTPUT, Map.of(FOREGROUND, "1f1f1f")),
-                    new AttributeOptionValues(CONSOLE_YELLOW_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ffff00")),
-                    new AttributeOptionValues(CONSOLE_YELLOW_OUTPUT, Map.of(FOREGROUND, "d6bf55")),
-                    new AttributeOptionValues(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "66d75", FONT_TYPE, "2")),
-                    new AttributeOptionValues(DIFF_ABSENT, Map.of(FOREGROUND, "null")),
-                    new AttributeOptionValues(DIFF_CONFLICT, Map.of(BACKGROUND, "45302b")),
-                    new AttributeOptionValues(DIFF_DELETED, Map.of(BACKGROUND, "484a4a")),
-                    new AttributeOptionValues(DIFF_INSERTED, Map.of(BACKGROUND, "294436")),
-                    new AttributeOptionValues(DIFF_MODIFIED, Map.of(BACKGROUND, "385570")))
+                    new IclsAttributeOption(BAD_CHARACTER, Map.of(BACKGROUND, "ff0000")),
+                    new IclsAttributeOption(BREAKPOINT_ATTRIBUTES, Map.of(BACKGROUND, "3a2323", ERROR_STRIPE_COLOR, "664233")),
+                    new IclsAttributeOption(CONSOLE_BLACK_OUTPUT, Map.of(FOREGROUND, "ffffff")),
+                    new IclsAttributeOption(CONSOLE_BLUE_BRIGHT_OUTPUT, Map.of(FOREGROUND, "7eaef1")),
+                    new IclsAttributeOption(CONSOLE_BLUE_OUTPUT, Map.of(FOREGROUND, "5394ec")),
+                    new IclsAttributeOption(CONSOLE_CYAN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "6cdada")),
+                    new IclsAttributeOption(CONSOLE_CYAN_OUTPUT, Map.of(FOREGROUND, "299999")),
+                    new IclsAttributeOption(CONSOLE_DARKGRAY_OUTPUT, Map.of(FOREGROUND, "555555")),
+                    new IclsAttributeOption(CONSOLE_ERROR_OUTPUT, Map.of(FOREGROUND, "ff6b68")),
+                    new IclsAttributeOption(CONSOLE_GRAY_OUTPUT, Map.of(FOREGROUND, "999999")),
+                    new IclsAttributeOption(CONSOLE_GREEN_BRIGHT_OUTPUT, Map.of(FOREGROUND, "a8c023")),
+                    new IclsAttributeOption(CONSOLE_GREEN_OUTPUT, Map.of(FOREGROUND, "a8c023")),
+                    new IclsAttributeOption(CONSOLE_MAGENTA_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff99ff")),
+                    new IclsAttributeOption(CONSOLE_MAGENTA_OUTPUT, Map.of(FOREGROUND, "ae8abe")),
+                    new IclsAttributeOption(CONSOLE_NORMAL_OUTPUT, Map.of(FOREGROUND, "bbbbbb")),
+                    new IclsAttributeOption(CONSOLE_RED_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ff8785")),
+                    new IclsAttributeOption(CONSOLE_RED_OUTPUT, Map.of(FOREGROUND, "ff6b68")),
+                    new IclsAttributeOption(CONSOLE_SYSTEM_OUTPUT, Map.of(FOREGROUND, "bbbbbb")),
+                    new IclsAttributeOption(CONSOLE_USER_INPUT, Map.of(FOREGROUND, "7f00", FONT_TYPE, "2")),
+                    new IclsAttributeOption(CONSOLE_WHITE_OUTPUT, Map.of(FOREGROUND, "1f1f1f")),
+                    new IclsAttributeOption(CONSOLE_YELLOW_BRIGHT_OUTPUT, Map.of(FOREGROUND, "ffff00")),
+                    new IclsAttributeOption(CONSOLE_YELLOW_OUTPUT, Map.of(FOREGROUND, "d6bf55")),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES, Map.of(FOREGROUND, "66d75", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DIFF_ABSENT, Map.of(FOREGROUND, "null")),
+                    new IclsAttributeOption(DIFF_CONFLICT, Map.of(BACKGROUND, "45302b")),
+                    new IclsAttributeOption(DIFF_DELETED, Map.of(BACKGROUND, "484a4a")),
+                    new IclsAttributeOption(DIFF_INSERTED, Map.of(BACKGROUND, "294436")),
+                    new IclsAttributeOption(DIFF_MODIFIED, Map.of(BACKGROUND, "385570")))
     );
-    
-    private static IntellijIdeaColorScheme.FontType iclsFontTypeFromEclipseSetting(ColorThemeElement eclipseSetting) {
-        int fontType = IntellijIdeaColorScheme.FontType.NORMAL.toNumber();
-        if (eclipseSetting.isBold())
-            fontType += IntellijIdeaColorScheme.FontType.BOLD.toNumber();
-        if (eclipseSetting.isItalic())
-            fontType += IntellijIdeaColorScheme.FontType.ITALIC.toNumber();
-        
-        return IntellijIdeaColorScheme.FontType.fromNumeric(fontType); 
-    }
 
-    private static boolean omitOption(SchemeType schemeType, IntellijIdeaColorScheme.OptionProperty optionPropertyName, String optionPropertyValue) {
-        Map<IntellijIdeaColorScheme.OptionProperty, String> omitOptionValues = OMIT_OPTION_VALUES.get(schemeType);
-        return omitOptionValues.containsKey(optionPropertyName) && ColorUtil.sameColor(omitOptionValues.get(optionPropertyName), optionPropertyValue);
+    private static void updateAttributeValueFontOption(IclsAttributeOption iclsAttributeOption, ColorThemeElement eclipseSetting) {
+        IntellijIdeaColorScheme.FontBasicType fontBasicType = IntellijIdeaColorScheme.FontBasicType.of(eclipseSetting.isBold(), eclipseSetting.isItalic());
+        Map<IntellijIdeaColorScheme.OptionProperty, String> iclsAttributeOptionValue = iclsAttributeOption.getValues();
+        if (iclsAttributeOptionValue.containsKey(FONT_TYPE)) {
+            if ((eclipseSetting.isBoldSetFalse() || eclipseSetting.isItalicSetFalse()) && iclsAttributeOption.getName() != DEFAULT_VALID_STRING_ESCAPE) {
+                iclsAttributeOption.removeAttributeOptionPropertyValue(FONT_TYPE);
+
+            }
+        }
+
+        if (fontBasicType != IntellijIdeaColorScheme.FontBasicType.NORMAL)
+            iclsAttributeOption.addAttributeOptionPropertyValue(FONT_TYPE, fontBasicType.toString());
+
+
     }
 
     @Override
     public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
         Map<IntellijIdeaColorScheme.ColorOption, String> iclsColorOptions = new HashMap<>();
-        Map<IntellijIdeaColorScheme.AttributeOption, AttributeOptionValues> attributeOptionsValuesByName = ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
-                .collect(Collectors.toMap(AttributeOptionValues::getAttributeOption, iclsAttributeOption -> iclsAttributeOption));
+        Map<IntellijIdeaColorScheme.AttributeOptionName, IclsAttributeOption> attributeOptionsValuesByName = ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
+                .collect(Collectors.toMap(IclsAttributeOption::getName, iclsAttributeOption -> iclsAttributeOption));
 
         for (Map.Entry<EclipseColorTheme.SettingField, ColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
             EclipseColorTheme.SettingField eclipseFieldName = colorThemeElement.getKey();
@@ -220,29 +217,35 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             iclsColorOptions.put(iclsColorOption, eclipseForegroundHex);
         }
 
-        for (Map.Entry<IntellijIdeaColorScheme.AttributeOption, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {
-            IntellijIdeaColorScheme.AttributeOption attributeOptionName = iclsMappedEclipseAttribute.getKey();
+        for (Map.Entry<IntellijIdeaColorScheme.AttributeOptionName, Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {
+            IntellijIdeaColorScheme.AttributeOptionName attributeOptionName = iclsMappedEclipseAttribute.getKey();
             Map<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField> eclipseMappedIclsOptionProperties = iclsMappedEclipseAttribute.getValue();
             for (Map.Entry<IntellijIdeaColorScheme.OptionProperty, EclipseColorTheme.SettingField> iclsAttributeOptionPropertyValue : eclipseMappedIclsOptionProperties.entrySet()) {
                 IntellijIdeaColorScheme.OptionProperty optionPropertyName = iclsAttributeOptionPropertyValue.getKey();
-                ColorThemeElement eclipseSetting = eclipseColorTheme.getSettingsByName().get(iclsAttributeOptionPropertyValue.getValue());
-                String optionPropertyValue = eclipseSetting.getColorValue();
-                if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
-                    attributeOptionsValuesByName.put(attributeOptionName, new AttributeOptionValues(attributeOptionName, new HashMap<>()));
-                AttributeOptionValues attributeOptionValues = attributeOptionsValuesByName.get(attributeOptionName);
+                ColorThemeElement eclipseSetting = eclipseColorTheme.getSettingByName(iclsAttributeOptionPropertyValue.getValue());
+                if (eclipseSetting != null) {
+                    String optionPropertyValue = eclipseSetting.getColorValue();
+                    if (attributeOptionName.colorMapper != null)
+                        optionPropertyValue = attributeOptionName.colorMapper.get(optionPropertyValue);
 
-                if (!omitOption(eclipseColorTheme.getLightOrDark(), optionPropertyName, optionPropertyValue))
-                    attributeOptionValues.addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
 
-                IntellijIdeaColorScheme.FontType fontType = iclsFontTypeFromEclipseSetting(eclipseSetting);
-                if (fontType != IntellijIdeaColorScheme.FontType.NORMAL)
-                    attributeOptionValues.addAttributeOptionPropertyValue(FONT_TYPE, fontType.toString());
-                if (eclipseSetting.isStrikethrough())
-                    attributeOptionValues.addAttributeOptionPropertyValue(EFFECT_TYPE, "3");
+                    if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
+                        attributeOptionsValuesByName.put(attributeOptionName, new IclsAttributeOption(attributeOptionName, new HashMap<>()));
+                    IclsAttributeOption iclsAttributeOption = attributeOptionsValuesByName.get(attributeOptionName);
+
+                    iclsAttributeOption.addAttributeOptionPropertyValue(optionPropertyName, optionPropertyValue);
+                    updateAttributeValueFontOption(iclsAttributeOption, eclipseSetting);
+
+                    if (eclipseSetting.isUnderline()) {
+                        iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_COLOR, optionPropertyValue);
+                        iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_TYPE, UNDERLINE.value);
+                    } else if (eclipseSetting.isStrikethrough())
+                        iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_TYPE, STRIKETHROUGH.value);
+                }
             }
         }
 
-        List<AttributeOptionValues> iclsAttributeOptions = Arrays.asList(attributeOptionsValuesByName.values().toArray(new AttributeOptionValues[0]));
+        List<IclsAttributeOption> iclsAttributeOptions = Arrays.asList(attributeOptionsValuesByName.values().toArray(new IclsAttributeOption[0]));
         return new IntellijIdeaColorScheme(
                 eclipseColorTheme.getModified(),
                 eclipseColorTheme.getName(),

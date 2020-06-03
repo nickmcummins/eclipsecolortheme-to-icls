@@ -13,15 +13,16 @@ import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.ColorUtil.rgbString;
-import static com.nickmcummins.webscraping.Util.YAML;
+import static com.nickmcummins.webscraping.Util.*;
 import static com.nickmcummins.webscraping.http.HttpUtil.get;
-import static com.nickmcummins.webscraping.Util.print;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.*;
@@ -112,10 +113,13 @@ public class EclipseColorTheme implements ColorTheme {
             localVariable, localVariableDeclaration, field, staticField, staticFinalField, deprecatedMember,
             enumColor, inheritedMethod, abstractMethod, parameterVariable, typeArgument, typeParameter, constant,
             background, currentLine, foreground, lineNumber, selectionBackground, selectionForeground);
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final Map<SettingField, SettingField> SETTING_FALLBACKS = Map.of(
+    );
     private final String id;
     private final String name;
     private final String author;
-    private final String modified;
+    private final LocalDateTime modified;
     private final Map<SettingField, ColorThemeElement> settingsByName;
     SchemeType lightOrDark;
     private String filename;
@@ -124,7 +128,7 @@ public class EclipseColorTheme implements ColorTheme {
         this.id = id;
         this.name = name;
         this.author = author;
-        this.modified = modified;
+        this.modified = parseDate(DATE_FORMAT, modified);
         this.settingsByName = settingsByName;
 
         Color backgroundColor = Color.decode(settingsByName.get(background).getColorValue());
@@ -185,6 +189,16 @@ public class EclipseColorTheme implements ColorTheme {
         return settingsByName;
     }
 
+    public ColorThemeElement getSettingByName(SettingField settingName) {
+        if (settingsByName.containsKey(settingName)) {
+            return settingsByName.get(settingName);
+        } else if (SETTING_FALLBACKS.containsKey(settingName)) {
+            return settingsByName.get(SETTING_FALLBACKS.get(settingName));
+        }
+
+        return null;
+    }
+
     public String toColorsYaml() {
         Map<String, Map<String, String>> colors = new HashMap<>();
         for (ColorThemeElement colorThemeElement : settingsByName.values()) {
@@ -214,7 +228,7 @@ public class EclipseColorTheme implements ColorTheme {
         return name;
     }
 
-    public String getModified() {
+    public LocalDateTime getModified() {
         return modified;
     }
 

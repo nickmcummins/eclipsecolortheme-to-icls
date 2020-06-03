@@ -1,24 +1,24 @@
-<scheme name="Sholight copy1" version="142">
+<scheme name="Sholight" version="142">
     <metaInfo>
-        <property name="created">2020-05-27T17:34:08</property>
+        <property name="created">2014-07-04T22:58:55</property>
         <property name="ide">idea</property>
-        <property name="ideVersion">2020.2.0.0</property>
-        <property name="modified">2020-05-27T17:34:29</property>
+        <property name="ideVersion">2020.1.1.0.0</property>
+        <property name="modified">2020-05-13T14:06:05</property>
         <property name="originalScheme">Sholight</property>
     </metaInfo>
     <colors>
-        <option name="CARET_COLOR" value="999999" />
-        <option name="CARET_ROW_COLOR" value="eeeeee" />
-        <option name="CONSOLE_BACKGROUND_KEY" value="ffffff" />
-        <option name="GUTTER_BACKGROUND" value="ffffff" />
-        <option name="INDENT_GUIDE" value="808080" />
-        <option name="LINE_NUMBERS_COLOR" value="999999" />
-        <option name="RIGHT_MARGIN_COLOR" value="999999" />
-        <option name="SELECTION_BACKGROUND" value="a0d0" />
-        <option name="SELECTION_FOREGROUND" value="ffffff" />
-        <option name="SOFT_WRAP_SIGN_COLOR" value="808080" />
-        <option name="TEARLINE_COLOR" value="999999" />
-        <option name="WHITESPACES" value="808080" />
+        <option name="CARET_COLOR" value="999999"/>
+        <option name="CARET_ROW_COLOR" value="eeeeee"/>
+        <option name="CONSOLE_BACKGROUND_KEY" value="ffffff"/>
+        <option name="GUTTER_BACKGROUND" value="ffffff"/>
+        <option name="INDENT_GUIDE" value="808080"/>
+        <option name="LINE_NUMBERS_COLOR" value="999999"/>
+        <option name="RIGHT_MARGIN_COLOR" value="999999"/>
+        <option name="SELECTION_BACKGROUND" value="a0d0"/>
+        <option name="SELECTION_FOREGROUND" value="ffffff"/>
+        <option name="SOFT_WRAP_SIGN_COLOR" value="808080"/>
+        <option name="TEARLINE_COLOR" value="999999"/>
+        <option name="WHITESPACES" value="808080"/>
     </colors>
     <attributes>
         <option name="ABSTRACT_METHOD_ATTRIBUTES">

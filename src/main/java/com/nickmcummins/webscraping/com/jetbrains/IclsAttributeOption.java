@@ -7,21 +7,21 @@ import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ATTRIBUTE_OPTION_VALUE_ORDER;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.AttributeOption;
+import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.AttributeOptionName;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.OptionProperty;
 
-public class AttributeOptionValues {
-    private final AttributeOption attributeOption;
+public class IclsAttributeOption {
+    private final AttributeOptionName name;
     private Map<OptionProperty, String> values;
 
-    public AttributeOptionValues(AttributeOption attributeOption, Map<OptionProperty, String> values) {
-        this.attributeOption = attributeOption;
+    public IclsAttributeOption(AttributeOptionName name, Map<OptionProperty, String> values) {
+        this.name = name;
         this.values = values;
     }
 
-    public static AttributeOptionValues fromXml(Element attributeOption) {
-        return new AttributeOptionValues(
-                AttributeOption.valueOf(attributeOption.attr("name")),
+    public static IclsAttributeOption fromXml(Element attributeOption) {
+        return new IclsAttributeOption(
+                AttributeOptionName.valueOf(attributeOption.attr("name")),
                 attributeOption.select("value").select("option").stream()
                         .collect(Collectors.toMap(option -> OptionProperty.valueOf(option.attr("name")), option -> option.attr("value"))));
     }
@@ -33,8 +33,12 @@ public class AttributeOptionValues {
         values.put(optionPropertyName, value);
     }
 
-    public AttributeOption getAttributeOption() {
-        return attributeOption;
+    public void removeAttributeOptionPropertyValue(OptionProperty optionPropertyName) {
+        values.remove(optionPropertyName);
+    }
+
+    public AttributeOptionName getName() {
+        return name;
     }
 
     public Map<OptionProperty, String> getValues() {
@@ -53,6 +57,6 @@ public class AttributeOptionValues {
                     .collect(Collectors.joining("\n"));
         }
         String valuesTag = values.isEmpty() ? "<value/>\n" : String.format("<value>\n%s\n            </value>\n", formattedValueOptions);
-        return String.format("        <option name=\"%s\">\n            %s        </option>", attributeOption, valuesTag);
+        return String.format("        <option name=\"%s\">\n            %s        </option>", name, valuesTag);
     }
 }

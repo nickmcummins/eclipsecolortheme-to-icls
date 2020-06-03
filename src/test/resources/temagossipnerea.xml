@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="59202" name="temagossipnerea" modified="2019-11-05 15:41:39" author="nerea">
+    <searchResultIndication color="#FFFFFF" />
+    <filteredSearchResultIndication color="#FFFFFF" />
+    <occurrenceIndication color="#FFFFFF" />
+    <writeOccurrenceIndication color="#FFFFFF" />
+    <findScope color="#BED6FF" />
+    <deletionIndication color="#A3296D" />
+    <sourceHoverBackground color="#FFFFFF" />
+    <singleLineComment color="#077D7F" italic="false" />
+    <multiLineComment color="#077D7F" italic="false" />
+    <commentTaskTag color="#055758" italic="false" />
+    <javadoc color="#055758" italic="false" />
+    <javadocLink color="#06A9AC" italic="false" />
+    <javadocTag color="#06A9AC" italic="false" />
+    <javadocKeyword color="#D9E577" italic="false" />
+    <class color="#D25252" bold="false" underline="false" strikethrough="false" />
+    <interface color="#F7B1D8" />
+    <method color="#000000" />
+    <methodDeclaration color="#BED6FF" />
+    <bracket color="#F7B1D8" />
+    <number color="#0F197E" />
+    <string color="#992C0B" />
+    <operator color="#525B5B" />
+    <keyword color="#000000" bold="false" />
+    <annotation color="#000000" />
+    <staticMethod color="#BED6FF" />
+    <localVariable color="#749773" />
+    <localVariableDeclaration color="#BED6FF" />
+    <field color="#BED6FF" />
+    <staticField color="#EFC090" />
+    <staticFinalField color="#EFC090" />
+    <deprecatedMember color="#A3296D" underline="false" strikethrough="false" />
+    <enum color="#7FB347" />
+    <inheritedMethod color="#BED6FF" />
+    <abstractMethod color="#BED6FF" />
+    <parameterVariable color="#749773" />
+    <typeArgument color="#B986F2" />
+    <typeParameter color="#B986F2" />
+    <constant color="#EFC090" />
+    <background color="#FFFFFF" />
+    <currentLine color="#BED6FF" />
+    <foreground color="#525B5B" />
+    <lineNumber color="#ED309A" />
+    <selectionBackground color="#FFFFFF" />
+    <selectionForeground color="#D0D0D0" />
+</colorTheme>

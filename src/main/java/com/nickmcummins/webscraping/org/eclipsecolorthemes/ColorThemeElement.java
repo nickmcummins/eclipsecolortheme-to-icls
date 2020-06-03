@@ -1,7 +1,9 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes;
 
+import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
 import org.jsoup.nodes.Attributes;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,12 +12,12 @@ public class ColorThemeElement {
     public final String name;
     // values
     private final String colorValue;
-    private final boolean bold;
-    private final boolean italic;
-    private final boolean underline;
-    private final boolean strikethrough;
+    private final Boolean bold;
+    private final Boolean italic;
+    private final Boolean underline;
+    private final Boolean strikethrough;
 
-    public ColorThemeElement(String name, String colorValue, boolean bold, boolean italic, boolean underline, boolean strikethrough) {
+    public ColorThemeElement(String name, String colorValue, Boolean bold, Boolean italic, Boolean underline, Boolean strikethrough) {
         this.name = name;
         this.colorValue = colorValue;
         this.bold = bold;
@@ -24,15 +26,35 @@ public class ColorThemeElement {
         this.strikethrough = strikethrough;
     }
 
+    private static Boolean fontTypeFromHtmlElementAttr(Element div, IntellijIdeaColorScheme.FontType fontType) {
+        String elementClassSelector = String.format("a[class='%s-active']", fontType.name().toLowerCase());
+
+        Elements aElements = div.select(elementClassSelector);
+        if (!aElements.isEmpty()) {
+            return aElements.get(0).attr("href").contains("false");
+        }
+
+        return null;
+    }
+
     public static ColorThemeElement fromHtmlPageDiv(Element div) {
         return new ColorThemeElement(
                 div.select("div[class='setting']").get(0).text(),
                 div.select("input").get(0).attr("value"),
-                !div.select("a[class='format-bold-active']").isEmpty() && div.select("a[class='format-bold-active']").get(0).attr("href").contains("false"),
-                !div.select("a[class='format-italic-active']").isEmpty() && div.select("a[class='format-italic-active']").get(0).attr("href").contains("false"),
-                !div.select("a[class='format-underline-active']").isEmpty() && div.select("a[class='format-underline-active']").get(0).attr("href").contains("false"),
-                !div.select("a[class='format-strikethrough-active']").isEmpty() && div.select("a[class='format-strikethrough-active']").get(0).attr("href").contains("false")
+                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontBasicType.BOLD),
+                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontBasicType.ITALIC),
+                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontEffectType.UNDERLINE),
+                fontTypeFromHtmlElementAttr(div, IntellijIdeaColorScheme.FontEffectType.STRIKETHROUGH)
         );
+    }
+
+    private static Boolean fontTypeFromXmlElementAttr(Attributes attributes, IntellijIdeaColorScheme.FontType fontType) {
+        String attr = fontType.name().toLowerCase();
+        if (attributes.hasKey(attr)) {
+            return Boolean.parseBoolean(attributes.get(attr));
+        }
+
+        return null;
     }
 
     public static ColorThemeElement fromXmlElement(Element element) {
@@ -41,22 +63,22 @@ public class ColorThemeElement {
         return new ColorThemeElement(
                 tagName,
                 attributes.get("color"),
-                attributes.hasKey("bold") && Boolean.parseBoolean(attributes.get("bold")),
-                attributes.hasKey("italic") && Boolean.parseBoolean(attributes.get("italic")),
-                attributes.hasKey("underline") && Boolean.parseBoolean(attributes.get("underline")),
-                attributes.hasKey("strikethrough") && Boolean.parseBoolean(attributes.get("strikethrough"))
+                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontBasicType.BOLD),
+                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontBasicType.ITALIC),
+                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontEffectType.UNDERLINE),
+                fontTypeFromXmlElementAttr(attributes, IntellijIdeaColorScheme.FontEffectType.STRIKETHROUGH)
         );
     }
 
     public String toString() {
         List<String> fontProperties = new ArrayList<>(4);
-        if (bold)
+        if (isBold())
             fontProperties.add("bold=\"true\"");
-        if (italic)
+        if (isItalic())
             fontProperties.add("italic=\"true\"");
-        if (underline)
+        if (isUnderline())
             fontProperties.add("underline=\"true\"");
-        if (strikethrough)
+        if (isStrikethrough())
             fontProperties.add("strikethrough=\"true\"");
 
         if (!fontProperties.isEmpty())
@@ -69,19 +91,27 @@ public class ColorThemeElement {
         return colorValue;
     }
 
-    public boolean isBold() {
-        return bold;
+    public boolean isBoldSetFalse() {
+        return bold != null && !bold;
     }
 
-    public boolean isItalic() {
-        return italic;
+    public Boolean isBold() {
+        return bold != null && bold;
     }
 
-    public boolean isUnderline() {
-        return underline;
+    public boolean isItalicSetFalse() {
+        return italic != null && !italic;
     }
 
-    public boolean isStrikethrough() {
-        return strikethrough;
+    public Boolean isItalic() {
+        return italic != null && italic;
+    }
+
+    public Boolean isUnderline() {
+        return underline != null && underline;
+    }
+
+    public Boolean isStrikethrough() {
+        return strikethrough != null && strikethrough;
     }
 }
