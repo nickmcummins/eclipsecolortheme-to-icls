@@ -190,7 +190,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             }
         }
 
-        if (fontBasicType != IntellijIdeaColorScheme.FontBasicType.NORMAL)
+        if (fontBasicType != IntellijIdeaColorScheme.FontBasicType.NORMAL && iclsAttributeOption.getName() != DEFAULT_VALID_STRING_ESCAPE)
             iclsAttributeOption.addAttributeOptionPropertyValue(FONT_TYPE, fontBasicType.toString());
 
 
@@ -239,8 +239,10 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     if (eclipseSetting.isUnderline()) {
                         iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_COLOR, optionPropertyValue);
                         iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_TYPE, UNDERLINE.value);
-                    } else if (eclipseSetting.isStrikethrough())
+                    } else if (eclipseSetting.isStrikethrough()) {
+                        iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_COLOR, optionPropertyValue);
                         iclsAttributeOption.addAttributeOptionPropertyValue(EFFECT_TYPE, STRIKETHROUGH.value);
+                    }
                 }
             }
         }
