@@ -65,4 +65,15 @@ public class Util {
                 .lines()
                 .collect(joining("\n"));
     }
+
+    public static String replaceValueOfXmlElement(String xml, String elementName, String attrName, String attrValue, String newValue)  {
+        String xmlOpenTag = String.format("<%s %s=\"%s\">", elementName, attrName, attrValue);
+        String xmlCloseTag = String.format("</%s>", elementName);
+
+        int valIndexOfStart = xml.indexOf(xmlOpenTag) + xmlOpenTag.length();
+        int valIndexOfEnd = xml.indexOf(xmlCloseTag, valIndexOfStart);
+
+        String currentVal = xml.substring(valIndexOfStart, valIndexOfEnd);
+        return xml.replaceFirst(currentVal, newValue);
+    }
 }
