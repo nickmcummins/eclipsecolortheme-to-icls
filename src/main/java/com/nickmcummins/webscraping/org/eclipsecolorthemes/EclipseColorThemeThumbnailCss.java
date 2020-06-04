@@ -15,7 +15,7 @@ import static java.util.stream.Collectors.joining;
 
 public class EclipseColorThemeThumbnailCss {
     private static final List<String> CSS_FIELDS = List.of(
-            "number", "string", "operator", "keyword", "class", "method", "javadoc", "localvariabledeclaration",
+            "number", "string", "OPERATOR", "keyword", "class", "method", "javadoc", "localvariabledeclaration",
             "parametervariable", "field", "staticfinalfield"
     );
     private static final String JAVA_CSS_FIELD = """  
@@ -26,7 +26,7 @@ public class EclipseColorThemeThumbnailCss {
     private static final String UNSET_COLOR = "#FFFFFF";
     private final Map<String, Element> colorTheme;
 
-    public EclipseColorThemeThumbnailCss(String eclipseColorThemeXml) {
+    EclipseColorThemeThumbnailCss(String eclipseColorThemeXml) {
         try {
             this.colorTheme = Jsoup.parse(new String(Files.readAllBytes(Paths.get(eclipseColorThemeXml))), "", Parser.xmlParser())
                     .selectFirst("colorTheme").children().stream()
@@ -36,7 +36,7 @@ public class EclipseColorThemeThumbnailCss {
         }
     }
 
-    public String javaCssFields() {
+    private String javaCssFields() {
         return CSS_FIELDS.stream()
                 .map(field -> String.format(JAVA_CSS_FIELD, field, fieldColor(field)))
                 .collect(joining("\n\n"));

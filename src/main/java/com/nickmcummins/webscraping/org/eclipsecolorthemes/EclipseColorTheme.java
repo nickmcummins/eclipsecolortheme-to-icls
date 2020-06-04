@@ -25,39 +25,40 @@ import static com.nickmcummins.webscraping.Util.*;
 import static com.nickmcummins.webscraping.http.HttpUtil.get;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
-import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorSettingField.*;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeSettingElement.Name.*;
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY;
 
 public class EclipseColorTheme implements ColorTheme {
     private static final String URL_UNAVAILABLE = "No URL has been captured for this domain.";
     private static final String SITE_MAINTENANCE = "We’ll be back soon!";
     public static final String EXTENSION = "xml";
-    private static final List<EclipseColorSettingField> SETTINGS_ORDER = List.of(searchResultIndication,
-            filteredSearchResultIndication, occurrenceIndication, writeOccurrenceIndication, findScope,
-            deletionIndication, sourceHoverBackground, singleLineComment, multiLineComment,
-            commentTaskTag, javadoc, javadocLink, javadocTag, javadocKeyword, classColor, interfaceColor, method,
-            methodDeclaration, bracket, number, stringColor, operator, keyword, annotation, staticMethod,
-            localVariable, localVariableDeclaration, field, staticField, staticFinalField, deprecatedMember,
-            enumColor, inheritedMethod, abstractMethod, parameterVariable, typeArgument, typeParameter, constant,
-            background, currentLine, foreground, lineNumber, selectionBackground, selectionForeground);
+    private static final List<EclipseColorThemeSettingElement.Name> SETTINGS_ORDER = List.of(
+            SEARCH_RESULT_INDICATION, FILTERED_SEARCH_RESULT_INDICATION, OCCURRENCE_INDICATION,
+            WRITE_OCCURRENCE_INDICATION, FIND_SCOPE, DELETION_INDICATION, SOURCE_HOVER_BACKGROUND, SINGLE_LINE_COMMENT,
+            MULTI_LINE_COMMENT, COMMENT_TASK_TAG, JAVADOC, JAVADOC_LINK, JAVADOC_TAG, JAVADOC_KEYWORD, CLASS, INTERFACE,
+            METHOD, METHOD_DECLARATION, BRACKET, NUMBER, STRING, OPERATOR, KEYWORD, ANNOTATION, STATIC_METHOD,
+            LOCAL_VARIABLE, LOCAL_VARIABLE_DECLARATION, FIELD, STATIC_FIELD, STATIC_FINAL_FIELD, DEPRECATED_MEMBER,
+            ENUM, INHERITED_METHOD, ABSTRACT_METHOD, PARAMETER_VARIABLE, TYPE_ARGUMENT, TYPE_PARAMETER, CONSTANT,
+            BACKGROUND, CURRENT_LINE, FOREGROUND, LINE_NUMBER, SELECTION_BACKGROUND, SELECTION_FOREGROUND
+    );
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
     private final String id;
     private final String name;
     private final String author;
     private final LocalDateTime modified;
-    private final Map<EclipseColorSettingField, EclipseColorThemeElement> settingsByName;
+    private final Map<EclipseColorThemeSettingElement.Name, EclipseColorThemeSettingElement> settingsByName;
     private final SchemeType lightOrDark;
     private String filename;
 
-    public EclipseColorTheme(String id, String name, String author, String modified, Map<EclipseColorSettingField, EclipseColorThemeElement> settingsByName) {
+    public EclipseColorTheme(String id, String name, String author, String modified, Map<EclipseColorThemeSettingElement.Name, EclipseColorThemeSettingElement> settingsByName) {
         this.id = id;
         this.name = name;
         this.author = author;
         this.modified = parseDate(DATE_FORMAT, modified);
         this.settingsByName = settingsByName;
 
-        Color backgroundColor = Color.decode(settingsByName.get(background).getColorValue());
-        Color textColor = Color.decode(settingsByName.get(foreground).getColorValue());
+        Color backgroundColor = Color.decode(settingsByName.get(BACKGROUND).getColorValue());
+        Color textColor = Color.decode(settingsByName.get(FOREGROUND).getColorValue());
         this.lightOrDark = ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
     }
 
@@ -74,8 +75,8 @@ public class EclipseColorTheme implements ColorTheme {
                     soup.selectFirst("h2").selectFirst("span").selectFirst("span").child(0).text(),
                     DATE_FORMAT.format(LocalDateTime.now()),
                     soup.select("div[class='setting-entry']").stream()
-                            .map(EclipseColorThemeElement::fromHtmlPageDiv)
-                            .collect(Collectors.toMap(EclipseColorSettingField::fromColorThemeElement, Function.identity())));
+                            .map(EclipseColorThemeSettingElement::fromHtmlPageDiv)
+                            .collect(Collectors.toMap(EclipseColorThemeSettingElement.Name::fromColorThemeElement, Function.identity())));
         } catch (Exception e) {
             print(webpage);
             throw new CannotDownloadException(e);
@@ -95,7 +96,7 @@ public class EclipseColorTheme implements ColorTheme {
                 colorTheme.attr("author"),
                 colorTheme.attr("modified"),
                 colorTheme.children().stream()
-                        .collect(Collectors.toMap(EclipseColorSettingField::fromXmlElement, EclipseColorThemeElement::fromXmlElement)));
+                        .collect(Collectors.toMap(EclipseColorThemeSettingElement.Name::fromXmlElement, EclipseColorThemeSettingElement::fromXmlElement)));
     }
 
     public static EclipseColorTheme fromXmlFile(String filename) {
@@ -110,11 +111,11 @@ public class EclipseColorTheme implements ColorTheme {
         return lightOrDark;
     }
 
-    public Map<EclipseColorSettingField, EclipseColorThemeElement> getSettingsByName() {
+    public Map<EclipseColorThemeSettingElement.Name, EclipseColorThemeSettingElement> getSettingsByName() {
         return settingsByName;
     }
 
-    public EclipseColorThemeElement getSettingByName(EclipseColorSettingField settingName) {
+    public EclipseColorThemeSettingElement getSettingByName(EclipseColorThemeSettingElement.Name settingName) {
         if (settingsByName.containsKey(settingName)) {
             return settingsByName.get(settingName);
         }
@@ -124,7 +125,7 @@ public class EclipseColorTheme implements ColorTheme {
 
     String toColorsYaml() {
         Map<String, Map<String, String>> colors = new HashMap<>();
-        for (EclipseColorThemeElement colorThemeElement : settingsByName.values()) {
+        for (EclipseColorThemeSettingElement colorThemeElement : settingsByName.values()) {
             colors.put(colorThemeElement.name, Map.of(
                     "hex", colorThemeElement.getColorValue(),
                     "rgb", rgbString(Color.decode(colorThemeElement.getColorValue())))

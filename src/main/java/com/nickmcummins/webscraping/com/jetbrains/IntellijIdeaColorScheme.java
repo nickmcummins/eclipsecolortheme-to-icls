@@ -22,44 +22,30 @@ public class IntellijIdeaColorScheme implements ColorTheme {
         originalScheme
     }
 
-    public enum ColorOption {
-        CARET_COLOR,
-        CARET_ROW_COLOR,
-        CONSOLE_BACKGROUND_KEY,
-        GUTTER_BACKGROUND,
-        INDENT_GUIDE,
-        LINE_NUMBERS_COLOR,
-        RIGHT_MARGIN_COLOR,
-        SELECTION_BACKGROUND,
-        SELECTION_FOREGROUND,
-        SOFT_WRAP_SIGN_COLOR,
-        TEARLINE_COLOR,
-        WHITESPACES
-    }
-
     private static final String EXTENSION = "icls";
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
     static final List<IclsOptionProperty> ATTRIBUTE_OPTION_VALUE_ORDER = List.of(FOREGROUND, FONT_TYPE, BACKGROUND,
             EFFECT_COLOR, ERROR_STRIPE_COLOR, EFFECT_TYPE);
 
     private final Map<MetaInfoProperty, String> metaInfo;
-    private final Map<ColorOption, String> colorOptions;
+    private final Map<IclsColorOption.Name, String> colorOptions;
     private final Collection<IclsAttributeOption> attributeOptions;
 
-    private IntellijIdeaColorScheme(Map<MetaInfoProperty, String> metaInfo, Map<ColorOption, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
+    private IntellijIdeaColorScheme(Map<MetaInfoProperty, String> metaInfo, Map<IclsColorOption.Name, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
         this.metaInfo = metaInfo;
         this.colorOptions = colorOptions;
         this.attributeOptions = attributeOptions;
     }
 
-    public IntellijIdeaColorScheme(LocalDateTime created, String name, Map<ColorOption, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
-        this(new HashMap<>(Map.of(
-                MetaInfoProperty.created, formatDate(DATE_FORMAT, created),
-                modified, DATE_FORMAT.format(LocalDateTime.now()),
-                originalScheme, name
-                )),
+    public IntellijIdeaColorScheme(LocalDateTime created, String name, Map<IclsColorOption.Name, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
+        this(
+                new HashMap<>(Map.of(
+                        MetaInfoProperty.created, formatDate(DATE_FORMAT, created),
+                        modified, DATE_FORMAT.format(LocalDateTime.now()),
+                        originalScheme, name)),
                 colorOptions,
-                attributeOptions);
+                attributeOptions
+        );
     }
 
     public void updateMetaInfo(MetaInfoProperty property, String value) {

@@ -7,7 +7,9 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EclipseColorThemeElement {
+import static com.nickmcummins.webscraping.Util.camelToSnake;
+
+public class EclipseColorThemeSettingElement {
     public final String name;
     // values
     private final String colorValue;
@@ -16,7 +18,7 @@ public class EclipseColorThemeElement {
     private final Boolean underline;
     private final Boolean strikethrough;
 
-    private EclipseColorThemeElement(String name, String colorValue, Boolean bold, Boolean italic, Boolean underline, Boolean strikethrough) {
+    private EclipseColorThemeSettingElement(String name, String colorValue, Boolean bold, Boolean italic, Boolean underline, Boolean strikethrough) {
         this.name = name;
         this.colorValue = colorValue;
         this.bold = bold;
@@ -36,8 +38,8 @@ public class EclipseColorThemeElement {
         return null;
     }
 
-    static EclipseColorThemeElement fromHtmlPageDiv(Element div) {
-        return new EclipseColorThemeElement(
+    static EclipseColorThemeSettingElement fromHtmlPageDiv(Element div) {
+        return new EclipseColorThemeSettingElement(
                 div.select("div[class='setting']").get(0).text(),
                 div.select("input").get(0).attr("value"),
                 fontTypeFromHtmlElementAttr(div, EclipseFontProperty.BOLD),
@@ -56,10 +58,10 @@ public class EclipseColorThemeElement {
         return null;
     }
 
-    static EclipseColorThemeElement fromXmlElement(Element element) {
+    static EclipseColorThemeSettingElement fromXmlElement(Element element) {
         String tagName = element.tagName();
         Attributes attributes = element.attributes();
-        return new EclipseColorThemeElement(
+        return new EclipseColorThemeSettingElement(
                 tagName,
                 attributes.get("color"),
                 fontTypeFromXmlElementAttr(attributes, EclipseFontProperty.BOLD),
@@ -112,5 +114,65 @@ public class EclipseColorThemeElement {
 
     public Boolean isStrikethrough() {
         return strikethrough != null && strikethrough;
+    }
+
+    public enum Name {
+        SELECTION_BACKGROUND,
+        TYPE_PARAMETER,
+        METHOD_DECLARATION,
+        MULTI_LINE_COMMENT,
+        CONSTANT,
+        STRING,
+        SEARCH_RESULT_INDICATION,
+        TYPE_ARGUMENT,
+        SINGLE_LINE_COMMENT,
+        FOREGROUND,
+        INTERFACE,
+        OPERATOR,
+        STATIC_FIELD,
+        JAVADOC_KEYWORD,
+        JAVADOC,
+        NUMBER,
+        STATIC_FINAL_FIELD,
+        LOCAL_VARIABLE,
+        DELETION_INDICATION,
+        BRACKET,
+        DEPRECATED_MEMBER,
+        KEYWORD,
+        CLASS,
+        INHERITED_METHOD,
+        CURRENT_LINE,
+        ANNOTATION,
+        WRITE_OCCURRENCE_INDICATION,
+        JAVADOC_LINK,
+        SELECTION_FOREGROUND,
+        METHOD,
+        FIND_SCOPE,
+        JAVADOC_TAG,
+        PARAMETER_VARIABLE,
+        ENUM,
+        COMMENT_TASK_TAG,
+        LOCAL_VARIABLE_DECLARATION,
+        FIELD,
+        BACKGROUND,
+        OCCURRENCE_INDICATION,
+        ABSTRACT_METHOD,
+        LINE_NUMBER,
+        STATIC_METHOD,
+        FILTERED_SEARCH_RESULT_INDICATION,
+        SOURCE_HOVER_BACKGROUND;
+
+
+        public static Name fromString(String settingString) {
+            return Name.valueOf(camelToSnake(settingString));
+        }
+
+        public static Name fromColorThemeElement(EclipseColorThemeSettingElement colorThemeElement) {
+            return fromString(colorThemeElement.name);
+        }
+
+        public static Name fromXmlElement(Element xmlElement) {
+            return fromString(xmlElement.tagName());
+        }
     }
 }

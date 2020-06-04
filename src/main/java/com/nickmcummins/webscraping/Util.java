@@ -1,5 +1,7 @@
 package com.nickmcummins.webscraping;
 
+import com.google.common.base.CaseFormat;
+import com.google.common.base.Converter;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
@@ -23,6 +25,7 @@ public class Util {
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         YAML = new Yaml(options);
     }
+    private static final Converter<String, String> CAMEL_TO_SNAKE = CaseFormat.LOWER_CAMEL.converterTo(CaseFormat.UPPER_UNDERSCORE);
 
     public static void print(String message, Object... args) {
         System.out.println(String.format(message, args));
@@ -59,7 +62,6 @@ public class Util {
                 .collect(Collectors.toList());
     }
 
-
     public static String getResourceAsString(String filename) {
         return new BufferedReader(new InputStreamReader(Util.class.getResourceAsStream(String.format("/%s", filename)), UTF_8))
                 .lines()
@@ -75,5 +77,9 @@ public class Util {
 
         String currentVal = xml.substring(valIndexOfStart, valIndexOfEnd);
         return xml.replaceFirst(currentVal, newValue);
+    }
+
+    public static String camelToSnake(String camel) {
+        return CAMEL_TO_SNAKE.convert(camel);
     }
 }
