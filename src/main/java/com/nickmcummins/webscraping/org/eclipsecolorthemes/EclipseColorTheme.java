@@ -62,7 +62,7 @@ public class EclipseColorTheme implements ColorTheme {
         this.lightOrDark = ColorUtil.isDark(backgroundColor) && ColorUtil.isLight(textColor) ? DARK : LIGHT;
     }
 
-    static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {
+    public static EclipseColorTheme fromWebpage(String url) throws InterruptedException, CannotDownloadException {
         String webpage = get(url);
         if (webpage.contains(URL_UNAVAILABLE) || webpage.contains(SITE_MAINTENANCE)) {
             throw new CannotDownloadException();

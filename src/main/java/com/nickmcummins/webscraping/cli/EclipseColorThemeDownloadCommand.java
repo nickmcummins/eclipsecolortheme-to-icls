@@ -1,6 +1,7 @@
 package com.nickmcummins.webscraping.cli;
 
-import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeDownloader;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.downloader.ArchiveOrgEclipseColorThemeDownloader;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.downloader.EclipseColorThemeDownloader;
 
 import static picocli.CommandLine.Command;
 import static picocli.CommandLine.Option;
@@ -8,10 +9,10 @@ import static picocli.CommandLine.Option;
 @Command(name = "download", description = "Download from eclipsecolorthemes.org.")
 public class EclipseColorThemeDownloadCommand implements Runnable {
     @Option(names = {"-s", "--start-id"})
-    public String startId;
+    public Integer startId;
 
     @Option(names = {"-n", "--number-to-download"})
-    public String numberToDownload;
+    public Integer numberToDownload;
 
     @Option(names = {"-t", "--generate-thumbnails"})
     public boolean generateThumbnails;
@@ -19,7 +20,7 @@ public class EclipseColorThemeDownloadCommand implements Runnable {
     @Override
     public void run() {
         try {
-            EclipseColorThemeDownloader downloader = new EclipseColorThemeDownloader(startId, numberToDownload, generateThumbnails);
+            EclipseColorThemeDownloader downloader = new ArchiveOrgEclipseColorThemeDownloader(startId, numberToDownload, generateThumbnails);
             downloader.downloadThemes();
         } catch (RuntimeException e) {
             e.printStackTrace();
