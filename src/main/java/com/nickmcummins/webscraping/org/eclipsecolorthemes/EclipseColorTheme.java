@@ -25,87 +25,14 @@ import static com.nickmcummins.webscraping.Util.*;
 import static com.nickmcummins.webscraping.http.HttpUtil.get;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
-import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.*;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorSettingField.*;
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY;
 
 public class EclipseColorTheme implements ColorTheme {
-    public enum SettingField {
-        selectionBackground,
-        typeParameter,
-        methodDeclaration,
-        multiLineComment,
-        constant,
-        stringColor("string"),
-        searchResultIndication,
-        typeArgument,
-        singleLineComment,
-        foreground,
-        interfaceColor("interface"),
-        operator,
-        staticField,
-        javadocKeyword,
-        javadoc,
-        number,
-        staticFinalField,
-        localVariable,
-        deletionIndication,
-        bracket,
-        deprecatedMember,
-        keyword,
-        classColor("class"),
-        inheritedMethod,
-        currentLine,
-        annotation,
-        writeOccurrenceIndication,
-        javadocLink,
-        selectionForeground,
-        method,
-        findScope,
-        javadocTag,
-        parameterVariable,
-        enumColor("enum"),
-        commentTaskTag,
-        localVariableDeclaration,
-        field,
-        background,
-        occurrenceIndication,
-        abstractMethod,
-        lineNumber,
-        staticMethod,
-        filteredSearchResultIndication,
-        sourceHoverBackground;
-
-        public static final Map<String, SettingField> STRING_TO_SETTINGS = Arrays.stream(SettingField.values())
-                .collect(Collectors.toMap(settingField -> settingField.name != null ? settingField.name : settingField.toString(), settingField -> settingField));
-
-        private final String name;
-
-        SettingField() {
-            this(null);
-        }
-
-        SettingField(String name) {
-            this.name = name;
-        }
-
-        public static SettingField fromString(String settingString) {
-            return STRING_TO_SETTINGS.get(settingString);
-        }
-
-        public static SettingField fromColorThemeElement(EclipseColorThemeElement colorThemeElement) {
-            return fromString(colorThemeElement.name);
-        }
-
-        public static SettingField fromXmlElement(Element xmlElement) {
-            return fromString(xmlElement.tagName());
-        }
-
-    }
-
     private static final String URL_UNAVAILABLE = "No URL has been captured for this domain.";
     private static final String SITE_MAINTENANCE = "We’ll be back soon!";
     public static final String EXTENSION = "xml";
-    private static final List<SettingField> SETTINGS_ORDER = List.of(searchResultIndication,
+    private static final List<EclipseColorSettingField> SETTINGS_ORDER = List.of(searchResultIndication,
             filteredSearchResultIndication, occurrenceIndication, writeOccurrenceIndication, findScope,
             deletionIndication, sourceHoverBackground, singleLineComment, multiLineComment,
             commentTaskTag, javadoc, javadocLink, javadocTag, javadocKeyword, classColor, interfaceColor, method,
@@ -114,17 +41,15 @@ public class EclipseColorTheme implements ColorTheme {
             enumColor, inheritedMethod, abstractMethod, parameterVariable, typeArgument, typeParameter, constant,
             background, currentLine, foreground, lineNumber, selectionBackground, selectionForeground);
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-    private static final Map<SettingField, SettingField> SETTING_FALLBACKS = Map.of(
-    );
     private final String id;
     private final String name;
     private final String author;
     private final LocalDateTime modified;
-    private final Map<SettingField, EclipseColorThemeElement> settingsByName;
+    private final Map<EclipseColorSettingField, EclipseColorThemeElement> settingsByName;
     private final SchemeType lightOrDark;
     private String filename;
 
-    public EclipseColorTheme(String id, String name, String author, String modified, Map<SettingField, EclipseColorThemeElement> settingsByName) {
+    public EclipseColorTheme(String id, String name, String author, String modified, Map<EclipseColorSettingField, EclipseColorThemeElement> settingsByName) {
         this.id = id;
         this.name = name;
         this.author = author;
@@ -150,14 +75,14 @@ public class EclipseColorTheme implements ColorTheme {
                     DATE_FORMAT.format(LocalDateTime.now()),
                     soup.select("div[class='setting-entry']").stream()
                             .map(EclipseColorThemeElement::fromHtmlPageDiv)
-                            .collect(Collectors.toMap(SettingField::fromColorThemeElement, Function.identity())));
+                            .collect(Collectors.toMap(EclipseColorSettingField::fromColorThemeElement, Function.identity())));
         } catch (Exception e) {
             print(webpage);
             throw new CannotDownloadException(e);
         }
     }
 
-    static String idFromUrl(String url)
+    private static String idFromUrl(String url)
     {
         return url.split("&")[url.split("&").length - 1].split("=")[1];
     }
@@ -170,7 +95,7 @@ public class EclipseColorTheme implements ColorTheme {
                 colorTheme.attr("author"),
                 colorTheme.attr("modified"),
                 colorTheme.children().stream()
-                        .collect(Collectors.toMap(SettingField::fromXmlElement, EclipseColorThemeElement::fromXmlElement)));
+                        .collect(Collectors.toMap(EclipseColorSettingField::fromXmlElement, EclipseColorThemeElement::fromXmlElement)));
     }
 
     public static EclipseColorTheme fromXmlFile(String filename) {
@@ -185,15 +110,13 @@ public class EclipseColorTheme implements ColorTheme {
         return lightOrDark;
     }
 
-    public Map<SettingField, EclipseColorThemeElement> getSettingsByName() {
+    public Map<EclipseColorSettingField, EclipseColorThemeElement> getSettingsByName() {
         return settingsByName;
     }
 
-    public EclipseColorThemeElement getSettingByName(SettingField settingName) {
+    public EclipseColorThemeElement getSettingByName(EclipseColorSettingField settingName) {
         if (settingsByName.containsKey(settingName)) {
             return settingsByName.get(settingName);
-        } else if (SETTING_FALLBACKS.containsKey(settingName)) {
-            return settingsByName.get(SETTING_FALLBACKS.get(settingName));
         }
 
         return null;

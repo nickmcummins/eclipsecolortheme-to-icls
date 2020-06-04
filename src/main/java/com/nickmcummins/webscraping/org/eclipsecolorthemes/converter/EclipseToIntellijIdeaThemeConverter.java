@@ -5,6 +5,7 @@ import com.nickmcummins.webscraping.SchemeType;
 import com.nickmcummins.webscraping.converter.ThemeConverter;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeElement;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorSettingField;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -12,15 +13,15 @@ import java.util.stream.Collectors;
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.AttributeOptionName.*;
+import static com.nickmcummins.webscraping.com.jetbrains.IclsAttributeOption.Name.*;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ColorOption.*;
 import static com.nickmcummins.webscraping.com.jetbrains.IclsOptionProperty.*;
 
-import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme.SettingField.*;
+import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorSettingField.*;
 import static java.util.Map.entry;
 
 public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<EclipseColorTheme, IntellijIdeaColorScheme> {
-    private static final Map<EclipseColorTheme.SettingField, List<IntellijIdeaColorScheme.ColorOption>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
+    private static final Map<EclipseColorSettingField, List<IntellijIdeaColorScheme.ColorOption>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
             background, List.of(CONSOLE_BACKGROUND_KEY, GUTTER_BACKGROUND),
             selectionForeground, List.of(SELECTION_FOREGROUND),
             selectionBackground, List.of(SELECTION_BACKGROUND),
@@ -42,7 +43,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             "#C0B6A8", "e0dbd4",
             "#FF5050", "ffa8a8"
     );
-    private static final Map<IntellijIdeaColorScheme.AttributeOptionName, Map<IclsOptionProperty, EclipseColorTheme.SettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
+    private static final Map<IclsAttributeOption.Name, Map<IclsOptionProperty, EclipseColorSettingField>> ECLIPSE_TO_ICLS_ATTRIBUTES = Map.ofEntries(
             entry(ABSTRACT_METHOD_ATTRIBUTES, Map.of(FOREGROUND, abstractMethod)),
             entry(DEFAULT_BRACES, Map.of(FOREGROUND, bracket)),
             entry(DEFAULT_BRACKETS, Map.of(FOREGROUND, bracket)),
@@ -194,11 +195,11 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
     @Override
     public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
         Map<IntellijIdeaColorScheme.ColorOption, String> iclsColorOptions = new HashMap<>();
-        Map<IntellijIdeaColorScheme.AttributeOptionName, IclsAttributeOption> attributeOptionsValuesByName = ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
+        Map<IclsAttributeOption.Name, IclsAttributeOption> attributeOptionsValuesByName = ICLS_CONSOLE_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
                 .collect(Collectors.toMap(IclsAttributeOption::getName, iclsAttributeOption -> iclsAttributeOption));
 
-        for (Map.Entry<EclipseColorTheme.SettingField, EclipseColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
-            EclipseColorTheme.SettingField eclipseFieldName = colorThemeElement.getKey();
+        for (Map.Entry<EclipseColorSettingField, EclipseColorThemeElement> colorThemeElement : eclipseColorTheme.getSettingsByName().entrySet()) {
+            EclipseColorSettingField eclipseFieldName = colorThemeElement.getKey();
             EclipseColorThemeElement eclipseColor = colorThemeElement.getValue();
             if (ECLIPSE_TO_IDEA_OPTIONS.containsKey(eclipseFieldName)) {
                 List<IntellijIdeaColorScheme.ColorOption> iclsOptionsWithColor = ECLIPSE_TO_IDEA_OPTIONS.get(eclipseFieldName);
@@ -212,10 +213,10 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             iclsColorOptions.put(iclsColorOption, eclipseForegroundHex);
         }
 
-        for (Map.Entry<IntellijIdeaColorScheme.AttributeOptionName, Map<IclsOptionProperty, EclipseColorTheme.SettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {
-            IntellijIdeaColorScheme.AttributeOptionName attributeOptionName = iclsMappedEclipseAttribute.getKey();
-            Map<IclsOptionProperty, EclipseColorTheme.SettingField> eclipseMappedIclsOptionProperties = iclsMappedEclipseAttribute.getValue();
-            for (Map.Entry<IclsOptionProperty, EclipseColorTheme.SettingField> iclsAttributeIclsOptionPropertyValue : eclipseMappedIclsOptionProperties.entrySet()) {
+        for (Map.Entry<IclsAttributeOption.Name, Map<IclsOptionProperty, EclipseColorSettingField>> iclsMappedEclipseAttribute : ECLIPSE_TO_ICLS_ATTRIBUTES.entrySet()) {
+            IclsAttributeOption.Name attributeOptionName = iclsMappedEclipseAttribute.getKey();
+            Map<IclsOptionProperty, EclipseColorSettingField> eclipseMappedIclsOptionProperties = iclsMappedEclipseAttribute.getValue();
+            for (Map.Entry<IclsOptionProperty, EclipseColorSettingField> iclsAttributeIclsOptionPropertyValue : eclipseMappedIclsOptionProperties.entrySet()) {
                 IclsOptionProperty IclsOptionPropertyName = iclsAttributeIclsOptionPropertyValue.getKey();
                 EclipseColorThemeElement eclipseSetting = eclipseColorTheme.getSettingByName(iclsAttributeIclsOptionPropertyValue.getValue());
                 if (eclipseSetting != null) {
