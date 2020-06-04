@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="51219" name="Light Sun 314" modified="2017-11-20 20:12:18" author="Alex Gulyan">
+    <searchResultIndication color="#464467" />
+    <filteredSearchResultIndication color="#3F3F6A" />
+    <occurrenceIndication color="#E0DAE8" />
+    <writeOccurrenceIndication color="#E0DAE8" />
+    <findScope color="#BCADAD" />
+    <deletionIndication color="#A7A7D1" />
+    <sourceHoverBackground color="#E0DAE8" />
+    <singleLineComment color="#B1A2C4" />
+    <multiLineComment color="#B1A2C4" />
+    <commentTaskTag color="#ACC1AC" />
+    <javadoc color="#A7A7D1" />
+    <javadocLink color="#A7A7D1" />
+    <javadocTag color="#A7A7D1" />
+    <javadocKeyword color="#F08080" />
+    <class color="#C170A5" bold="true" />
+    <interface color="#DD82BD" bold="false" />
+    <method color="#808080" bold="true" />
+    <methodDeclaration color="#08CFD6" />
+    <bracket color="#585545" />
+    <number color="#E89051" bold="true" />
+    <string color="#E89051" />
+    <operator color="#68CCB4" />
+    <keyword color="#6AA7BA" />
+    <annotation color="#DD82BD" />
+    <staticMethod color="#AD91AA" />
+    <localVariable color="#DD82BD" />
+    <localVariableDeclaration color="#DD82BD" />
+    <field color="#9EBF7E" />
+    <staticField color="#93A2CC" />
+    <staticFinalField color="#53DCCD" bold="false" />
+    <deprecatedMember color="#A7A7D1" />
+    <enum color="#6389A8" />
+    <inheritedMethod color="#2c577c" />
+    <abstractMethod color="#2c577c" />
+    <parameterVariable color="#5c8198" />
+    <typeArgument color="#d07fcd" />
+    <typeParameter color="#d07fcd" />
+    <constant color="#ae25ab" />
+    <background color="#FFFFFF" />
+    <currentLine color="#DBF8FC" />
+    <foreground color="#430400" />
+    <lineNumber color="#999999" />
+    <selectionBackground color="#FFE2FF" />
+    <selectionForeground color="#FFFFFF" />
+</colorTheme>

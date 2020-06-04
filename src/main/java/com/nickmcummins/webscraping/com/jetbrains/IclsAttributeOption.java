@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
 import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.ATTRIBUTE_OPTION_VALUE_ORDER;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.converter.EclipseToIntellijIdeaThemeConverter.ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 public class IclsAttributeOption {
     public enum Name {
@@ -94,17 +95,10 @@ public class IclsAttributeOption {
     }
 
     public String toString() {
-        List<String> valueStrings = new ArrayList<>(values.values());
-        String formattedValueOptions;
-        if (valueStrings.size() == 1 && valueStrings.get(0).equals("null"))
-            formattedValueOptions = "<value />";
-        else {
-            formattedValueOptions = values.entrySet().stream()
-                    .sorted(Comparator.comparing(option -> ATTRIBUTE_OPTION_VALUE_ORDER.indexOf(option.getKey())))
-                    .map(entry -> String.format("                <option name=\"%s\" value=\"%s\"/>", entry.getKey(), formatHexValue(entry.getValue())))
-                    .collect(Collectors.joining("\n"));
-        }
-        String valuesTag = values.isEmpty() ? "<value/>\n" : String.format("<value>\n%s\n            </value>\n", formattedValueOptions);
+        List<String> valueStrings = values.values().stream().filter(value -> !value.equals("null") && !isBlank(value)).collect(Collectors.toList());
+        String valuesTag = valueStrings.isEmpty()
+                ? "<value/>\n"
+                : String.format("<value>\n%s\n            </value>\n", values.entrySet().stream().sorted(Comparator.comparing(option -> ATTRIBUTE_OPTION_VALUE_ORDER.indexOf(option.getKey()))).map(entry -> String.format("                <option name=\"%s\" value=\"%s\"/>", entry.getKey(), formatHexValue(entry.getValue()))).collect(Collectors.joining("\n")));
         return String.format("        <option name=\"%s\">\n            %s        </option>", name, valuesTag);
     }
 }

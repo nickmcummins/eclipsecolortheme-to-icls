@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="917" name="Xalem" modified="2011-03-29 11:12:11" author="Cesc" website="francescrequesens.com">
+    <searchResultIndication color="#FFAA00" />
+    <filteredSearchResultIndication color="#EFEFEF" />
+    <occurrenceIndication color="#EFEFEF" />
+    <writeOccurrenceIndication color="#EFEFEF" />
+    <findScope color="#BCADAD" />
+    <deletionIndication color="#9B5656" bold="false" />
+    <sourceHoverBackground color="#EEEEEE" />
+    <singleLineComment color="#5588DD" italic="true" />
+    <multiLineComment color="#5588DD" italic="true" />
+    <commentTaskTag color="#5588DD" italic="true" />
+    <javadoc color="#1144AA" italic="false" />
+    <javadocLink color="#1144AA" italic="false" />
+    <javadocTag color="#1144AA" italic="true" />
+    <javadocKeyword color="#CC9393" />
+    <class color="#003366" underline="false" strikethrough="false" />
+    <interface color="#9B5656" underline="false" strikethrough="false" />
+    <method color="#FF0066" bold="false" underline="false" strikethrough="false" />
+    <methodDeclaration color="#222222" bold="false" underline="false" strikethrough="false" />
+    <bracket color="#444444" bold="false" underline="false" strikethrough="false" />
+    <number color="#DD0077" bold="true" />
+    <string color="#448800" bold="false" />
+    <operator color="#EE6666" />
+    <keyword color="#0066FF" bold="true" italic="false" underline="false" strikethrough="false" />
+    <annotation color="#808080" bold="false" />
+    <staticMethod color="#C4C4B7" bold="false" />
+    <localVariable color="#0088FF" bold="false" />
+    <localVariableDeclaration color="#FF0066" bold="false" />
+    <field color="#566874" bold="false" />
+    <staticField color="#885d3b" bold="false" underline="false" strikethrough="false" />
+    <staticFinalField color="#CC6633" bold="false" underline="false" strikethrough="false" />
+    <deprecatedMember color="#AB2525" bold="false" />
+    <enum color="#885d3b" bold="false" />
+    <inheritedMethod color="#2c577c" />
+    <abstractMethod color="#2c577c" bold="false" />
+    <parameterVariable color="#5c8198" bold="false" />
+    <typeArgument color="#885d3b" bold="false" />
+    <typeParameter color="#885d3b" />
+    <constant color="" bold="false" />
+    <background color="#FFFFFF" />
+    <currentLine color="#EEEEEE" />
+    <foreground color="#000000" />
+    <lineNumber color="#333333" />
+    <selectionBackground color="#EEEEEE" />
+    <selectionForeground color="#000000" />
+</colorTheme>

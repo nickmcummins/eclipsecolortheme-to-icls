@@ -76,7 +76,7 @@ public class Util {
         int valIndexOfEnd = xml.indexOf(xmlCloseTag, valIndexOfStart);
 
         String currentVal = xml.substring(valIndexOfStart, valIndexOfEnd);
-        return xml.replaceFirst(currentVal, newValue);
+        return xml.replaceAll(currentVal, newValue);
     }
 
     public static String camelToSnake(String camel) {
