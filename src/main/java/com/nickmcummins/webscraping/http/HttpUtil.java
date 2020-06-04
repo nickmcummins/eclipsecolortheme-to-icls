@@ -63,7 +63,7 @@ public class HttpUtil {
                 }
             }
         } while ((response != null && response.statusCode() == 302) || (!success && tries < MAX_RETRIES));
-        if (response == null)
+        if (response == null || response.statusCode() == 503)
             throw new CannotDownloadException();
 
         return response.body();

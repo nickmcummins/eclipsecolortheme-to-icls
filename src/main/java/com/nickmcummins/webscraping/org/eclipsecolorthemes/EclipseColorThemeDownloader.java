@@ -9,7 +9,7 @@ import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnai
 import static com.nickmcummins.webscraping.persistence.FileIndexUtil.getLastDownloadedIndex;
 
 public class EclipseColorThemeDownloader {
-    private static final String VIEW_THEME_URL = "http://web.archive.org/web/20190824073023/http://www.eclipsecolorthemes.org/?view=theme&id=%d";
+    private static final String VIEW_THEME_URL = "http://web.archive.org/web/20191120230234/http://www.eclipsecolorthemes.org/?view=theme&id=%d";
     private static final int LATEST_ARCHIVED_THEME_ID = 58465;
     private final int startIndex;
     private final int endIndex;
@@ -30,6 +30,7 @@ public class EclipseColorThemeDownloader {
             if (writeToFile)
                 eclipseColorTheme.writeToFile();
         } catch (IOException | InterruptedException e) {
+            System.out.println(e);
             throw new RuntimeException(String.format("\tException downloading theme %s", ectThemeUrl), e);
         }
 

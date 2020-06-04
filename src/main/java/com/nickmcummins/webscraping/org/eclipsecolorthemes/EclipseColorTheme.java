@@ -147,7 +147,7 @@ public class EclipseColorTheme implements ColorTheme {
                     idFromUrl(url),
                     soup.selectFirst("h2").select("b").text(),
                     soup.selectFirst("h2").selectFirst("span").selectFirst("span").child(0).text(),
-                    null,
+                    DATE_FORMAT.format(LocalDateTime.now()),
                     soup.select("div[class='setting-entry']").stream()
                             .map(EclipseColorThemeElement::fromHtmlPageDiv)
                             .collect(Collectors.toMap(SettingField::fromColorThemeElement, Function.identity())));
