@@ -13,16 +13,13 @@ public class EclipseColorThemeDownloadCommand implements Runnable {
     @Option(names = {"-n", "--number-to-download"})
     public String numberToDownload;
 
-    @Option(names = {"-l", "--use-last-id"})
-    public boolean useLastId;
-
     @Option(names = {"-t", "--generate-thumbnails"})
     public boolean generateThumbnails;
 
     @Override
     public void run() {
         try {
-            EclipseColorThemeDownloader downloader = new EclipseColorThemeDownloader(startId, numberToDownload, useLastId, generateThumbnails);
+            EclipseColorThemeDownloader downloader = new EclipseColorThemeDownloader(startId, numberToDownload, generateThumbnails);
             downloader.downloadThemes();
         } catch (RuntimeException e) {
             e.printStackTrace();

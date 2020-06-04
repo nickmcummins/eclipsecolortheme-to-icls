@@ -13,10 +13,9 @@ Commands:
 ### Downloader Tool
 This is for downloading themes from eclipsecolorthemes.org. 
 ```
-Usage: eclipsecolortheme-cli download [-lt] [-n=<numberToDownload>]
+Usage: eclipsecolortheme-cli download [-t] [-n=<numberToDownload>]
                                       [-s=<startId>]
 Download from eclipsecolorthemes.org.
-  -l, --use-last-id
   -n, --number-to-download=<numberToDownload>
   -s, --start-id=<startId>
   -t, --generate-thumbnails
