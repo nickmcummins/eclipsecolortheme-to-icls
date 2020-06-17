@@ -5,9 +5,9 @@ import com.google.common.base.Converter;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -60,6 +60,20 @@ public class Util {
                 .filter(file -> file.contains(extension))
                 .map(file -> String.format("%s/%s", directory, file))
                 .collect(Collectors.toList());
+    }
+
+    public static String writeToFile(Path directoryPath, String filename, String content) {
+        String filepath = String.format("%s/%s", directoryPath.toAbsolutePath(), filename);
+
+        try (FileWriter file = new FileWriter(filepath)) {
+            if (!Files.exists(directoryPath)) Files.createDirectory(directoryPath);
+            file.write(content);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.println(String.format("\tSuccessfully wrote %s", filename));
+        return filepath;
     }
 
     public static String getResourceAsString(String filename) {

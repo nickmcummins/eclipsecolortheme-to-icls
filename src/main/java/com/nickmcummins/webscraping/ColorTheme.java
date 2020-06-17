@@ -1,31 +1,31 @@
 package com.nickmcummins.webscraping;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+
 
 public interface ColorTheme {
     List<String> INVALID_CHARACTERS = List.of(" ", "/");
 
     String getName();
 
-    String getExtension();
-
-    default void writeToFile() throws IOException {
-        writeToFile("");
+    default String getFilename() {
+        return String.format("%s%s.%s", getFilenamePrefix(), sanitizeFilename(getName()), getExtension());
     }
 
-    default String writeToFile(String directory) {
-        directory = String.format("%s/", directory);
-        String filename = String.format("%s%s.%s", directory, sanitizeFilename(getName()), getExtension());
-        try (FileWriter file = new FileWriter(filename)) {
-            file.write(toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    default String getFilenamePrefix() {
+        return "";
+    }
 
-        System.out.println(String.format("\tSuccessfully wrote %s", filename));
-        return filename;
+    String getExtension();
+
+    default String writeToFile(Path directoryPath) {
+        return Util.writeToFile(directoryPath, getFilename(), toString());
+    }
+
+    default void writeToFile(String downloadDirectory) {
+        writeToFile(Paths.get(downloadDirectory));
     }
 
     static String sanitizeFilename(String filename) {

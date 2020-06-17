@@ -13,7 +13,7 @@ import static picocli.CommandLine.Option;
 
 @Command(name = "thumbnail")
 public class EclipseColorThemeGenerateThumbnailCommand implements Runnable {
-    public static final String THUMBNAILS_DIRECTORY = String.format("%s/thumbnails", ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY);
+    private static final String THUMBNAILS_DIRECTORY = String.format("%s/thumbnails", ECLIPSE_COLOR_THEME_DOWNLOAD_DIRECTORY);
 
     @Option(names = {"-i", "--xml-file"})
     private String xmlFilename;
@@ -43,8 +43,8 @@ public class EclipseColorThemeGenerateThumbnailCommand implements Runnable {
             thumbnailsDirectory = THUMBNAILS_DIRECTORY;
 
         for (String xmlFile : xmlFilenames) {
-            EclipseColorThemeThumbnail thumbnail = new EclipseColorThemeThumbnail(xmlFile, thumbnailsDirectory);
-            thumbnail.generate();
+            EclipseColorThemeThumbnail thumbnail = new EclipseColorThemeThumbnail(xmlFile, true);
+            thumbnail.generate(thumbnailsDirectory);
         }
     }
 }

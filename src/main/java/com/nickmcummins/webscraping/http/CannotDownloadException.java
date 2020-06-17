@@ -1,6 +1,6 @@
 package com.nickmcummins.webscraping.http;
 
-public class CannotDownloadException extends Throwable {
+public class CannotDownloadException extends Exception {
     public  CannotDownloadException() {
         super();
     }
@@ -9,4 +9,3 @@ public class CannotDownloadException extends Throwable {
         super(cause);
     }
 }
-

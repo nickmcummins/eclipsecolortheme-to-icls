@@ -15,7 +15,6 @@ import java.util.List;
 
 import static com.nickmcummins.webscraping.Util.getResourceAsString;
 import static com.nickmcummins.webscraping.Util.print;
-import static com.nickmcummins.webscraping.cli.EclipseColorThemeGenerateThumbnailCommand.THUMBNAILS_DIRECTORY;
 
 public class EclipseColorThemeThumbnail {
     private static final String wkhtmltoimage = "wkhtmltoimage";
@@ -25,19 +24,13 @@ public class EclipseColorThemeThumbnail {
     private final String imageFilename;
     private final Path cssFilepath;
     private final Path htmlFilepath;
+    private final boolean prefixFilenameWithId;
 
-    public EclipseColorThemeThumbnail(String xmlFilepath, String thumbnailsDirectory) {
+    public EclipseColorThemeThumbnail(String xmlFilepath, boolean prefixFilenameWithId) {
         this.xmlFilepath = xmlFilepath;
-        String[] xmlFilepathParts = xmlFilepath.split("/");
-        String imageFilename = xmlFilepathParts[xmlFilepathParts.length - 1].replace(".xml", ".png");
+        this.prefixFilenameWithId = prefixFilenameWithId;
+        this.imageFilename = String.format( "%s%s", imageFilenamePrefix(), imageFilename());
 
-        if (thumbnailsDirectory.equals(THUMBNAILS_DIRECTORY)) {
-            String xmlFileDirectory = xmlFilepathParts[xmlFilepathParts.length - 2];
-            String imageFilePrefix = NumberUtils.isDigits(xmlFileDirectory) ? String.format("%s-", xmlFileDirectory) : "";
-            this.imageFilename = String.format("%s/%s%s", thumbnailsDirectory, imageFilePrefix, imageFilename);
-        }
-        else
-            this.imageFilename = String.format("%s/%s", thumbnailsDirectory, imageFilename);
         try {
             Path tmpDirectory = Files.createTempDirectory("eclipsecolortheme_thumbnail_");
             this.cssFilepath = Files.createTempFile(tmpDirectory, null, ".css");
@@ -47,8 +40,20 @@ public class EclipseColorThemeThumbnail {
         }
     }
 
-    public void generate() {
+    private String imageFilename() {
+        String[] xmlFilepathParts = xmlFilepath.split("/");
+        return xmlFilepathParts[xmlFilepathParts.length - 1].replace(".xml", ".png");
+    }
 
+    private String imageFilenamePrefix() {
+        String[] xmlFilepathParts = xmlFilepath.split("/");
+        return prefixFilenameWithId && NumberUtils.isDigits(xmlFilepathParts[xmlFilepathParts.length - 2])
+                ? String.format("%s-", xmlFilepathParts[xmlFilepathParts.length - 2])
+                : "";
+    }
+
+    public void generate(String thumbnailsDirectory) {
+        String imageFilename = String.format("%s/%s", thumbnailsDirectory, this.imageFilename);
         if (new File(imageFilename).exists()) {
             print("\tSkipping creation of already existing file %s", imageFilename);
         } else {

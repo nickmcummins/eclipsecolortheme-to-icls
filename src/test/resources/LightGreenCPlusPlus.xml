@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<colorTheme id="6083" name="LightGreenCPlusPlus" author="sguwenka">
+<colorTheme id="6083" name="LightGreenCPlusPlus" modified="2012-02-14 11:45:51" author="sguwenka">
     <searchResultIndication color="#D5E3CC" />
     <filteredSearchResultIndication color="#D5E3CC" />
     <occurrenceIndication color="#E4F2DA" />
@@ -11,26 +11,26 @@
     <multiLineComment color="#87A3A3" italic="true" />
     <commentTaskTag color="#509493" bold="true" italic="true" />
     <javadoc color="#87A3A3" italic="true" />
-    <javadocLink color="#509493" italic="true" underline="true" />
+    <javadocLink color="#509493" bold="false" italic="true" underline="true" strikethrough="false" />
     <javadocTag color="#509493" bold="true" italic="true" />
     <javadocKeyword color="#509493" bold="true" italic="true" />
     <class color="#6B7500" bold="true" />
     <interface color="#6B7500" />
     <method color="#606000" />
-    <methodDeclaration color="#606000" />
-    <bracket color="#007400" />
+    <methodDeclaration color="#606000" underline="false" strikethrough="false" />
+    <bracket color="#007400" bold="false" />
     <number color="#9024A3" bold="true" />
     <string color="#002FFF" />
-    <operator color="#000000" />
+    <operator color="#000000" bold="false" />
     <keyword color="#007400" bold="true" />
     <annotation color="#808080" />
     <staticMethod color="#7D8241" />
-    <localVariable color="#008090" />
-    <localVariableDeclaration color="#008090" />
-    <field color="#578A2C" />
-    <staticField color="#76826B" />
-    <staticFinalField color="#76826B" />
-    <deprecatedMember color="#ab2525" strikethrough="true" />
+    <localVariable color="#008090" bold="false" />
+    <localVariableDeclaration color="#008090" bold="false" />
+    <field color="#578A2C" bold="false" />
+    <staticField color="#76826B" bold="false" />
+    <staticFinalField color="#76826B" bold="false" />
+    <deprecatedMember color="#ab2525" underline="false" strikethrough="true" />
     <enum color="#9024A3" bold="true" />
     <inheritedMethod color="#2c577c" />
     <abstractMethod color="#2c577c" />

@@ -38,7 +38,7 @@ public class EclipseColorThemeSettingElement {
         return null;
     }
 
-    static EclipseColorThemeSettingElement fromHtmlPageDiv(Element div) {
+    public static EclipseColorThemeSettingElement fromHtmlPageDiv(Element div) {
         return new EclipseColorThemeSettingElement(
                 div.select("div[class='setting']").get(0).text(),
                 div.select("input").get(0).attr("value"),
