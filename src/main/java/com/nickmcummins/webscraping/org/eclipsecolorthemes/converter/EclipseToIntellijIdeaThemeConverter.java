@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
+import static com.nickmcummins.webscraping.ColorUtil.listContainsColor;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeSettingElement.Name.*;
@@ -61,7 +62,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(DEFAULT_FUNCTION_DECLARATION, Map.of(IclsOptionProperty.FOREGROUND, METHOD_DECLARATION)),
             entry(DEFAULT_INTERFACE_NAME, Map.of(IclsOptionProperty.FOREGROUND, INTERFACE)),
             entry(DEFAULT_INSTANCE_FIELD, Map.of(IclsOptionProperty.FOREGROUND, FIELD)),
-            entry(DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.FOREGROUND, Name.FOREGROUND)),
+            entry(DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.FOREGROUND, EclipseColorThemeSettingElement.Name.FOREGROUND, IclsOptionProperty.BACKGROUND, EclipseColorThemeSettingElement.Name.BACKGROUND)),
             entry(DEFAULT_KEYWORD, Map.of(IclsOptionProperty.FOREGROUND, KEYWORD)),
             entry(DEFAULT_LINE_COMMENT, Map.of(IclsOptionProperty.FOREGROUND, SINGLE_LINE_COMMENT)),
             entry(DEFAULT_LOCAL_VARIABLE, Map.of(IclsOptionProperty.FOREGROUND, LOCAL_VARIABLE)),
@@ -91,6 +92,9 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, WRITE_OCCURRENCE_INDICATION)),
             entry(XML_ATTRIBUTE_NAME, Map.of(IclsOptionProperty.FOREGROUND, FIELD)),
             entry(XML_TAG_NAME, Map.of(IclsOptionProperty.FOREGROUND, LOCAL_VARIABLE_DECLARATION))
+    );
+    private static final Map<IclsAttributeOption.Name, Map<IclsOptionProperty, List<String>>> ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES = Map.of(
+            DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.BACKGROUND, List.of("f5f5f5", "ffffff", "f9fcf7"))
     );
     private static final Map<SchemeType, List<IclsAttributeOption>> ICLS_ATTRIBUTE_OPTION_DEFAULTS = Map.of(
             LIGHT, List.of(
@@ -149,7 +153,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new IclsAttributeOption(WARNING_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
                     new IclsAttributeOption(WRONG_REFERENCES_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff0000"))),
             DARK, List.of(
-                    new IclsAttributeOption(BAD_CHARACTER, Map.of(IclsOptionProperty.BACKGROUND, "ff0000")),
+                    new IclsAttributeOption(BAD_CHARACTER, Map.of(IclsOptionProperty.EFFECT_COLOR, "ff0000", IclsOptionProperty.EFFECT_TYPE, IclsFontBasicType.ITALIC.value)),
                     new IclsAttributeOption(BREAKPOINT_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "3a2323", ERROR_STRIPE_COLOR, "664233")),
                     new IclsAttributeOption(CONSOLE_BLACK_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "ffffff")),
                     new IclsAttributeOption(CONSOLE_BLUE_BRIGHT_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "7eaef1")),
@@ -171,12 +175,38 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new IclsAttributeOption(CONSOLE_WHITE_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "1f1f1f")),
                     new IclsAttributeOption(CONSOLE_YELLOW_BRIGHT_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "ffff00")),
                     new IclsAttributeOption(CONSOLE_YELLOW_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "d6bf55")),
-                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES, Map.of(IclsOptionProperty.FOREGROUND, "66d75", FONT_TYPE, "2")),
+                    new IclsAttributeOption(CTRL_CLICKABLE, Map.of(IclsOptionProperty.FOREGROUND, "589df6", EFFECT_COLOR, "589df6", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES, Map.of(IclsOptionProperty.FOREGROUND, "666d75", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES_EXECUTION_LINE, Map.of(IclsOptionProperty.FOREGROUND, "7b94b3", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DEBUGGER_INLINED_VALUES_MODIFIED, Map.of(IclsOptionProperty.FOREGROUND, "ca7e03", FONT_TYPE, "2")),
+                    new IclsAttributeOption(DEFAULT_ENTITY, Map.of(FONT_TYPE, IclsFontBasicType.BOLD.value)),
+                    new IclsAttributeOption(DEFAULT_KEYWORD, Map.of(FONT_TYPE, IclsFontBasicType.BOLD.value)),
+                    new IclsAttributeOption(DEFAULT_INVALID_STRING_ESCAPE, Map.of(IclsOptionProperty.FOREGROUND, "8000", IclsOptionProperty.BACKGROUND, "ffcccc")),
+                    new IclsAttributeOption(DEFAULT_VALID_STRING_ESCAPE, Map.of(FONT_TYPE, IclsFontBasicType.BOLD.value)),
+                    new IclsAttributeOption(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "404040", EFFECT_TYPE, IclsFontEffectType.STRIKETHROUGH.value)),
                     new IclsAttributeOption(DIFF_ABSENT, Map.of(IclsOptionProperty.FOREGROUND, "null")),
                     new IclsAttributeOption(DIFF_CONFLICT, Map.of(IclsOptionProperty.BACKGROUND, "45302b")),
                     new IclsAttributeOption(DIFF_DELETED, Map.of(IclsOptionProperty.BACKGROUND, "484a4a")),
                     new IclsAttributeOption(DIFF_INSERTED, Map.of(IclsOptionProperty.BACKGROUND, "294436")),
-                    new IclsAttributeOption(DIFF_MODIFIED, Map.of(IclsOptionProperty.BACKGROUND, "385570")))
+                    new IclsAttributeOption(DIFF_MODIFIED, Map.of(IclsOptionProperty.BACKGROUND, "385570")),
+                    new IclsAttributeOption(DUPLICATE_FROM_SERVER, Map.of(IclsOptionProperty.BACKGROUND, "f5f7f0")),
+                    new IclsAttributeOption(ERRORS_ATTRIBUTES, Map.of(EFFECT_COLOR, "ff0000", ERROR_STRIPE_COLOR, "cf5b56", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
+                    new IclsAttributeOption(EXECUTIONPOINT_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ffffff", IclsOptionProperty.BACKGROUND, "2154a6", ERROR_STRIPE_COLOR, "2154a6")),
+                    new IclsAttributeOption(FOLLOWED_HYPERLINK_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff", IclsOptionProperty.BACKGROUND, "e9e9e9", EFFECT_COLOR, "ff", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(GENERIC_SERVER_ERROR_OR_WARNING, Map.of(EFFECT_COLOR, "f49810", ERROR_STRIPE_COLOR, "e69317", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
+                    new IclsAttributeOption(HYPERLINK_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(INFORMATION_ATTRIBUTES, Map.of()),
+                    new IclsAttributeOption(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "cccccc", ERROR_STRIPE_COLOR, "d9cfad", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
+                    new IclsAttributeOption(LINE_FULL_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "ccffcc", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LINE_NONE_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "ffcccc", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LINE_PARTIAL_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "ffffcc", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LOG_ERROR_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "cd0000")),
+                    new IclsAttributeOption(LOG_EXPIRED_ENTRY, Map.of(IclsOptionProperty.FOREGROUND, "555555")),
+                    new IclsAttributeOption(LOG_WARNING_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "a66f00")),
+                    new IclsAttributeOption(NOT_TOP_FRAME_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "c0d0f0")),
+                    new IclsAttributeOption(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "808080")),
+                    new IclsAttributeOption(WARNING_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(WRONG_REFERENCES_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff0000")))
     );
 
     private static void updateAttributeValueFontOption(IclsAttributeOption iclsAttributeOption, EclipseColorThemeSettingElement eclipseSetting) {
@@ -218,24 +248,29 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             IclsAttributeOption.Name attributeOptionName = iclsMappedEclipseAttribute.getKey();
             Map<IclsOptionProperty, Name> eclipseMappedIclsOptionProperties = iclsMappedEclipseAttribute.getValue();
             for (Map.Entry<IclsOptionProperty, EclipseColorThemeSettingElement.Name> iclsAttributeIclsOptionPropertyValue : eclipseMappedIclsOptionProperties.entrySet()) {
-                IclsOptionProperty IclsOptionPropertyName = iclsAttributeIclsOptionPropertyValue.getKey();
+                IclsOptionProperty iclsOptionPropertyName = iclsAttributeIclsOptionPropertyValue.getKey();
                 EclipseColorThemeSettingElement eclipseSetting = eclipseColorTheme.getSettingByName(iclsAttributeIclsOptionPropertyValue.getValue());
                 if (eclipseSetting != null) {
-                    String IclsOptionPropertyValue = eclipseSetting.getColorValue();
-                    if (attributeOptionName.colorMapper != null) IclsOptionPropertyValue = attributeOptionName.colorMapper.get(IclsOptionPropertyValue);
+                    String iclsOptionPropertyValue = eclipseSetting.getColorValue();
+                    if (attributeOptionName.colorMapper != null)
+                        iclsOptionPropertyValue = attributeOptionName.colorMapper.get(iclsOptionPropertyValue);
 
 
-                    if (!attributeOptionsValuesByName.containsKey(attributeOptionName)) attributeOptionsValuesByName.put(attributeOptionName, new IclsAttributeOption(attributeOptionName, new HashMap<>()));
+                    if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
+                        attributeOptionsValuesByName.put(attributeOptionName, new IclsAttributeOption(attributeOptionName, new HashMap<>()));
                     IclsAttributeOption iclsAttributeOption = attributeOptionsValuesByName.get(attributeOptionName);
+                    if (!(ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES.containsKey(attributeOptionName)
+                            && ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES.get(attributeOptionName).containsKey(iclsOptionPropertyName)
+                            && listContainsColor(ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES.get(attributeOptionName).get(iclsOptionPropertyName), iclsOptionPropertyValue)))
+                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(iclsOptionPropertyName, iclsOptionPropertyValue);
 
-                    iclsAttributeOption.addAttributeIclsOptionPropertyValue(IclsOptionPropertyName, IclsOptionPropertyValue);
                     updateAttributeValueFontOption(iclsAttributeOption, eclipseSetting);
 
                     if (eclipseSetting.isUnderline()) {
-                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, IclsOptionPropertyValue);
+                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, iclsOptionPropertyValue);
                         iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value);
                     } else if (eclipseSetting.isStrikethrough()) {
-                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, IclsOptionPropertyValue);
+                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, iclsOptionPropertyValue);
                         iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_TYPE, IclsFontEffectType.STRIKETHROUGH.value);
                     }
                 }

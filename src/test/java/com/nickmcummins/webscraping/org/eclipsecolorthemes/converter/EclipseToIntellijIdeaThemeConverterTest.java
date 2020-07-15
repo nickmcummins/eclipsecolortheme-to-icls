@@ -27,9 +27,9 @@ public class EclipseToIntellijIdeaThemeConverterTest {
     @DataProvider
     public Object[][] lightThemes() {
         return toObjectArrayArray(List.of(
-                "416-berry.xml", "cloud-light-theme.xml", "DefaultPretty.xml", "houlind.xml", "IntelliJ-Purple.xml",
-                "LightGreenCPlusPlus.xml", "Light-Sun-314.xml", "mads.xml", "Sariizback.xml", "Sholight.xml",
-                "temagossipnerea.xml", "Xalem.xml"
+                "416-berry.xml", "cloud-light-theme.xml", "DefaultPretty.xml", "github-theme.xml", "houlind.xml",
+                "IntelliJ-Purple.xml", "LightGreenCPlusPlus.xml", "Light-Sun-314.xml", "mads.xml", "Sariizback.xml",
+                "Sholight.xml", "temagossipnerea.xml", "Xalem.xml"
         ));
     }
 
@@ -41,6 +41,37 @@ public class EclipseToIntellijIdeaThemeConverterTest {
                 .format(IntellijIdeaColorScheme.DATE_FORMAT);
 
         String expectedIcls = loadResourceAsString(lightThemeFilename.replace("xml", "icls"));
+        expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "modified", modified);
+        expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "ideVersion", "2020.1.1.0.0");
+
+
+
+        IntellijIdeaColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
+        if (eclipseColorTheme.getModified() == null) {
+            convertedIcls.updateMetaInfo(created, modified);
+        }
+        convertedIcls.updateMetaInfo(IntellijIdeaColorScheme.MetaInfoProperty.modified, modified);
+        convertedIcls.updateMetaInfo(ide, "idea");
+        convertedIcls.updateMetaInfo(ideVersion, "2020.1.1.0.0");
+        assertEquals(convertedIcls.toString(), expectedIcls);
+    }
+
+    @DataProvider
+    public Object[][] darkThemes() {
+        return toObjectArrayArray(List.of(
+                "C-C++-Inkpot.xml"
+        ));
+    }
+
+
+    @Test(dataProvider = "darkThemes", enabled = false)
+    public void testConvertDarkTheme(String darkThemeFilename) throws Exception {
+        EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromString(loadResourceAsString(darkThemeFilename));
+        String modified = LocalDateTime.now()
+                .withHour(0).withMinute(0).withSecond(0)
+                .format(IntellijIdeaColorScheme.DATE_FORMAT);
+
+        String expectedIcls = loadResourceAsString(darkThemeFilename.replace("xml", "icls"));
         expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "modified", modified);
         expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "ideVersion", "2020.1.1.0.0");
 
