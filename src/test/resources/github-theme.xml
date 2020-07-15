@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<colorTheme id="10701" name="github-theme" author="Bruno Souza">
+<colorTheme id="10701" name="github-theme" modified="2014-07-04 22:58:55" author="Bruno Souza">
 	<selectionBackground color="#CCCCCC" />
 	<typeParameter color="#0086B3" />
 	<methodDeclaration color="#990000" />
