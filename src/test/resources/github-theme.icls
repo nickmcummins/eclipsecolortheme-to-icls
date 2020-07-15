@@ -1,24 +1,24 @@
 <scheme name="github-theme" version="142">
     <metaInfo>
-        <property name="created">2020-05-13T14:05:37</property>
+        <property name="created">2020-07-14T00:00:00</property>
         <property name="ide">idea</property>
-        <property name="ideVersion">2020.1.1.0.0</property>
-        <property name="modified">2020-05-13T14:06:05</property>
+        <property name="ideVersion">2020.2.0.0</property>
+        <property name="modified">2020-07-14T21:02:58</property>
         <property name="originalScheme">github-theme</property>
     </metaInfo>
     <colors>
-        <option name="CARET_COLOR" value="dd1144" />
-        <option name="CARET_ROW_COLOR" value="efefef" />
-        <option name="CONSOLE_BACKGROUND_KEY" value="fafafa" />
-        <option name="GUTTER_BACKGROUND" value="fafafa" />
-        <option name="INDENT_GUIDE" value="a8a8a8" />
-        <option name="LINE_NUMBERS_COLOR" value="dd1144" />
-        <option name="RIGHT_MARGIN_COLOR" value="dd1144" />
-        <option name="SELECTION_BACKGROUND" value="cccccc" />
-        <option name="SELECTION_FOREGROUND" value="333333" />
-        <option name="SOFT_WRAP_SIGN_COLOR" value="a8a8a8" />
-        <option name="TEARLINE_COLOR" value="dd1144" />
-        <option name="WHITESPACES" value="a8a8a8" />
+        <option name="CARET_COLOR" value="dd1144"/>
+        <option name="CARET_ROW_COLOR" value="efefef"/>
+        <option name="CONSOLE_BACKGROUND_KEY" value="fafafa"/>
+        <option name="GUTTER_BACKGROUND" value="fafafa"/>
+        <option name="INDENT_GUIDE" value="a8a8a8"/>
+        <option name="LINE_NUMBERS_COLOR" value="dd1144"/>
+        <option name="RIGHT_MARGIN_COLOR" value="dd1144"/>
+        <option name="SELECTION_BACKGROUND" value="cccccc"/>
+        <option name="SELECTION_FOREGROUND" value="333333"/>
+        <option name="SOFT_WRAP_SIGN_COLOR" value="a8a8a8"/>
+        <option name="TEARLINE_COLOR" value="dd1144"/>
+        <option name="WHITESPACES" value="a8a8a8"/>
     </colors>
     <attributes>
         <option name="ABSTRACT_METHOD_ATTRIBUTES">

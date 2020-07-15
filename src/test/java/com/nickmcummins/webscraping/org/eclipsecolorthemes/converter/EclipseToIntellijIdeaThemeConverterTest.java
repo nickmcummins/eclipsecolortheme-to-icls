@@ -27,9 +27,9 @@ public class EclipseToIntellijIdeaThemeConverterTest {
     @DataProvider
     public Object[][] lightThemes() {
         return toObjectArrayArray(List.of(
-                "416-berry.xml", "cloud-light-theme.xml", "DefaultPretty.xml", "houlind.xml", "IntelliJ-Purple.xml",
-                "LightGreenCPlusPlus.xml", "Light-Sun-314.xml", "mads.xml", "Sariizback.xml", "Sholight.xml",
-                "temagossipnerea.xml", "Xalem.xml"
+                "416-berry.xml", "cloud-light-theme.xml", "DefaultPretty.xml", "github-theme.xml", "houlind.xml",
+                "IntelliJ-Purple.xml", "LightGreenCPlusPlus.xml", "Light-Sun-314.xml", "mads.xml", "Sariizback.xml",
+                "Sholight.xml", "temagossipnerea.xml", "Xalem.xml"
         ));
     }
 
