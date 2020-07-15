@@ -59,7 +59,7 @@ public class EclipseToIntellijIdeaThemeConverterTest {
     @DataProvider
     public Object[][] darkThemes() {
         return toObjectArrayArray(List.of(
-                "C-C++-Inkpot.xml"
+                "C-C++-Inkpot.xml", "DuoTone-Dark.xml"
         ));
     }
 

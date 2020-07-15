@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="60224" name="DuoTone Dark" modified="2020-07-07 22:19:55" author="Souleste">
+    <searchResultIndication color="#464467" />
+    <filteredSearchResultIndication color="#3f3f6a" />
+    <occurrenceIndication color="#616161" />
+    <writeOccurrenceIndication color="#948567" />
+    <findScope color="#BCADAD" />
+    <sourceHoverBackground color="#a19879" />
+    <singleLineComment color="#4C508C" />
+    <multiLineComment color="#4C508C" />
+    <commentTaskTag color="#ACC1AC" />
+    <javadoc color="#b3b5af" />
+    <javadocLink color="#a7a7d1" />
+    <javadocTag color="#a7a7d1" />
+    <javadocKeyword color="#E86195" />
+    <class color="#6A51E6" />
+    <interface color="#CAE682" />
+    <method color="#f3f6ee" />
+    <methodDeclaration color="#f3f6ee" />
+    <bracket color="#f3f6ee" />
+    <number color="#E86195" />
+    <string color="#FFA852" />
+    <operator color="#f3f6ee" />
+    <keyword color="#739FFF" bold="false" />
+    <annotation color="#808080" />
+    <staticMethod color="#C4C4B7" />
+    <localVariable color="#D4C4A9" />
+    <localVariableDeclaration color="#D4C4A9" />
+    <field color="#FFCC99" />
+    <staticField color="#93A2CC" />
+    <staticFinalField color="#53dccd" />
+    <deprecatedMember color="#FFFFFF" />
+    <background color="#222249" />
+    <currentLine color="#222240" />
+    <foreground color="#777AAA" />
+    <lineNumber color="#777AAA" />
+    <selectionBackground color="#898941" />
+    <selectionForeground color="#000000" />
+</colorTheme>

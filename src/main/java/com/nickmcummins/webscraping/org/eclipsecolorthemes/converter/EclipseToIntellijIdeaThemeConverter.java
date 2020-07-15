@@ -41,6 +41,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry("#555555", "a8a8a8"),
             entry("#525B5B", "a9adad"),
             entry("#585858", "a7a7a7"),
+            entry("#777AAA", "4d4e7a"),
             entry("#8000FF", "c080ff"),
             entry("#C0B6A8", "e0dbd4"),
             entry("#EEE6DF", "7d7975"),
