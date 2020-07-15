@@ -19,6 +19,7 @@ package com.nickmcummins.webscraping;
  */
 
 import java.awt.Color;
+import java.util.List;
 
 
 /**
@@ -181,6 +182,10 @@ public class ColorUtil {
 
     public static boolean sameColor(String hexColorA, String hexColorB) {
         return hexColorA.replace("#", "").toLowerCase().equals(hexColorB.replace("#", "").toLowerCase());
+    }
+
+    public static boolean listContainsColor(List<String> hexColors, String hexColor) {
+        return hexColors.stream().anyMatch(color -> sameColor(color, hexColor));
     }
 }
 

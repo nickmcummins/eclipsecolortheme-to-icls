@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.ColorUtil.formatHexValue;
+import static com.nickmcummins.webscraping.ColorUtil.listContainsColor;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeSettingElement.Name.*;
@@ -61,7 +62,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(DEFAULT_FUNCTION_DECLARATION, Map.of(IclsOptionProperty.FOREGROUND, METHOD_DECLARATION)),
             entry(DEFAULT_INTERFACE_NAME, Map.of(IclsOptionProperty.FOREGROUND, INTERFACE)),
             entry(DEFAULT_INSTANCE_FIELD, Map.of(IclsOptionProperty.FOREGROUND, FIELD)),
-            entry(DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.FOREGROUND, Name.FOREGROUND)),
+            entry(DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.FOREGROUND, EclipseColorThemeSettingElement.Name.FOREGROUND, IclsOptionProperty.BACKGROUND, EclipseColorThemeSettingElement.Name.BACKGROUND)),
             entry(DEFAULT_KEYWORD, Map.of(IclsOptionProperty.FOREGROUND, KEYWORD)),
             entry(DEFAULT_LINE_COMMENT, Map.of(IclsOptionProperty.FOREGROUND, SINGLE_LINE_COMMENT)),
             entry(DEFAULT_LOCAL_VARIABLE, Map.of(IclsOptionProperty.FOREGROUND, LOCAL_VARIABLE)),
@@ -91,6 +92,9 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(WRITE_IDENTIFIER_UNDER_CARET_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, WRITE_OCCURRENCE_INDICATION)),
             entry(XML_ATTRIBUTE_NAME, Map.of(IclsOptionProperty.FOREGROUND, FIELD)),
             entry(XML_TAG_NAME, Map.of(IclsOptionProperty.FOREGROUND, LOCAL_VARIABLE_DECLARATION))
+    );
+    private static final Map<IclsAttributeOption.Name, Map<IclsOptionProperty, List<String>>> ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES = Map.of(
+            DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.BACKGROUND, List.of("f5f5f5", "ffffff", "f9fcf7"))
     );
     private static final Map<SchemeType, List<IclsAttributeOption>> ICLS_ATTRIBUTE_OPTION_DEFAULTS = Map.of(
             LIGHT, List.of(
@@ -218,24 +222,29 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             IclsAttributeOption.Name attributeOptionName = iclsMappedEclipseAttribute.getKey();
             Map<IclsOptionProperty, Name> eclipseMappedIclsOptionProperties = iclsMappedEclipseAttribute.getValue();
             for (Map.Entry<IclsOptionProperty, EclipseColorThemeSettingElement.Name> iclsAttributeIclsOptionPropertyValue : eclipseMappedIclsOptionProperties.entrySet()) {
-                IclsOptionProperty IclsOptionPropertyName = iclsAttributeIclsOptionPropertyValue.getKey();
+                IclsOptionProperty iclsOptionPropertyName = iclsAttributeIclsOptionPropertyValue.getKey();
                 EclipseColorThemeSettingElement eclipseSetting = eclipseColorTheme.getSettingByName(iclsAttributeIclsOptionPropertyValue.getValue());
                 if (eclipseSetting != null) {
-                    String IclsOptionPropertyValue = eclipseSetting.getColorValue();
-                    if (attributeOptionName.colorMapper != null) IclsOptionPropertyValue = attributeOptionName.colorMapper.get(IclsOptionPropertyValue);
+                    String iclsOptionPropertyValue = eclipseSetting.getColorValue();
+                    if (attributeOptionName.colorMapper != null)
+                        iclsOptionPropertyValue = attributeOptionName.colorMapper.get(iclsOptionPropertyValue);
 
 
-                    if (!attributeOptionsValuesByName.containsKey(attributeOptionName)) attributeOptionsValuesByName.put(attributeOptionName, new IclsAttributeOption(attributeOptionName, new HashMap<>()));
+                    if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
+                        attributeOptionsValuesByName.put(attributeOptionName, new IclsAttributeOption(attributeOptionName, new HashMap<>()));
                     IclsAttributeOption iclsAttributeOption = attributeOptionsValuesByName.get(attributeOptionName);
+                    if (!(ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES.containsKey(attributeOptionName)
+                            && ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES.get(attributeOptionName).containsKey(iclsOptionPropertyName)
+                            && listContainsColor(ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES.get(attributeOptionName).get(iclsOptionPropertyName), iclsOptionPropertyValue)))
+                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(iclsOptionPropertyName, iclsOptionPropertyValue);
 
-                    iclsAttributeOption.addAttributeIclsOptionPropertyValue(IclsOptionPropertyName, IclsOptionPropertyValue);
                     updateAttributeValueFontOption(iclsAttributeOption, eclipseSetting);
 
                     if (eclipseSetting.isUnderline()) {
-                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, IclsOptionPropertyValue);
+                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, iclsOptionPropertyValue);
                         iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value);
                     } else if (eclipseSetting.isStrikethrough()) {
-                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, IclsOptionPropertyValue);
+                        iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_COLOR, iclsOptionPropertyValue);
                         iclsAttributeOption.addAttributeIclsOptionPropertyValue(EFFECT_TYPE, IclsFontEffectType.STRIKETHROUGH.value);
                     }
                 }
