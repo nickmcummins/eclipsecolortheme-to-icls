@@ -64,7 +64,7 @@ public class EclipseToIntellijIdeaThemeConverterTest {
     }
 
 
-    @Test(dataProvider = "darkThemes", enabled = false)
+    @Test(dataProvider = "darkThemes")
     public void testConvertDarkTheme(String darkThemeFilename) throws Exception {
         EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromString(loadResourceAsString(darkThemeFilename));
         String modified = LocalDateTime.now()

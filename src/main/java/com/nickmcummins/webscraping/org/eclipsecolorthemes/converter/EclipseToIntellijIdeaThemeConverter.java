@@ -33,17 +33,18 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
     private static final List<IclsColorOption.Name> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_OPTIONS = List.of(
             INDENT_GUIDE, SOFT_WRAP_SIGN_COLOR, WHITESPACES
     );
-    public static final Map<String, String> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS = Map.of(
-            "#000000", "808080",
-            "#007400", "7db87c",
-            "#333333", "999999",
-            "#430400", "a18280",
-            "#555555", "a8a8a8",
-            "#525B5B", "a9adad",
-            "#585858", "a7a7a7",
-            "#8000FF", "c080ff",
-            "#C0B6A8", "e0dbd4",
-            "#FF5050", "ffa8a8"
+    public static final Map<String, String> ECLIPSE_FOREGROUND_TO_MAPPED_ICLS_COLORS = Map.ofEntries(
+            entry("#000000", "808080"),
+            entry("#007400", "7db87c"),
+            entry("#333333", "999999"),
+            entry("#430400", "a18280"),
+            entry("#555555", "a8a8a8"),
+            entry("#525B5B", "a9adad"),
+            entry("#585858", "a7a7a7"),
+            entry("#8000FF", "c080ff"),
+            entry("#C0B6A8", "e0dbd4"),
+            entry("#EEE6DF", "7d7975"),
+            entry("#FF5050", "ffa8a8")
     );
     private static final Map<IclsAttributeOption.Name, Map<IclsOptionProperty, Name>> ICLS_ATTRIBUTE_OPTIONS_FROM_ECLIPSE_SETTING = Map.ofEntries(
             entry(ABSTRACT_METHOD_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, ABSTRACT_METHOD)),
@@ -94,7 +95,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(XML_TAG_NAME, Map.of(IclsOptionProperty.FOREGROUND, LOCAL_VARIABLE_DECLARATION))
     );
     private static final Map<IclsAttributeOption.Name, Map<IclsOptionProperty, List<String>>> ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES = Map.of(
-            DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.BACKGROUND, List.of("f5f5f5", "ffffff", "f9fcf7"))
+            DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.BACKGROUND, List.of("f5f5f5", "ffffff", "f9fcf7", "0b0b0b"))
     );
     private static final Map<SchemeType, List<IclsAttributeOption>> ICLS_ATTRIBUTE_OPTION_DEFAULTS = Map.of(
             LIGHT, List.of(
@@ -181,32 +182,32 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                     new IclsAttributeOption(DEBUGGER_INLINED_VALUES_MODIFIED, Map.of(IclsOptionProperty.FOREGROUND, "ca7e03", FONT_TYPE, "2")),
                     new IclsAttributeOption(DEFAULT_ENTITY, Map.of(FONT_TYPE, IclsFontBasicType.BOLD.value)),
                     new IclsAttributeOption(DEFAULT_KEYWORD, Map.of(FONT_TYPE, IclsFontBasicType.BOLD.value)),
-                    new IclsAttributeOption(DEFAULT_INVALID_STRING_ESCAPE, Map.of(IclsOptionProperty.FOREGROUND, "8000", IclsOptionProperty.BACKGROUND, "ffcccc")),
+                    new IclsAttributeOption(DEFAULT_INVALID_STRING_ESCAPE, Map.of(IclsOptionProperty.FOREGROUND, "6a8759", EFFECT_COLOR, "ff0000", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
                     new IclsAttributeOption(DEFAULT_VALID_STRING_ESCAPE, Map.of(FONT_TYPE, IclsFontBasicType.BOLD.value)),
-                    new IclsAttributeOption(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "404040", EFFECT_TYPE, IclsFontEffectType.STRIKETHROUGH.value)),
-                    new IclsAttributeOption(DIFF_ABSENT, Map.of(IclsOptionProperty.FOREGROUND, "null")),
-                    new IclsAttributeOption(DIFF_CONFLICT, Map.of(IclsOptionProperty.BACKGROUND, "45302b")),
-                    new IclsAttributeOption(DIFF_DELETED, Map.of(IclsOptionProperty.BACKGROUND, "484a4a")),
-                    new IclsAttributeOption(DIFF_INSERTED, Map.of(IclsOptionProperty.BACKGROUND, "294436")),
-                    new IclsAttributeOption(DIFF_MODIFIED, Map.of(IclsOptionProperty.BACKGROUND, "385570")),
-                    new IclsAttributeOption(DUPLICATE_FROM_SERVER, Map.of(IclsOptionProperty.BACKGROUND, "f5f7f0")),
-                    new IclsAttributeOption(ERRORS_ATTRIBUTES, Map.of(EFFECT_COLOR, "ff0000", ERROR_STRIPE_COLOR, "cf5b56", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
-                    new IclsAttributeOption(EXECUTIONPOINT_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ffffff", IclsOptionProperty.BACKGROUND, "2154a6", ERROR_STRIPE_COLOR, "2154a6")),
-                    new IclsAttributeOption(FOLLOWED_HYPERLINK_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff", IclsOptionProperty.BACKGROUND, "e9e9e9", EFFECT_COLOR, "ff", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
-                    new IclsAttributeOption(GENERIC_SERVER_ERROR_OR_WARNING, Map.of(EFFECT_COLOR, "f49810", ERROR_STRIPE_COLOR, "e69317", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
-                    new IclsAttributeOption(HYPERLINK_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff", EFFECT_COLOR, "ff", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(DEPRECATED_ATTRIBUTES, Map.of(EFFECT_COLOR, "c3c3c3", EFFECT_TYPE, IclsFontEffectType.STRIKETHROUGH.value)),
+                    new IclsAttributeOption(DIFF_ABSENT, Map.of(IclsOptionProperty.BACKGROUND, "f0f0f0")),
+                    new IclsAttributeOption(DIFF_CONFLICT, Map.of(IclsOptionProperty.BACKGROUND, "45302b", ERROR_STRIPE_COLOR, "8f5247")),
+                    new IclsAttributeOption(DIFF_DELETED, Map.of(IclsOptionProperty.BACKGROUND, "484a4a", IclsOptionProperty.ERROR_STRIPE_COLOR, "656e76")),
+                    new IclsAttributeOption(DIFF_INSERTED, Map.of(IclsOptionProperty.BACKGROUND, "294436", IclsOptionProperty.ERROR_STRIPE_COLOR, "447152")),
+                    new IclsAttributeOption(DIFF_MODIFIED, Map.of(IclsOptionProperty.BACKGROUND, "385570", IclsOptionProperty.ERROR_STRIPE_COLOR, "43698d")),
+                    new IclsAttributeOption(DUPLICATE_FROM_SERVER, Map.of(IclsOptionProperty.BACKGROUND, "5e5339")),
+                    new IclsAttributeOption(ERRORS_ATTRIBUTES, Map.of(EFFECT_COLOR, "bc3f3c", ERROR_STRIPE_COLOR, "9e2927", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
+                    new IclsAttributeOption(EXECUTIONPOINT_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "2d6099")),
+                    new IclsAttributeOption(FOLLOWED_HYPERLINK_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "287bde", EFFECT_COLOR, "287bde", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(GENERIC_SERVER_ERROR_OR_WARNING, Map.of(EFFECT_COLOR, "f49810", ERROR_STRIPE_COLOR, "b06100", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
+                    new IclsAttributeOption(HYPERLINK_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "287bde", EFFECT_COLOR, "287bde", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
                     new IclsAttributeOption(INFORMATION_ATTRIBUTES, Map.of()),
-                    new IclsAttributeOption(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "cccccc", ERROR_STRIPE_COLOR, "d9cfad", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
-                    new IclsAttributeOption(LINE_FULL_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "ccffcc", FONT_TYPE, "1")),
-                    new IclsAttributeOption(LINE_NONE_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "ffcccc", FONT_TYPE, "1")),
-                    new IclsAttributeOption(LINE_PARTIAL_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "ffffcc", FONT_TYPE, "1")),
-                    new IclsAttributeOption(LOG_ERROR_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "cd0000")),
+                    new IclsAttributeOption(INFO_ATTRIBUTES, Map.of(EFFECT_COLOR, "aeae80", ERROR_STRIPE_COLOR, "756d56", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
+                    new IclsAttributeOption(LINE_FULL_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "485848", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LINE_NONE_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "715353", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LINE_PARTIAL_COVERAGE, Map.of(IclsOptionProperty.FOREGROUND, "80805a", FONT_TYPE, "1")),
+                    new IclsAttributeOption(LOG_ERROR_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "cc666e")),
                     new IclsAttributeOption(LOG_EXPIRED_ENTRY, Map.of(IclsOptionProperty.FOREGROUND, "555555")),
-                    new IclsAttributeOption(LOG_WARNING_OUTPUT, Map.of(IclsOptionProperty.FOREGROUND, "a66f00")),
-                    new IclsAttributeOption(NOT_TOP_FRAME_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "c0d0f0")),
-                    new IclsAttributeOption(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "808080")),
-                    new IclsAttributeOption(WARNING_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "f6ebbc", ERROR_STRIPE_COLOR, "ebc700", EFFECT_TYPE, IclsFontEffectType.UNDERLINE.value)),
-                    new IclsAttributeOption(WRONG_REFERENCES_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "ff0000")))
+                    new IclsAttributeOption(LOG_WARNING_OUTPUT, Map.of()),
+                    new IclsAttributeOption(NOT_TOP_FRAME_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "2f3f55")),
+                    new IclsAttributeOption(NOT_USED_ELEMENT_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "72737a")),
+                    new IclsAttributeOption(WARNING_ATTRIBUTES, Map.of(IclsOptionProperty.BACKGROUND, "52503a", ERROR_STRIPE_COLOR, "be9117", EFFECT_TYPE, IclsFontEffectType.UNDERWAVE.value)),
+                    new IclsAttributeOption(WRONG_REFERENCES_ATTRIBUTES, Map.of(IclsOptionProperty.FOREGROUND, "bc3f3c")))
     );
 
     private static void updateAttributeValueFontOption(IclsAttributeOption iclsAttributeOption, EclipseColorThemeSettingElement eclipseSetting) {
