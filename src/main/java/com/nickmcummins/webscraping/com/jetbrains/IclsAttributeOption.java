@@ -95,7 +95,7 @@ public class IclsAttributeOption {
     }
 
     public String toString() {
-        List<String> valueStrings = values.values().stream().filter(value -> !value.equals("null") && !isBlank(value)).collect(Collectors.toList());
+        List<String> valueStrings = values.values().stream().filter(value -> !isBlank(value) && !value.equals("null")).collect(Collectors.toList());
         String valuesTag = valueStrings.isEmpty()
                 ? "<value/>\n"
                 : String.format("<value>\n%s\n            </value>\n", values.entrySet().stream().sorted(Comparator.comparing(option -> ATTRIBUTE_OPTION_VALUE_ORDER.indexOf(option.getKey()))).map(entry -> String.format("                <option name=\"%s\" value=\"%s\"/>", entry.getKey(), formatHexValue(entry.getValue()))).collect(Collectors.joining("\n")));

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<colorTheme id="60255" name="C/C++ Inkpot" modified="2020-07-14 09:51:54" author="antongruba">
+    <occurrenceIndication color="#616161" />
+    <sourceHoverBackground color="#FFFFFF" />
+    <singleLineComment color="#30D56E" bold="false" />
+    <multiLineComment color="#30D56E" bold="false" italic="false" />
+    <commentTaskTag color="#D197D9" />
+    <javadoc color="#30D56E" bold="false" italic="false" />
+    <javadocLink color="" bold="false" />
+    <javadocTag color="#93FFBC" bold="false" italic="false" />
+    <javadocKeyword color="" bold="false" />
+    <class color="#347DEE" bold="true" />
+    <interface color="#87FAC4" bold="false" italic="false" />
+    <method color="#87CEFA" bold="false" />
+    <methodDeclaration color="#CFBFAD" bold="false" italic="false" />
+    <bracket color="#CFBFAD" />
+    <number color="#FFAE6F" />
+    <string color="#F1900F" />
+    <operator color="#00FFF4" />
+    <keyword color="#364BFF" bold="false" />
+    <annotation color="" bold="false" />
+    <staticField color="#A481D0" bold="false" />
+    <staticFinalField color="#A481D0" bold="false" />
+    <parameterVariable color="#00DEFF" bold="false" />
+    <constant color="#A481D0" />
+    <background color="#0B0B0B" />
+    <currentLine color="#040404" />
+    <foreground color="#EEE6DF" />
+    <lineNumber color="#007DA2" />
+    <selectionBackground color="#000030" />
+    <selectionForeground color="#404040" />
+</colorTheme>

@@ -55,4 +55,35 @@ public class EclipseToIntellijIdeaThemeConverterTest {
         convertedIcls.updateMetaInfo(ideVersion, "2020.1.1.0.0");
         assertEquals(convertedIcls.toString(), expectedIcls);
     }
+
+    @DataProvider
+    public Object[][] darkThemes() {
+        return toObjectArrayArray(List.of(
+                "C-C++-Inkpot.xml"
+        ));
+    }
+
+
+    @Test(dataProvider = "darkThemes", enabled = false)
+    public void testConvertDarkTheme(String darkThemeFilename) throws Exception {
+        EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromString(loadResourceAsString(darkThemeFilename));
+        String modified = LocalDateTime.now()
+                .withHour(0).withMinute(0).withSecond(0)
+                .format(IntellijIdeaColorScheme.DATE_FORMAT);
+
+        String expectedIcls = loadResourceAsString(darkThemeFilename.replace("xml", "icls"));
+        expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "modified", modified);
+        expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "ideVersion", "2020.1.1.0.0");
+
+
+
+        IntellijIdeaColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
+        if (eclipseColorTheme.getModified() == null) {
+            convertedIcls.updateMetaInfo(created, modified);
+        }
+        convertedIcls.updateMetaInfo(IntellijIdeaColorScheme.MetaInfoProperty.modified, modified);
+        convertedIcls.updateMetaInfo(ide, "idea");
+        convertedIcls.updateMetaInfo(ideVersion, "2020.1.1.0.0");
+        assertEquals(convertedIcls.toString(), expectedIcls);
+    }
 }
