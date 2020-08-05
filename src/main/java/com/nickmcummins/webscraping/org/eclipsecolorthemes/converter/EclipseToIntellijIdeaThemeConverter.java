@@ -96,7 +96,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             entry(XML_TAG_NAME, Map.of(IclsOptionProperty.FOREGROUND, LOCAL_VARIABLE_DECLARATION))
     );
     private static final Map<IclsAttributeOption.Name, Map<IclsOptionProperty, List<String>>> ICLS_ATTRIBUTE_OPTIONS_EXCLUDE_VALUES = Map.of(
-            DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.BACKGROUND, List.of("f5f5f5", "ffffff", "f9fcf7", "0b0b0b"))
+            DEFAULT_IDENTIFIER, Map.of(IclsOptionProperty.BACKGROUND, List.of("f5f5f5", "ffffff", "f9fcf7", "0b0b0b", "222249"))
     );
     private static final Map<SchemeType, List<IclsAttributeOption>> ICLS_ATTRIBUTE_OPTION_DEFAULTS = Map.of(
             LIGHT, List.of(

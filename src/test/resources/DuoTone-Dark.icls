@@ -1,6 +1,6 @@
-<scheme name="DuoTone Dark copy" version="142">
+<scheme name="DuoTone Dark" version="142">
     <metaInfo>
-        <property name="created">2020-07-15T01:42:50</property>
+        <property name="created">2020-07-07T22:19:55</property>
         <property name="ide">idea</property>
         <property name="ideVersion">2020.2.0.0</property>
         <property name="modified">2020-07-15T01:43:05</property>
@@ -314,7 +314,9 @@
             </value>
         </option>
         <option name="DIFF_ABSENT">
-            <value/>
+            <value>
+                <option name="BACKGROUND" value="f0f0f0"/>
+            </value>
         </option>
         <option name="DIFF_CONFLICT">
             <value>
