@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.nickmcummins.webscraping.Util.formatDate;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.modified;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.originalScheme;
+import static com.nickmcummins.webscraping.com.jetbrains.IclsColorScheme.MetaInfoProperty.modified;
+import static com.nickmcummins.webscraping.com.jetbrains.IclsColorScheme.MetaInfoProperty.originalScheme;
 import static com.nickmcummins.webscraping.com.jetbrains.IclsOptionProperty.*;
 
-public class IntellijIdeaColorScheme implements ColorTheme {
+public class IclsColorScheme implements ColorTheme {
     public enum MetaInfoProperty {
         created,
         ide,
@@ -31,13 +31,13 @@ public class IntellijIdeaColorScheme implements ColorTheme {
     private final Map<IclsColorOption.Name, String> colorOptions;
     private final Collection<IclsAttributeOption> attributeOptions;
 
-    private IntellijIdeaColorScheme(Map<MetaInfoProperty, String> metaInfo, Map<IclsColorOption.Name, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
+    private IclsColorScheme(Map<MetaInfoProperty, String> metaInfo, Map<IclsColorOption.Name, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
         this.metaInfo = metaInfo;
         this.colorOptions = colorOptions;
         this.attributeOptions = attributeOptions;
     }
 
-    public IntellijIdeaColorScheme(LocalDateTime created, String name, Map<IclsColorOption.Name, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
+    public IclsColorScheme(LocalDateTime created, String name, Map<IclsColorOption.Name, String> colorOptions, Collection<IclsAttributeOption> attributeOptions) {
         this(
                 new HashMap<>(Map.of(
                         MetaInfoProperty.created, formatDate(DATE_FORMAT, created),
