@@ -1,5 +1,5 @@
 <Themes>
-  <Theme Name="Light / github_new" GUID="{1652bd94-9748-4aca-acdb-f1308fa6f5be}">
+  <Theme Name="Light / eclipsethemes Editor" GUID="{47be1c52-3f21-49de-956a-216bf8a6c50f}">
     <Category Name="ACDCOverview" GUID="{c8887ac6-3c60-4209-9d69-8f4c12a60044}">
       <Color Name="Body">
         <Background Type="CT_RAW" Source="FFFFFFFF" />
@@ -44,7 +44,7 @@
         <Foreground Type="CT_RAW" Source="FFCCCEDB" />
       </Color>
     </Category>
-    <Category Name="Cpp Text Editor MEF Items" GUID="{75a05685-00a8-4ded-bae5-e7a50bfa929a}">
+    <Category Name="ColorizedSignatureHelp colors" GUID="{75a05685-00a8-4ded-bae5-e7a50bfa929a}">
       <Color Name="axml - attribute name">
         <Background Type="CT_INVALID" Source="00000000" />
         <Foreground Type="CT_RAW" Source="FF000000" />
@@ -2903,7 +2903,7 @@
         <Foreground Type="CT_RAW" Source="FF1E1E1E" />
       </Color>
     </Category>
-    <Category Name="CosmosClientTools.2.3.0000.1" GUID="{6f796f8a-b3b5-49eb-9b25-cb59bd413caf}">
+    <Category Name="CosmosClientTools.2.3.4000.1" GUID="{6f796f8a-b3b5-49eb-9b25-cb59bd413caf}">
       <Color Name="JobGraphBoder">
         <Background Type="CT_RAW" Source="FF3A3A3A" />
       </Color>
@@ -9916,7 +9916,7 @@
     </Category>
     <Category Name="Command Window" GUID="{ee1be240-4e81-4beb-8eea-54322b6b1bf5}">
       <Color Name="Plain Text">
-        <Background Type="CT_RAW" Source="FFFFFFFF" />
+        <Background Type="CT_INVALID" Source="00000000" />
         <Foreground Type="CT_INVALID" Source="00000000" />
       </Color>
       <Color Name="Selected Text">
@@ -10260,7 +10260,7 @@
     </Category>
     <Category Name="Package Manager Console" GUID="{f9d6bce6-c669-41db-8ee7-dd953828685b}">
       <Color Name="Plain Text">
-        <Background Type="CT_RAW" Source="FFFFFFFF" />
+        <Background Type="CT_INVALID" Source="00000000" />
         <Foreground Type="CT_INVALID" Source="00000000" />
       </Color>
       <Color Name="Selected Text">
