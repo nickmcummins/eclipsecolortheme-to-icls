@@ -1,6 +1,6 @@
 package com.nickmcummins.webscraping.org.eclipsecolorthemes.converter;
 
-import com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme;
+import com.nickmcummins.webscraping.com.jetbrains.IclsColorScheme;
 import com.nickmcummins.webscraping.converter.ThemeConverter;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
 import org.testng.annotations.BeforeClass;
@@ -11,17 +11,17 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.nickmcummins.webscraping.Util.replaceValueOfXmlElement;
-import static com.nickmcummins.webscraping.com.jetbrains.IntellijIdeaColorScheme.MetaInfoProperty.*;
+import static com.nickmcummins.webscraping.com.jetbrains.IclsColorScheme.MetaInfoProperty.*;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.TestUtil.loadResourceAsString;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.TestUtil.toObjectArrayArray;
 import static org.testng.Assert.assertEquals;
 
-public class EclipseToIntellijIdeaThemeConverterTest {
-    private ThemeConverter<EclipseColorTheme, IntellijIdeaColorScheme> eclipseToIntellijThemeConverter;
+public class EclipseToIclsThemeConverterTest {
+    private ThemeConverter<EclipseColorTheme, IclsColorScheme> eclipseToIntellijThemeConverter;
 
     @BeforeClass
     public void setup() {
-        eclipseToIntellijThemeConverter = new EclipseToIntellijIdeaThemeConverter();
+        eclipseToIntellijThemeConverter = new EclipseToIclsThemeConverter();
     }
 
     @DataProvider
@@ -38,7 +38,7 @@ public class EclipseToIntellijIdeaThemeConverterTest {
         EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromString(loadResourceAsString(lightThemeFilename));
         String modified = LocalDateTime.now()
                 .withHour(0).withMinute(0).withSecond(0)
-                .format(IntellijIdeaColorScheme.DATE_FORMAT);
+                .format(IclsColorScheme.DATE_FORMAT);
 
         String expectedIcls = loadResourceAsString(lightThemeFilename.replace("xml", "icls"));
         expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "modified", modified);
@@ -46,11 +46,11 @@ public class EclipseToIntellijIdeaThemeConverterTest {
 
 
 
-        IntellijIdeaColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
+        IclsColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
         if (eclipseColorTheme.getModified() == null) {
             convertedIcls.updateMetaInfo(created, modified);
         }
-        convertedIcls.updateMetaInfo(IntellijIdeaColorScheme.MetaInfoProperty.modified, modified);
+        convertedIcls.updateMetaInfo(IclsColorScheme.MetaInfoProperty.modified, modified);
         convertedIcls.updateMetaInfo(ide, "idea");
         convertedIcls.updateMetaInfo(ideVersion, "2020.1.1.0.0");
         assertEquals(convertedIcls.toString(), expectedIcls);
@@ -69,7 +69,7 @@ public class EclipseToIntellijIdeaThemeConverterTest {
         EclipseColorTheme eclipseColorTheme = EclipseColorTheme.fromString(loadResourceAsString(darkThemeFilename));
         String modified = LocalDateTime.now()
                 .withHour(0).withMinute(0).withSecond(0)
-                .format(IntellijIdeaColorScheme.DATE_FORMAT);
+                .format(IclsColorScheme.DATE_FORMAT);
 
         String expectedIcls = loadResourceAsString(darkThemeFilename.replace("xml", "icls"));
         expectedIcls = replaceValueOfXmlElement(expectedIcls, "property", "name", "modified", modified);
@@ -77,11 +77,11 @@ public class EclipseToIntellijIdeaThemeConverterTest {
 
 
 
-        IntellijIdeaColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
+        IclsColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
         if (eclipseColorTheme.getModified() == null) {
             convertedIcls.updateMetaInfo(created, modified);
         }
-        convertedIcls.updateMetaInfo(IntellijIdeaColorScheme.MetaInfoProperty.modified, modified);
+        convertedIcls.updateMetaInfo(IclsColorScheme.MetaInfoProperty.modified, modified);
         convertedIcls.updateMetaInfo(ide, "idea");
         convertedIcls.updateMetaInfo(ideVersion, "2020.1.1.0.0");
         assertEquals(convertedIcls.toString(), expectedIcls);

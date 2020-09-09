@@ -15,13 +15,13 @@ import static com.nickmcummins.webscraping.ColorUtil.listContainsColor;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeSettingElement.Name.*;
-import static com.nickmcummins.webscraping.com.jetbrains.IclsAttributeOption.Name.*;
+import static com.nickmcummins.webscraping.com.jetbrains.idea.IdeaIclsAttributeOption.Name.*;
 import static com.nickmcummins.webscraping.com.jetbrains.IclsColorOption.Name.*;
 import static com.nickmcummins.webscraping.com.jetbrains.IclsOptionProperty.*;
 
 import static java.util.Map.entry;
 
-public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<EclipseColorTheme, IntellijIdeaColorScheme> {
+public class EclipseToIclsThemeConverter implements ThemeConverter<EclipseColorTheme, IclsColorScheme> {
 
     private static final Map<Name, List<IclsColorOption.Name>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
             Name.BACKGROUND, List.of(CONSOLE_BACKGROUND_KEY, GUTTER_BACKGROUND),
@@ -226,7 +226,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
     }
 
     @Override
-    public IntellijIdeaColorScheme convert(EclipseColorTheme eclipseColorTheme) {
+    public IclsColorScheme convert(EclipseColorTheme eclipseColorTheme) {
         Map<IclsColorOption.Name, String> iclsColorOptions = new HashMap<>();
         Map<IclsAttributeOption.Name, IclsAttributeOption> attributeOptionsValuesByName = ICLS_ATTRIBUTE_OPTION_DEFAULTS.get(eclipseColorTheme.getLightOrDark()).stream()
                 .collect(Collectors.toMap(IclsAttributeOption::getName, iclsAttributeOption -> iclsAttributeOption));
@@ -254,8 +254,8 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
                 EclipseColorThemeSettingElement eclipseSetting = eclipseColorTheme.getSettingByName(iclsAttributeIclsOptionPropertyValue.getValue());
                 if (eclipseSetting != null) {
                     String iclsOptionPropertyValue = eclipseSetting.getColorValue();
-                    if (attributeOptionName.colorMapper != null)
-                        iclsOptionPropertyValue = attributeOptionName.colorMapper.get(iclsOptionPropertyValue);
+                    if (attributeOptionName.getColorMapper() != null)
+                        iclsOptionPropertyValue = attributeOptionName.getColorMapper().get(iclsOptionPropertyValue);
 
 
                     if (!attributeOptionsValuesByName.containsKey(attributeOptionName))
@@ -279,7 +279,7 @@ public class EclipseToIntellijIdeaThemeConverter implements ThemeConverter<Eclip
             }
         }
 
-        return new IntellijIdeaColorScheme(
+        return new IclsColorScheme(
                 eclipseColorTheme.getModified(),
                 eclipseColorTheme.getName(),
                 iclsColorOptions,
