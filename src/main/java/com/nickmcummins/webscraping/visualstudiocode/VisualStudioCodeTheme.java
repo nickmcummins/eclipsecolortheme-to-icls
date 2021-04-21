@@ -3,6 +3,7 @@ package com.nickmcummins.webscraping.visualstudiocode;
 import com.nickmcummins.webscraping.ColorTheme;
 
 import java.util.List;
+import java.util.Map;
 
 public class VisualStudioCodeTheme implements ColorTheme {
     private static final List<String> DEFAULT_TAGS = List.of("theme", "color-theme");
@@ -12,12 +13,66 @@ public class VisualStudioCodeTheme implements ColorTheme {
     private final String name;
     private final String publisher;
     private final List<String> tags;
+    private List<VSCodeColor> colors;
+    private Map<SemanticTokenColorSetting, String> semanticTokenColors;
 
-    public VisualStudioCodeTheme(String id, String name, String publisher) {
+    public VisualStudioCodeTheme(String id, String name, String publisher, List<VSCodeColor> colors, Map<SemanticTokenColorSetting, String> semanticTokenColors) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
         this.tags = DEFAULT_TAGS;
+        this.colors = colors;
+        this.semanticTokenColors = semanticTokenColors;
+    }
+
+    private String packageJson() {
+        return String.format("""
+                {
+                  "name": "%s",
+                  "displayName": "%s",
+                  "version": "0.1.0",
+                  "description": "%s theme for VS Code",
+                  "categories": ["Themes"],
+                  "keywords": ["theme"],
+                  "bugs": {"url": "%s/issues"},
+                  "repository": {
+                    "type": "git",
+                    "url": "%s"
+                  },
+                  "license": "MIT",
+                  "publisher": "%s",
+                  "scripts": {
+                    "build": "esno src/index.ts",
+                    "dev": "nodemon --watch src -e ts --exec \\"esno src/index.ts\\"",
+                    "vscode:prepublish": "npm run build",
+                    "release": "npx bumpp --commit --tag --push && vsce publish"
+                  },
+                  "contributes": {
+                    "themes": [
+                      {
+                        "label": "%s",
+                        "uiTheme": "vs",
+                        "path": "./themes/%s.json"
+                      }
+                    ]
+                  },
+                  "devDependencies": {
+                    "@antfu/eslint-config": "^0.4.3",
+                    "@types/color": "^3.0.1",
+                    "color": "^3.1.2",
+                    "eslint": "^7.21.0",
+                    "esno": "^0.4.6",
+                    "nodemon": "^2.0.3",
+                    "tsup": "^4.6.1",
+                    "typescript": "^4.2.3"
+                  },
+                  "engines": {
+                    "vscode": "^1.43.0"
+                  },
+                  "icon": "icon.png",
+                  "preview": true
+                }
+                """, id, name, name, GITHUB_REPO, GITHUB_REPO, publisher, name, id);
     }
 
     private String extensionVsixManifest() {
@@ -25,9 +80,9 @@ public class VisualStudioCodeTheme implements ColorTheme {
                 <?xml version="1.0" encoding="utf-8"?>
                 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
                     <Metadata>
-                        <Identity Language="en-US" Id="theme-vitesse" Version="0.1.0" Publisher="%s"/>
+                        <Identity Language="en-US" Id="%s" Version="0.1.0" Publisher="%s"/>
                         <DisplayName>%s</DisplayName>
-                        <Description xml:space="preserve">%s for VS Code</Description>
+                        <Description xml:space="preserve">%s theme for VS Code</Description>
                         <Tags>%s</Tags>
                         <Categories>Themes</Categories>
                         <GalleryFlags>Public Preview</GalleryFlags>
@@ -60,7 +115,7 @@ public class VisualStudioCodeTheme implements ColorTheme {
                         <Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/icon.png" Addressable="true"/>
                     </Assets>
                 </PackageManifest>           
-                """, publisher, name, name, String.join(",", tags), GITHUB_REPO, GITHUB_REPO, GITHUB_REPO, GITHUB_REPO);
+                """, id, publisher, name, name, String.join(",", tags), GITHUB_REPO, GITHUB_REPO, GITHUB_REPO, GITHUB_REPO);
     }
 
     private static String contentTypesXml() {
@@ -85,5 +140,11 @@ public class VisualStudioCodeTheme implements ColorTheme {
     @Override
     public String getExtension() {
         return null;
+    }
+
+    public enum SemanticTokenColorSetting {
+        NAMESPACE,
+        INTERFACE,
+        CLASS;
     }
 }
