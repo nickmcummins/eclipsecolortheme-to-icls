@@ -12,7 +12,7 @@
     <properties>
         <java.compiler.version>1.8</java.compiler.version>
         <java.signature.artifactId>java18</java.signature.artifactId>
-        <maven.compiler.source>14</maven.compiler.source>
+        <maven.compiler.source>15</maven.compiler.source>
     </properties>
 
     <repositories>
