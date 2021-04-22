@@ -438,4 +438,8 @@ public enum VSCodeColorSetting
     {
         this.name = name;
     }
+
+    public String toString() {
+        return name;
+    }
 }

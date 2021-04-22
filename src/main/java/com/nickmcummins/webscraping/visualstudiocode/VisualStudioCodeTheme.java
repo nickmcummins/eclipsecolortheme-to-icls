@@ -4,6 +4,7 @@ import com.nickmcummins.webscraping.ColorTheme;
 
 import java.util.List;
 import java.util.Map;
+import static java.util.stream.Collectors.joining;
 
 public class VisualStudioCodeTheme implements ColorTheme {
     private static final List<String> DEFAULT_TAGS = List.of("theme", "color-theme");
@@ -14,15 +15,15 @@ public class VisualStudioCodeTheme implements ColorTheme {
     private final String publisher;
     private final List<String> tags;
     private List<VSCodeColor> colors;
-    private Map<SemanticTokenColorSetting, String> semanticTokenColors;
+    private List<VSCodeTokenColor> tokenColors;
 
-    public VisualStudioCodeTheme(String id, String name, String publisher, List<VSCodeColor> colors, Map<SemanticTokenColorSetting, String> semanticTokenColors) {
+    public VisualStudioCodeTheme(String id, String name, String publisher, List<VSCodeColor> colors, List<VSCodeTokenColor> tokenColors) {
         this.id = id;
         this.name = name;
         this.publisher = publisher;
         this.tags = DEFAULT_TAGS;
         this.colors = colors;
-        this.semanticTokenColors = semanticTokenColors;
+        this.tokenColors = tokenColors;
     }
 
     private String packageJson() {
@@ -114,7 +115,7 @@ public class VisualStudioCodeTheme implements ColorTheme {
                         <Asset Type="Microsoft.VisualStudio.Services.Content.License" Path="extension/LICENSE.txt" Addressable="true"/>
                         <Asset Type="Microsoft.VisualStudio.Services.Icons.Default" Path="extension/icon.png" Addressable="true"/>
                     </Assets>
-                </PackageManifest>           
+                </PackageManifest>          
                 """, id, publisher, name, name, String.join(",", tags), GITHUB_REPO, GITHUB_REPO, GITHUB_REPO, GITHUB_REPO);
     }
 
@@ -142,9 +143,23 @@ public class VisualStudioCodeTheme implements ColorTheme {
         return null;
     }
 
-    public enum SemanticTokenColorSetting {
-        NAMESPACE,
-        INTERFACE,
-        CLASS;
+    public String toString() {
+        return String.format("""
+                {
+                    "name": "%s",
+                    "semanticHighlighting": true,
+                    "$schema": "vscode://schemas/color-theme",
+                    "type": "light",
+                    "colors": {
+                        %s
+                    },
+                    "tokenColors": {
+                        %s
+                    }
+                }
+                """,
+                name,
+                colors.stream().map(VSCodeColor::toString).collect(joining(",\n")),
+                tokenColors.stream().map(VSCodeTokenColor::toString).collect(joining(",\n")));
     }
 }

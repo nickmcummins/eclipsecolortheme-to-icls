@@ -3,17 +3,35 @@ package com.nickmcummins.webscraping.org.eclipsecolorthemes.converter;
 import com.nickmcummins.webscraping.SchemeType;
 import com.nickmcummins.webscraping.converter.ThemeConverter;
 import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorThemeSettingElement;
 import com.nickmcummins.webscraping.visualstudiocode.VSCodeColor;
+import com.nickmcummins.webscraping.visualstudiocode.VSCodeTokenColor;
+import com.nickmcummins.webscraping.visualstudiocode.VSCodeTokenColorScope;
 import com.nickmcummins.webscraping.visualstudiocode.VisualStudioCodeTheme;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import static com.nickmcummins.webscraping.SchemeType.DARK;
 import static com.nickmcummins.webscraping.SchemeType.LIGHT;
 import static com.nickmcummins.webscraping.visualstudiocode.VSCodeColorSetting.*;
+import static com.nickmcummins.webscraping.visualstudiocode.VSCodeTokenColorScope.*;
+import static java.util.Map.entry;
 
 public class EclipseToVSCodeThemeConverter implements ThemeConverter<EclipseColorTheme, VisualStudioCodeTheme> {
+    @Override
+    public VisualStudioCodeTheme convert(EclipseColorTheme inputTheme) {
+        List<VSCodeTokenColor> tokenColors = new ArrayList<>();
+        for (VSCodeTokenColorScope tokenColor : VSCODE_TOKEN_COLORS_FROM_ECLIPSE_SETTING.keySet()) {
+            EclipseColorThemeSettingElement.Name eclipseSettingName = VSCODE_TOKEN_COLORS_FROM_ECLIPSE_SETTING.get(tokenColor);
+            EclipseColorThemeSettingElement eclipseSetting = inputTheme.getSettingByName(eclipseSettingName);
+            tokenColors.add(new VSCodeTokenColor(tokenColor, eclipseSetting.getColorValue()));
+        }
+        List<VSCodeColor> colors = VSCODE_COLOR_DEFAULTS.get(inputTheme.getLightOrDark());
+        return new VisualStudioCodeTheme(inputTheme.getName(), inputTheme.getName(), "", colors, tokenColors);
+    }
+
     private static final Map<SchemeType, List<VSCodeColor>> VSCODE_COLOR_DEFAULTS = Map.of(
             LIGHT, List.of(
                     new VSCodeColor(FOCUS_BORDER, "00000000"),
@@ -603,8 +621,22 @@ public class EclipseToVSCodeThemeConverter implements ThemeConverter<EclipseColo
                     new VSCodeColor(TITLE_BAR_INACTIVE_BACKGROUND, "18181899"),
                     new VSCodeColor(TITLE_BAR_INACTIVE_FOREGROUND, "cccccc99"))
     );
-    @Override
-    public VisualStudioCodeTheme convert(EclipseColorTheme inputTheme) {
-        return null;
-    }
+    private static final Map<VSCodeTokenColorScope, EclipseColorThemeSettingElement.Name> VSCODE_TOKEN_COLORS_FROM_ECLIPSE_SETTING = Map.ofEntries(
+            entry(COMMENT, EclipseColorThemeSettingElement.Name.SINGLE_LINE_COMMENT),
+            entry(BRACE, EclipseColorThemeSettingElement.Name.BRACKET),
+            entry(VARIABLE, EclipseColorThemeSettingElement.Name.LOCAL_VARIABLE),
+            entry(ENTITY, EclipseColorThemeSettingElement.Name.LOCAL_VARIABLE),
+            entry(PARAMETER, EclipseColorThemeSettingElement.Name.PARAMETER_VARIABLE),
+            entry(TAG, EclipseColorThemeSettingElement.Name.JAVADOC_TAG),
+            entry(FUNCTION, EclipseColorThemeSettingElement.Name.METHOD),
+            entry(KEYWORD, EclipseColorThemeSettingElement.Name.KEYWORD),
+            entry(TYPE, EclipseColorThemeSettingElement.Name.TYPE_ARGUMENT),
+            entry(STRING, EclipseColorThemeSettingElement.Name.STRING),
+            entry(PUNCTUATION, EclipseColorThemeSettingElement.Name.BRACKET),
+            entry(OPERATORS, EclipseColorThemeSettingElement.Name.OPERATOR),
+            entry(CLASSES, EclipseColorThemeSettingElement.Name.CLASS),
+            entry(METHODS, EclipseColorThemeSettingElement.Name.METHOD),
+            entry(NUMBERS, EclipseColorThemeSettingElement.Name.NUMBER),
+            entry(CONSTANTS, EclipseColorThemeSettingElement.Name.CONSTANT)
+    );
 }
