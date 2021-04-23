@@ -2,6 +2,9 @@ package com.nickmcummins.webscraping.visualstudiocode;
 
 import com.nickmcummins.webscraping.ColorTheme;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import static java.util.stream.Collectors.joining;
@@ -9,6 +12,7 @@ import static java.util.stream.Collectors.joining;
 public class VisualStudioCodeTheme implements ColorTheme {
     private static final List<String> DEFAULT_TAGS = List.of("theme", "color-theme");
     private static final String GITHUB_REPO = "https://github.com/nickmcummins/eclipsecolortheme-to-icls";
+    public static final String EXTENSION = "vsix";
 
     private final String id;
     private final String name;
@@ -135,12 +139,12 @@ public class VisualStudioCodeTheme implements ColorTheme {
 
     @Override
     public String getName() {
-        return null;
+        return name;
     }
 
     @Override
     public String getExtension() {
-        return null;
+        return EXTENSION;
     }
 
     public String toString() {
@@ -161,5 +165,11 @@ public class VisualStudioCodeTheme implements ColorTheme {
                 name,
                 colors.stream().map(VSCodeColor::toString).collect(joining(",\n")),
                 tokenColors.stream().map(VSCodeTokenColor::toString).collect(joining(",\n")));
+    }
+
+    public void writeToFile() throws IOException {
+        String outputDir = "converted";
+        Files.createDirectory(Paths.get(outputDir));
+        ColorTheme.super.writeToFile(outputDir);
     }
 }

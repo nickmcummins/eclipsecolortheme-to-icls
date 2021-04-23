@@ -21,7 +21,7 @@ import static com.nickmcummins.webscraping.com.jetbrains.IclsOptionProperty.*;
 
 import static java.util.Map.entry;
 
-public class EclipseToIclsThemeConverter implements ThemeConverter<EclipseColorTheme, IclsColorScheme> {
+public class EclipseToIclsThemeConverter implements ThemeConverter<IclsColorScheme> {
 
     private static final Map<Name, List<IclsColorOption.Name>> ECLIPSE_TO_IDEA_OPTIONS = Map.of(
             Name.BACKGROUND, List.of(CONSOLE_BACKGROUND_KEY, GUTTER_BACKGROUND),
@@ -278,11 +278,11 @@ public class EclipseToIclsThemeConverter implements ThemeConverter<EclipseColorT
                 }
             }
         }
-
         return new IclsColorScheme(
                 eclipseColorTheme.getModified(),
                 eclipseColorTheme.getName(),
                 iclsColorOptions,
                 attributeOptionsValuesByName.values());
     }
+
 }

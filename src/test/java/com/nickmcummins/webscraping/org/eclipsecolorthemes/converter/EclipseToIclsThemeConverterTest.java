@@ -17,7 +17,7 @@ import static com.nickmcummins.webscraping.org.eclipsecolorthemes.TestUtil.toObj
 import static org.testng.Assert.assertEquals;
 
 public class EclipseToIclsThemeConverterTest {
-    private ThemeConverter<EclipseColorTheme, IclsColorScheme> eclipseToIntellijThemeConverter;
+    private ThemeConverter<IclsColorScheme> eclipseToIntellijThemeConverter;
 
     @BeforeClass
     public void setup() {
@@ -46,7 +46,7 @@ public class EclipseToIclsThemeConverterTest {
 
 
 
-        IclsColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
+        IclsColorScheme convertedIcls = (IclsColorScheme) eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
         if (eclipseColorTheme.getModified() == null) {
             convertedIcls.updateMetaInfo(created, modified);
         }
@@ -77,7 +77,7 @@ public class EclipseToIclsThemeConverterTest {
 
 
 
-        IclsColorScheme convertedIcls = eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
+        IclsColorScheme convertedIcls = (IclsColorScheme) eclipseToIntellijThemeConverter.convert(eclipseColorTheme);
         if (eclipseColorTheme.getModified() == null) {
             convertedIcls.updateMetaInfo(created, modified);
         }

@@ -1,5 +1,8 @@
 package com.nickmcummins.webscraping.converter;
 
-public interface ThemeConverter<T, F> {
-    F convert(T inputTheme);
+import com.nickmcummins.webscraping.ColorTheme;
+import com.nickmcummins.webscraping.org.eclipsecolorthemes.EclipseColorTheme;
+
+public interface ThemeConverter<T>{
+    ColorTheme convert(EclipseColorTheme theme);
 }

@@ -19,12 +19,13 @@ import static com.nickmcummins.webscraping.visualstudiocode.VSCodeColorSetting.*
 import static com.nickmcummins.webscraping.visualstudiocode.VSCodeTokenColorScope.*;
 import static java.util.Map.entry;
 
-public class EclipseToVSCodeThemeConverter implements ThemeConverter<EclipseColorTheme, VisualStudioCodeTheme> {
+public class EclipseToVSCodeThemeConverter implements ThemeConverter<VisualStudioCodeTheme> {
     @Override
     public VisualStudioCodeTheme convert(EclipseColorTheme inputTheme) {
         List<VSCodeTokenColor> tokenColors = new ArrayList<>();
         for (VSCodeTokenColorScope tokenColor : VSCODE_TOKEN_COLORS_FROM_ECLIPSE_SETTING.keySet()) {
             EclipseColorThemeSettingElement.Name eclipseSettingName = VSCODE_TOKEN_COLORS_FROM_ECLIPSE_SETTING.get(tokenColor);
+
             EclipseColorThemeSettingElement eclipseSetting = inputTheme.getSettingByName(eclipseSettingName);
             tokenColors.add(new VSCodeTokenColor(tokenColor, eclipseSetting.getColorValue()));
         }
